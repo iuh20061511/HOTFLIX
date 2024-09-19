@@ -1,0 +1,55 @@
+.combo-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 10px;
+}
+
+.combo-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.movie-poster {
+    width: 150px;
+    border-radius: 8px;
+}
+
+.timer {
+    color: #ff6600;
+    font-weight: bold;
+}
+
+.age-rating {
+    background-color: #ff6600;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+}
+
+.timer {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.warning {
+    color: red;
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

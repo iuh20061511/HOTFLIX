@@ -1,0 +1,164 @@
+.seat {
+    display: inline-block;
+    cursor: pointer;
+    width: 35px;
+    height: 50px;
+    border-radius: 7px;
+    background: linear-gradient(to top, #761818, red, #F3686A);
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    margin-top: -32px;
+    transform: skew(10deg);
+    color: #fff;
+    font-size: 10px;
+    text-align: center;
+
+}
+
+.seat-vip {
+    background: linear-gradient(to top, red, blueviolet, blueviolet);
+
+}
+
+.empty-seats {
+    background: linear-gradient(to top, #761818, red, #F3686A);
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+
+}
+
+.empty_seat_vip {
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    font-size: 12px;
+    text-align: center;
+    color: #fff;
+    font-weight: 700;
+    background: linear-gradient(to top, red, blueviolet, blueviolet);
+}
+
+.select-seats {
+    width: 25px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 7px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+
+}
+
+.list_seats_sell {
+    width: 35px;
+    height: 50px;
+    border-radius: 7px;
+    background: #000;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    margin-top: -32px;
+    transform: skew(10deg);
+    color: #fff;
+    pointer-events: none;
+}
+
+.sell-seats {
+    width: 25px;
+    height: 25px;
+    background-color: #000;
+    border-radius: 7px;
+    font-size: 12px;
+    text-align: center;
+    font-weight: 700;
+
+
+}
+
+
+.empty_double_seats {
+    width: 25px;
+    height: 25px;
+    border-radius: 7px;
+    font-size: 12px;
+    color: #fff;
+    background: linear-gradient(to top, #F3686A, orange, orange);
+    margin-top: 1px;
+    text-align: center;
+    font-weight: 700;
+
+}
+
+.seat_double {
+    width: 80px;
+    background: linear-gradient(to top, #F3686A, orange, orange);
+    margin-top: 1px;
+    position: relative;
+    font-size: 15px;
+
+}
+
+
+.seat_move {
+    margin-top: -5%;
+}
+
+/* Ẩn checkbox */
+input[type="checkbox"] {
+    display: none;
+}
+
+/* Phần span sẽ hiển thị hiệu ứng */
+.seat span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-radius: 7px;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+    /* Thêm chuyển đổi hiệu ứng mượt mà */
+}
+
+/* Khi checkbox được chọn, đổi màu ghế */
+input[type="checkbox"]:checked+span {
+    background-color: #ccc;
+    /* Màu sáng hơn */
+}
+
+
+
+/* Hiệu ứng hover */
+.seat:hover span {
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Màu khi hover */
+}
+
+.screen {
+
+    /* Chiều rộng của khối */
+    height: 120px;
+    /* Chiều cao của khối */
+    background-color: white;
+    border-radius: 10px 10px 5px 5px;
+    box-shadow: 0px 0px 20px 10px rgba(255, 255, 255, 0.2),
+        0px 0px 30px rgba(0, 0, 0, 0.8);
+    border-bottom: 5px solid #000;
+
+    border-top: 12px solid #ccc;
+    /* Tạo hiệu ứng xiên để giống hình ảnh */
+    transform: perspective(500px) rotateX(-41deg);
+    margin: 100px auto;
+    /* Canh giữa màn hình */
+}
+
+.cinema-seats1,
+.cinema-seats2 {
+
+    margin-left: 5%;
+}
