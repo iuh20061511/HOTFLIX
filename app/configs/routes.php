@@ -16,6 +16,14 @@ $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 
+//ADMIN
+$routes['quan-ly.html'] = 'admin/dashboard';
+$routes['quan-ly-tai-khoan.html'] = 'admin/users';
+$routes['them-tai-khoan.html'] = 'admin/users/addNewStaff';
+$routes['cap-nhat-tai-khoan-(.+).html'] = 'admin/users/updateStaff/$1';
+$routes['xoa-tai-khoan.html'] = 'admin/users/deleteStaff';
+$routes['danh-sach-thanh-vien.html'] = 'admin/users/listMembers';
+
 
 
 

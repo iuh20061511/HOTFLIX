@@ -142,7 +142,7 @@
                             </ul>
                         </div> -->
                         <?php if (isset($_SESSION['is_login'])) { ?>
-                            <div style="display: flex;" class="header_user">
+                            <div class="header_user">
                                 <div class="header__user-avatar">
                                     <img width="40px" src="<?php echo _WEB_ROOT ?>/public/assets/img/user/user_account.png" alt="User avatar">
                                 </div>
@@ -153,7 +153,7 @@
                                 <ul class="dropdown-user">
                                     <li><a href="#">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
-                                        <li><a href="#">Chức năng</a></li>
+                                        <li><a href="quan-ly.html">Chức năng</a></li>
                                     <?php } ?>
                                     <li><a href="#">Lịch sử</a></li>
                                     <li><a href="<?php echo _LINK ?>/account/logout">Đăng xuất</a></li>
@@ -163,7 +163,7 @@
 
 
                         <?php if (!isset($_SESSION['is_login'])) { ?>
-                            <a href="dang-nhap.html" class="header__sign-in" style="display: flex;">
+                            <a href="dang-nhap.html" class="header__sign-in"">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />

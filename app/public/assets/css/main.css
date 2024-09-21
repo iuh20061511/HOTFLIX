@@ -393,7 +393,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .header_user {
-  display: none !important;
+  display: flex;
   flex-direction: row;
   align-items: center;
   /* Căn giữa theo chiều dọc */
@@ -516,7 +516,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .header__sign-in {
-  display: none !important;
+  display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;

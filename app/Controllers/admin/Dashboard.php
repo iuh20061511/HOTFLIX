@@ -1,10 +1,7 @@
 <?php
-
-
-
-
 class Dashboard extends Controller
 {
+
     private $model;
 
     private $data = [];

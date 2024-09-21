@@ -5,18 +5,15 @@
 				<!-- main title -->
 				<div class="col-12">
 					<div class="main__title">
-						<h2>Người dùng</h2>
+						<h2>Thành viên</h2>
 
-						<span class="main__title-stat">Số lượng: <?php echo count($listStaff); ?></span>
+						<span class="main__title-stat">Số lượng: <?php echo count($listMember); ?></span>
 
 						<div class="main__title-wrap">
-							<a href="them-tai-khoan.html">
-								<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm nhân viên</button>
-							</a>
 
 							<!-- <select class="filter__select" name="sort" id="filter__sort">
-							<a href="quan-ly-tai-khoan.html"><option value="1">Nhân viên</option></a>
-							<a href="danh-sach-thanh-vien.html"><option value="2">Thành viên</option></a>
+								<a href="quan-ly-tai-khoan.html"><option value="1">Nhân viên</option></a>
+								<a href="danh-sach-thanh-vien.html"><option value="2">Thành viên</option></a>
 							</select> -->
 
 							<!-- search -->
@@ -45,48 +42,49 @@
 									<th>Số điện thoại</th>
 									<th>Giới tính</th>
 									<th>Vai trò</th>
-									<th>Rạp</th>
-									<th>Chức năng</th>
+									<th>Điểm</th>
+									<th>Xếp hạng thành viên</th>
+                                    <th>Chức năng</th>
 								</tr>
 							</thead>
 
 							<tbody>
 							<?php
                                 $stt = 0;
-                                foreach ($listStaff as $index => $staff) { ?>
+                                foreach ($listMember as $index => $member) { ?>
 								<tr>
 									<td>
 										<div class="catalog__text"><?php echo ++$stt ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo $staff['email'] ?></div>
+										<div class="catalog__text"><?php echo $member['email'] ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo $staff['full_name'] ?></div>
+										<div class="catalog__text"><?php echo $member['full_name'] ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo date('d/m/Y', strtotime($staff['birthday'])) ?></div>
+										<div class="catalog__text"><?php echo date('d/m/Y', strtotime($member['birthday'])) ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo $staff['phone'] ?></div>
+										<div class="catalog__text"><?php echo $member['phone'] ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo $staff['gender'] ?></div>
+										<div class="catalog__text"><?php echo $member['gender'] ?></div>
 									</td>
 									<td>
-										<div class="catalog__text catalog__text--green"><?php echo $staff['ten_role'] ?></div>
+										<div class="catalog__text catalog__text--green"><?php echo $member['ten_role'] ?></div>
 									</td>
 									<td>
-										<div class="catalog__text"><?php echo $staff['cinema_name'] ?></div>
+										<div class="catalog__text"><?php echo $member['points'] ?></div>
+									</td>
+                                    <td>
+										<div class="catalog__text"><?php echo $member['rank_name'] ?></div>
 									</td>
 									<td>
 										<div class="catalog__btns">
 											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
 												<i class="ti ti-lock"></i>
 											</button>
-											<a href="cap-nhat-tai-khoan-<?php echo $staff['id_staff'] ?>.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
 											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-staff-id="<?php echo $staff['id_staff'] ?>" data-staff-name="<?php echo $staff['full_name'] ?>"data-bs-target="#modal-delete">
 												<i class="ti ti-trash"></i>
 											</button>

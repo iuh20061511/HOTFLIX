@@ -1,7 +1,7 @@
 <?php
-class RoomsController extends Controller
+class Reviews extends Controller
 {
-    
+
     private $model;
 
     private $data = [];
@@ -10,21 +10,14 @@ class RoomsController extends Controller
     {
         $this->model = $this->model('HomeModel');
     }
+
     public function index()
     {
         $this->data['sub']['title'] = "Trang Admin";
 
-        $this->data['content'] = 'admin/rooms/listRoom';
+        $this->data['content'] = 'admin/reviews/listReview';
 
         $this->view("layout/admin", $this->data);
-
-    }
-
-    public function new($id)
-    {
-
-        echo $id;
-
     }
 
     public function ok()

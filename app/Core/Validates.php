@@ -3,7 +3,7 @@
 class Validate extends ValidateCheck
 {
 
-    public function checkPhone($phone)
+    public function checkPhone($phone, $edit = false, $isForgot = false, $id_user='')
     {
         if (empty($phone)) {
             return "Vui lòng nhập số điện thoại!";
@@ -11,9 +11,8 @@ class Validate extends ValidateCheck
         if (!preg_match("/^0\d{9}$/", $phone)) {
             return "Số điện thoại phải bắt đầu từ số 0 và có 10 chữ số!";
         }
-        $exists = $this->checkPhoneExists($phone);
-        if ($exists) {
-            return "Số điện thoại đã tồn tại!";
+        if (($edit ? $this->checkPhoneExistsEdit($phone,$id_user) : $this->checkPhoneExists($phone)) && $isForgot==false) {
+            return "Số điện thoại đã tồn tại, vui lòng chọn số điện thoại khác!";
         }
         return '';
     }
@@ -31,23 +30,19 @@ class Validate extends ValidateCheck
         return '';
     }
 
-
-    public function checkEmail($email, $edit = false, $isForgot = false)
-    {
+    public function checkEmail($email, $edit = false, $isForgot = false) {
         if (empty($email)) {
             return "Email không được để trống!";
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Email không hợp lệ, vui lòng nhập lại!";
         }
-
-        $exists = $this->checkEmailExists($email);
-        if ($exists) {
-            return "Email đã tồn tại!";
+        if (($edit ? $this->checkEmailExistsEdit($email) : $this->checkEmailExists($email)) && $isForgot==false) {
+            return "Email đã tồn tại, vui lòng chọn email khác!";
         }
-
         return '';
     }
+
     public function checkDateOfBirth($date)
     {
         if (empty($date)) {
@@ -103,9 +98,19 @@ class Validate extends ValidateCheck
     }
 
     function checkEmpty($string1, $string2){
-        if (empty($string1) || empty($string2)) {
+        if (empty($string1) || empty($string2) ) {
             return "Vui lòng nhập đầy đủ thông tin!";
-        }else{
+        }
+        else{
+            return '';
+        }
+    }
+
+    function checkSelect($string)
+    {
+        if ($string == 0) {
+            return "Vui lòng chọn thông tin này!";
+        } else {
             return '';
         }
     }

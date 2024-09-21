@@ -119,7 +119,7 @@
 		new SlimSelect({
 			select: '#sign__director',
 			settings: {
-				placeholderText: 'Choose director',
+				placeholderText: 'Thuộc rạp phim',
 			}
 		});
 	}
@@ -128,7 +128,7 @@
 		new SlimSelect({
 			select: '#sign__actors',
 			settings: {
-				placeholderText: 'Choose actors',
+				placeholderText: 'Vai trò',
 			}
 		});
 	}
@@ -139,7 +139,7 @@
 	if (document.getElementById('sign__gallery-upload')) {
 		var galleryUpload = document.getElementById('sign__gallery-upload');
 
-		galleryUpload.addEventListener('change', function(event) {
+		galleryUpload.addEventListener('change', function (event) {
 			var length = event.target.files.length;
 			var galleryLabel = galleryUpload.getAttribute('data-name');
 			var label = document.querySelector(galleryLabel);
@@ -153,8 +153,8 @@
 	}
 
 	if (document.querySelector('.sign__video-upload')) {
-		document.querySelectorAll('.sign__video-upload').forEach(function(element) {
-			element.addEventListener('change', function() {
+		document.querySelectorAll('.sign__video-upload').forEach(function (element) {
+			element.addEventListener('change', function () {
 				var videoLabel = element.getAttribute('data-name');
 				var vlabel = document.querySelector(videoLabel);
 

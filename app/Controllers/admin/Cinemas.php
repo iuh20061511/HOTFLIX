@@ -1,7 +1,7 @@
 <?php
-class MoviesController extends Controller
+class Cinemas extends Controller
 {
-    
+
     private $model;
 
     private $data = [];
@@ -14,7 +14,7 @@ class MoviesController extends Controller
     {
         $this->data['sub']['title'] = "Trang Admin";
 
-        $this->data['content'] = 'admin/movies/listMovie';
+        $this->data['content'] = 'admin/cinemas/listCinema';
 
         $this->view("layout/admin", $this->data);
 

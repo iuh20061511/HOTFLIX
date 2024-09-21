@@ -8,7 +8,6 @@
 
 			<div class="sidebar__user-title">
 				<span><?php echo $_SESSION['is_login']['name_role']?></span>
-				<!-- <span>cc</span> -->
 				<p><?php echo $_SESSION['is_login']['fullname']?></p>
 			</div>
 
@@ -26,10 +25,11 @@
 				</li>
 
 				<li class="sidebar__nav-item">
-					<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-users"></i> <span>Users</span> <i class="ti ti-chevron-down"></i></a>
+					<a class="sidebar__nav-link" href="quan-ly-tai-khoan.html" role="button" aria-expanded="false"><i class="ti ti-users"></i> <span>Quản lý Tài khoản</span> <i class="ti ti-chevron-down"></i></a>
 					<ul class="dropdown-menu sidebar__dropdown-menu">
-						<li><a href="add-item.html">Add user</a></li>
-						<li><a href="edit-user.html">Edit user</a></li>
+						<li><a href="them-tai-khoan.html">Thêm nhân viên</a></li>
+						<li><a href="danh-sach-thanh-vien.html">Danh sách Thành viên</a></li>
+						<li><a href="quan-ly-tai-khoan.html">Danh sách Nhân viên</a></li>
 					</ul>
 				</li>
 
@@ -76,10 +76,7 @@
 					<ul class="dropdown-menu sidebar__dropdown-menu">
 						<li><a href="add-item.html">Add item</a></li>
 						<li><a href="edit-user.html">Edit user</a></li>
-						<li><a href="signin.html">Sign In</a></li>
-						<li><a href="signup.html">Sign Up</a></li>
 						<li><a href="forgot.html">Forgot password</a></li>
-						<li><a href="404.html">404 Page</a></li>
 					</ul>
 				</li>
 				<!-- end dropdown -->

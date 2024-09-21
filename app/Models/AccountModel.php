@@ -31,7 +31,7 @@ class AccountModel extends Model
             $staff = $staffResult[0];
             if(password_verify($password, $staff['password'])){
                 $name_role= $this->model->getListTable('role', "where id_role =" .$staff['id_role']);
-                $customer['name_role'] = $name_role[0]['ten_role'];
+                $staff['name_role'] = $name_role[0]['ten_role'];
                 return $staff;
             }
         }
