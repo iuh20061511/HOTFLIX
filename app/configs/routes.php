@@ -17,12 +17,21 @@ $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 
 //ADMIN
+//--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
 $routes['quan-ly-tai-khoan.html'] = 'admin/users';
 $routes['them-tai-khoan.html'] = 'admin/users/addNewStaff';
 $routes['cap-nhat-tai-khoan-(.+).html'] = 'admin/users/updateStaff/$1';
 $routes['xoa-tai-khoan.html'] = 'admin/users/deleteStaff';
 $routes['danh-sach-thanh-vien.html'] = 'admin/users/listMembers';
+//--Cinema
+$routes['quan-ly-rap-phim.html'] = 'admin/cinemas';
+$routes['them-rap-phim.html'] = 'admin/cinemas/addNewCinema';
+$routes['cap-nhat-rap-phim-(.+).html'] = 'admin/cinemas/updateCinema/$1';
+$routes['xoa-rap-phim.html'] = 'admin/cinemas/deleteCinema';
+$routes['them-phong-chieu.html'] = 'admin/cinemas/addNewRoomForCinema';
+$routes['cap-nhat-phong-chieu-(.+).html'] = 'admin/cinemas/updateRoomForCinema/$1';
+$routes['xoa-phong-chieu.html'] = 'admin/cinemas/deleteRooomForCinema';
 
 
 

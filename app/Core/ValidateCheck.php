@@ -46,6 +46,28 @@ class ValidateCheck extends Model
     return false;
     }
 
+    public function checkNameCinemaExistsEdit($name_cinema,$id_cinema)
+    {
+        $cinema = $this->model->getListTable('cinemas', "where id_cinema = '$id_cinema'");
+
+        if ($cinema) {
+            $cinemaAccount = $cinema[0]["cinema_name"];
+        } else {
+            return false;
+        }
+
+        // Kiểm tra số tên rập có tồn tại, nhưng bỏ qua tên cũ
+        $cinemaResult = $this->model->getListTable('cinemas', "where cinema_name = '$name_cinema' AND cinema_name != '$cinemaAccount'");
+
+        // Nếu tên đã tồn tại
+        if (!empty($cinemaResult)) {
+            return true;
+        }
+
+    // Không có số điện thoại trùng lặp
+    return false;
+    }
+
     public function checkEmailExists($email)
     {
         $customerResult = $this->model->getListTable('customer', "where email = '$email'");

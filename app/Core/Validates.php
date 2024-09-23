@@ -69,6 +69,15 @@ class Validate extends ValidateCheck
         }
     }
 
+    function checkAdress($address)
+    {
+        if (empty($address)) {
+            return " Vui lòng nhập đầy đủ địa chỉ !";
+        } else {
+            return '';
+        }
+    }
+
 
     function checkPassword($password)
     {
@@ -111,6 +120,18 @@ class Validate extends ValidateCheck
         if ($string == 0) {
             return "Vui lòng chọn thông tin này!";
         } else {
+            return '';
+        }
+    }
+
+    function checkEmptyNumber($number, $quantity)
+    {
+        if (empty($number)) {
+            return "Vui lòng nhập số lượng!";
+        }else if(!empty($number) && $number<$quantity){
+            return "Vui lòng nhập số lượng khác (>=$quantity)!";
+        }
+        else {
             return '';
         }
     }

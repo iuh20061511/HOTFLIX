@@ -233,8 +233,8 @@
 						<p class="modal__text">Bạn có chắc chắn muốn xóa vĩnh viễn người dùng này không?</p>
 
 						<div class="modal__btns">
-							<input type="submit" value="Xóa" class="sign__btn sign__btn--small" name="deleteUser">
-							<input type="submit" value="Hủy" class="sign__btn sign__btn--small" data-bs-dismiss="modal" aria-label="Close" name="close">
+							<input type="submit" value="Xóa" class="sign__btn sign__btn--small m-2" name="deleteUser">
+							<input type="button" value="Hủy" class="sign__btn sign__btn--small m-2" data-bs-dismiss="modal" aria-label="Close" name="close">
 							<!-- <button class="modal__btn modal__btn--apply" name="deleteStaff" type="button"><span>Xóa</span></button>
 							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Hủy</span></button> -->
 						</div>

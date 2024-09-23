@@ -124,12 +124,11 @@ class Users extends Controller
                 $result = $this->model->deleteData('staff', "where id_staff = $id_staff");
                     if ($result) {
                         echo "<script>alert('Xóa thành công')</script>";
+                        $redirectUrl ="quan-ly-tai-khoan.html";
+                        header("refresh:0.5; url=$redirectUrl");
                     }
             }
         }
-        $this->data['sub']['listStaff'] = $this->model->getListStaff();
-
-        $this->data['content'] = 'admin/users/listUser';
 
         $this->view("layout/admin", $this->data);
     }

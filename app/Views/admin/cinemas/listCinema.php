@@ -5,18 +5,22 @@
 				<!-- main title -->
 				<div class="col-12">
 					<div class="main__title">
-						<h2>Cinemas</h2>
+						<h2>Rạp phim</h2>
 
-						<span class="main__title-stat">3,702 Total</span>
+						<span class="main__title-stat">Số lượng rạp: <?php echo count($listCinema);?></span>
 
 						<div class="main__title-wrap">
-							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap" data-bs-target="#modal-user">Add cinema</button>
-
-							<select class="filter__select" name="sort" id="filter__sort">
+						<a href="them-rap-phim.html">
+							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm rạp phim</button>
+						</a>
+						<a href="them-phong-chieu.html">
+							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm phòng chiếu</button>
+						</a>
+							<!-- <select class="filter__select" name="sort" id="filter__sort">
 								<option value="0">Date created</option>
 								<option value="1">Pricing plan</option>
 								<option value="2">Status</option>
-							</select>
+							</select> -->
 
 							<!-- search -->
 							<form action="#" class="main__title-form">
@@ -31,500 +35,85 @@
 				</div>
 				<!-- end main title -->
 
-				<!-- users -->
+				<!-- cinema -->
 				<div class="col-12">
 					<div class="catalog catalog--1">
 						<table class="catalog__table">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>BASIC INFO</th>
-									<th>USERNAME</th>
-									<th>PRICING PLAN</th>
-									<th>COMMENTS</th>
-									<th>REVIEWS</th>
-									<th>STATUS</th>
-									<th>CRAETED DATE</th>
-									<th>ACTIONS</th>
+									<th>STT</th>
+									<th>Tên rạp</th>
+									<th>Địa chỉ</th>
+									<th>Điện thoại liên lạc</th>
+									<th>Số lượng phòng</th>
+									<th>Trạng thái</th>
+									<th>Chức năng</th>
 								</tr>
 							</thead>
 
 							<tbody>
+							<?php
+                                $stt = 0;
+                                foreach ($listCinema as $index => $cinema) { ?>
 								<tr>
 									<td>
-										<div class="catalog__text">11</div>
+										<div class="catalog__text"><?php echo ++$stt?></div>
 									</td>
 									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Tess Harper</h3>
-												<span>email@email.com</span>
-											</div>
+										<div class="catalog__text">
+											<?php echo $cinema['cinema_name']?>
 										</div>
 									</td>
 									<td>
-										<div class="catalog__text">Username</div>
+										<div class="catalog__text"><?php echo $cinema['address']?></div>
 									</td>
 									<td>
-										<div class="catalog__text">Premium</div>
+										<div class="catalog__text"><?php echo $cinema['contact']?></div>
 									</td>
 									<td>
-										<div class="catalog__text">13</div>
+										<div class="catalog__text">
+										<?php
+											$number_room = 0;
+											foreach ($listRoom as $index => $room) { 
+												if($room['id_cinema'] == $cinema['id_cinema']){
+													$number_room +=1;
+												}
+											}
+											echo $number_room;
+											?>
+										</div>
 									</td>
 									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">05.02.2023</div>
+									<?php
+										if ($cinema['status'] == 1) { ?>
+											<div class="catalog__text catalog__text--green">Đang kinh doanh</div>
+										<?php } elseif ($cinema['status'] == 0) { ?>
+											<div class="catalog__text catalog__text--red">Ngưng kinh doanh</div>
+										<?php }
+									?>
 									</td>
 									<td>
 										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
+										<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view" 
+    									onclick="loadModalData(<?php echo htmlspecialchars(json_encode($listRoom, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>, <?php echo htmlspecialchars(json_encode($cinema, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>)"
+										>
+												<i class="ti ti-eye"></i>
 											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
+											<a href="cap-nhat-rap-phim-<?php echo $cinema['id_cinema'] ?>.html" class="catalog__btn catalog__btn--edit">
 												<i class="ti ti-edit"></i>
 											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete catalog__btn--delete-cinema" data-cinema-id="<?php echo $cinema['id_cinema'] ?>" data-cinema-name="<?php echo $cinema['cinema_name'] ?>" data-bs-target="#modal-delete">
 												<i class="ti ti-trash"></i>
 											</button>
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">12</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Gene Graham</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">05.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">13</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Rosa Lee</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">6</div>
-									</td>
-									<td>
-										<div class="catalog__text">6</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">14</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Matt Jones</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">11</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Brian Cranston</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Basic</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">16</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Louis Leterrier</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">2</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">03.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">17</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Son Gun</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Cinematic</div>
-									</td>
-									<td>
-										<div class="catalog__text">65</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">02.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">18</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Jordana Brewster</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">02.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">19</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Tyreese Gibson</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">13</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">01.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">20</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Charlize Theron</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">01.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
+								<?php } ?>
 							</tbody>
 						</table>
 					</div>
 				</div>
-				<!-- end users -->
+				<!-- end cinema -->
 
 				<!-- paginator -->
 				<div class="col-12">
@@ -571,100 +160,144 @@
 	</main>
 	<!-- end main content -->
 
-	<!-- user modal -->
-	<div class="modal fade" id="modal-user" tabindex="-1" aria-labelledby="modal-user" aria-hidden="true">
+
+	<!-- view modal -->
+	<div class="modal fade" id="modal-view" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Add movie</h4>
+				<div class="modal__content modal__content--view">
+					<div class="reviews__autor">
+						<span class="reviews__name" style="color: #ff55a5"></span>
+						<span class="reviews__time"></span>
+					</div>
 
-						<div class="row">
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="email0">Email</label>
-									<input id="email0" type="text" name="email0" class="sign__input">
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="pass0">Password</label>
-									<input id="pass0" type="password" name="pass0" class="sign__input">
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="subscription">Subscription</label>
-									<select class="sign__select" id="subscription">
-										<option value="Basic">Basic</option>
-										<option value="Premium">Premium</option>
-										<option value="Cinematic">Cinematic</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="rights">Rights</label>
-									<select class="sign__select" id="rights">
-										<option value="User">User</option>
-										<option value="Moderator">Moderator</option>
-										<option value="Admin">Admin</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-12 col-lg-6 offset-lg-3">
-								<button type="button" class="sign__btn sign__btn--modal">Add</button>
-							</div>	
-						</div>
-					</form>
+					<div class="table-responsive m-3">
+						<table class="table table-striped">
+							<thead>
+								<tr style="color: #ff55a5; font-size: 14px;">
+									<th scope="col" class="text-nowrap" style="width: 50px;">STT</th>
+									<th scope="col">Tên Phòng</th>
+									<th scope="col">Loại Phòng</th>
+									<th scope="col">Số Lượng Ghế</th>
+									<th scope="col">Chức năng</th>
+								</tr>
+							</thead>
+							<tbody>
+								<!-- Dữ liệu sẽ được thêm vào đây -->
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end user modal -->
+	<!-- end view modal -->
 
-	<!-- status modal -->
-	<div class="modal fade" id="modal-status" tabindex="-1" aria-labelledby="modal-status" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Status change</h4>
-
-						<p class="modal__text">Are you sure about immediately change status?</p>
-
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Apply</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end status modal -->
-
-	<!-- delete modal -->
+	<!-- delete modal cinema-->
 	<div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">User delete</h4>
-
-						<p class="modal__text">Are you sure to permanently delete this user?</p>
+					<form action="xoa-rap-phim.html" class="modal__form" method="post">
+						<h6 class="modal__title">Xóa <span id="cinema-name"></span> (ID: <span id="cinema-id"></span>)</h6>
+						<input type="hidden" name="id_cinema" id="cinema-id-input" value="">
+						<p class="modal__text">Bạn có chắc chắn muốn xóa vĩnh viễn rạp phim này không?</p>
 
 						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
+							<input type="submit" value="Xóa" class="sign__btn sign__btn--small m-2" name="deleteCinema">
+							<input type="button" value="Hủy" class="sign__btn sign__btn--small m-2" data-bs-dismiss="modal" aria-label="Close" name="close">
 						</div>
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end delete modal -->
+	<!-- end delete modal cinema-->
+
+	<!-- delete modal room-->
+	<div class="modal fade" id="modal-delete-room" tabindex="-1" aria-labelledby="modal-delete-room" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal__content">
+					<form action="xoa-phong-chieu.html" class="modal__form" method="post"> <!-- Changed action to xoa-phong-chieu.html -->
+						<h6 class="modal__title">Xóa <span id="room-name"></span> (ID: <span id="room-id"></span>)</h6>
+						<input type="hidden" name="id_room" id="room-id-input" value="">
+						<p class="modal__text">Bạn có chắc chắn muốn xóa vĩnh viễn phòng chiếu này không?</p>
+
+						<div class="modal__btns">
+							<input type="submit" value="Xóa" class="sign__btn sign__btn--small m-2" name="deleteRoom">
+							<input type="button" value="Hủy" class="sign__btn sign__btn--small m-2" data-bs-dismiss="modal" aria-label="Close" name="close">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end delete modal room-->
+
+
+	<script>
+		function loadModalData(listRoom, cinema) {
+			// Cập nhật tên rạp và địa chỉ trong modal
+			document.querySelector('.reviews__name').textContent = cinema.cinema_name;
+			document.querySelector('.reviews__time').textContent = cinema.address;
+
+			// Lấy bảng trong modal
+			const tableBody = document.querySelector('#modal-view .table tbody');
+			tableBody.innerHTML = ''; // Xóa nội dung cũ
+
+			// Lọc các phòng thuộc rạp hiện tại
+			const filteredRooms = listRoom.filter(room => room.id_cinema === cinema.id_cinema);
+
+			// Duyệt qua các phòng và thêm vào bảng
+			filteredRooms.forEach((room, index) => {
+				const row = `
+					<tr>
+						<td class="text-nowrap text-white text-center">${index + 1}</td>
+						<td class="text-white">${room.room_name}</td>
+						<td class="text-white">${room.RoomType_name}</td>
+						<td class="text-white text-center">${room.number_seat}</td>
+						<td class="text-white text-center">
+							<div class="catalog__btns">
+							<a href="cap-nhat-phong-chieu-${room.id_room}.html" class="catalog__btn catalog__btn--edit">
+								<i class="ti ti-edit"></i>
+							</a>
+							<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete catalog__btn--delete-room" data-room-id="${room.id_room}" data-room-name="${room.room_name}" data-bs-target="#modal-delete-room">
+								<i class="ti ti-trash"></i>
+							</button>
+							</div>
+						</td>
+					</tr>
+				`;
+				tableBody.insertAdjacentHTML('beforeend', row);
+			});
+
+			// Gắn sự kiện click cho nút xóa phòng chiếu (catalog__btn--delete-room)
+			document.querySelectorAll('.catalog__btn--delete-room').forEach(function (button) {
+        	button.addEventListener('click', function () {
+            var roomId = this.getAttribute('data-room-id');
+            var roomName = this.getAttribute('data-room-name');
+            
+            // Cập nhật dữ liệu cho modal xóa phòng chiếu
+            document.getElementById('room-id').textContent = roomId;
+            document.getElementById('room-name').textContent = roomName;
+            document.getElementById('room-id-input').value = roomId;
+        	});
+    		});
+		}
+
+		document.addEventListener('DOMContentLoaded', function () {
+        // Xử lý sự kiện cho nút xóa rạp phim
+        document.querySelectorAll('.catalog__btn--delete-cinema').forEach(function (button) {
+            button.addEventListener('click', function () {
+                // Xử lý khi bấm nút xóa rạp phim (cinema)
+                var cinemaId = this.getAttribute('data-cinema-id');
+                var cinemaName = this.getAttribute('data-cinema-name');
+                document.getElementById('cinema-id').textContent = cinemaId;
+                document.getElementById('cinema-name').textContent = cinemaName;
+                document.getElementById('cinema-id-input').value = cinemaId;
+            });
+        });
+    });
+
+	</script>
