@@ -68,6 +68,28 @@ class ValidateCheck extends Model
     return false;
     }
 
+    public function checkNameMovieExistsEdit($name_movie,$id_movie)
+    {
+        $movie = $this->model->getListTable('movie', "where id_movie = '$id_movie'");
+
+        if ($movie) {
+            $movieAccount = $movie[0]["movie_name"];
+        } else {
+            return false;
+        }
+
+        // Kiểm tra số tên rập có tồn tại, nhưng bỏ qua tên cũ
+        $movieResult = $this->model->getListTable('movie', "where movie_name = '$name_movie' AND movie_name != '$movieAccount'");
+
+        // Nếu tên đã tồn tại
+        if (!empty($movieResult)) {
+            return true;
+        }
+
+    // Không có số điện thoại trùng lặp
+    return false;
+    }
+
     public function checkEmailExists($email)
     {
         $customerResult = $this->model->getListTable('customer', "where email = '$email'");
