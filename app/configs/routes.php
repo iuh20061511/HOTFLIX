@@ -34,7 +34,11 @@ $routes['xoa-rap-phim.html'] = 'admin/cinemas/deleteCinema';
 $routes['them-phong-chieu.html'] = 'admin/cinemas/addNewRoomForCinema';
 $routes['cap-nhat-phong-chieu-(.+).html'] = 'admin/cinemas/updateRoomForCinema/$1';
 $routes['xoa-phong-chieu.html'] = 'admin/cinemas/deleteRooomForCinema';
-
+//Movies
+$routes['quan-ly-phim.html'] = 'admin/movies';
+$routes['them-bo-phim.html'] = 'admin/movies/addNewMovie';
+$routes['cap-nhat-phim-(.+).html'] = 'admin/movies/updateMovie/$1';
+$routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
 
 
 

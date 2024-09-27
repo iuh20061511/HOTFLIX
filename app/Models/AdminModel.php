@@ -40,6 +40,17 @@ class AdminModel extends Model
         return '';
     }
 
+    public function checkMovieExist($movie_name)
+    {
+        $listMovie = $this->model->getListTable('movie');
+        foreach ($listMovie as $movie) {
+            if (strcasecmp($movie['movie_name'], $movie_name) == 0) {
+                return "Tên bộ phim này đã được sử dụng!";
+            }
+        }
+        return '';
+    }
+
     public function checkRoomOfCinemaExist($room_name, $id_cinema, $id_room='',$isEdit=false)
     {  
         if($isEdit){
@@ -86,5 +97,21 @@ class AdminModel extends Model
             'ward_address' => $ward,
             'district_address' => $district,
         ];
+    }
+
+    public function upload($name,$tmp_name,$fd)
+    {
+        if($name!='')
+        {
+            $des= $fd."/".$name;
+            if(move_uploaded_file($tmp_name,$des))
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

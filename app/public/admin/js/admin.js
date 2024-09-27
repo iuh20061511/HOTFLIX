@@ -101,7 +101,7 @@
 		new SlimSelect({
 			select: '#sign__genre',
 			settings: {
-				placeholderText: 'Choose genre',
+				placeholderText: 'Thể loại phim',
 			}
 		});
 	}
@@ -110,7 +110,7 @@
 		new SlimSelect({
 			select: '#sign__country',
 			settings: {
-				placeholderText: 'Choose country',
+				placeholderText: 'Quốc gia',
 			}
 		});
 	}

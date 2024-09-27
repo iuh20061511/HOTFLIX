@@ -5,23 +5,28 @@
 				<!-- main title -->
 				<div class="col-12">
 					<div class="main__title">
-						<h2>Movies</h2>
+						<h2>Quản lý phim</h2>
 
-						<span class="main__title-stat">3,702 Total</span>
+						<span class="main__title-stat">Số lượng phim: <?php echo count($listMovie)?></span>
 
 						<div class="main__title-wrap">
-							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap" data-bs-target="#modal-user">Add movie</button>
+						<a href="them-bo-phim.html">
+							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm phim mới</button>
+						</a>
 
-							<select class="filter__select" name="sort" id="filter__sort">
-								<option value="0">Date created</option>
-								<option value="1">Pricing plan</option>
-								<option value="2">Status</option>
+						<form action="quan-ly-phim.html" class="m-3">
+							<select class="filter__select" name="movie_sort" id="filter__sort" onchange="this.form.submit()">
+								<option value="3" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 3) ? 'selected' : '' ?>>Tất cả</option>
+								<option value="0" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 0) ? 'selected' : '' ?>>Sắp chiếu</option>
+								<option value="1" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 1) ? 'selected' : '' ?>>Đang chiếu</option>
+								<option value="2" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 2) ? 'selected' : '' ?>>Đã chiếu</option>
 							</select>
+						</form>
 
 							<!-- search -->
-							<form action="#" class="main__title-form">
-								<input type="text" placeholder="Find user..">
-								<button type="button">
+							<form action="quan-ly-phim.html" class="main__title-form">
+								<input type="text" placeholder="Tìm kiếm phim..." name="search_nameMovie">
+								<button type="submit">
 									<i class="ti ti-search"></i>
 								</button>
 							</form>
@@ -37,489 +42,65 @@
 						<table class="catalog__table">
 							<thead>
 								<tr>
-									<th>ID</th>
-									<th>BASIC INFO</th>
-									<th>USERNAME</th>
-									<th>PRICING PLAN</th>
-									<th>COMMENTS</th>
-									<th>REVIEWS</th>
-									<th>STATUS</th>
-									<th>CRAETED DATE</th>
-									<th>ACTIONS</th>
+									<th>STT</th>
+									<th>Poster</th>
+									<th>Tên phim</th>
+									<th>Thời lượng</th>
+									<th>Ngày phát hành</th>
+									<th>Trạng thái</th>
+									<th>Trailer</th>
+									<th>Chức năng</th>
 								</tr>
 							</thead>
 
 							<tbody>
+							<?php
+                                $stt = 0;
+                                foreach ($listMovie as $index => $movie) { ?>
 								<tr>
 									<td>
-										<div class="catalog__text">11</div>
+										<div class="catalog__text"><?php echo ++$stt?></div>
 									</td>
 									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Tess Harper</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
+										<div class="catalog__text"><div class="view-poster" data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>">Poster</div></div>
 									</td>
 									<td>
-										<div class="catalog__text">Username</div>
+										<div class="catalog__text"><?php echo $movie['movie_name']; ?></div>
 									</td>
 									<td>
-										<div class="catalog__text">Premium</div>
+										<div class="catalog__text"><?php echo $movie['duration']; ?> phút</div>
 									</td>
 									<td>
-										<div class="catalog__text">13</div>
+										<div class="catalog__text"><?php echo date('d/m/Y', strtotime($movie['release_date'])) ?></div>
 									</td>
 									<td>
-										<div class="catalog__text">1</div>
+									<?php if ($movie['status'] == 0 ): ?>
+										<div class="catalog__text catalog__text--red">Sắp chiếu</div>
+									<?php endif; ?>
+									<?php if ($movie['status'] == 1 ): ?>
+										<div class="catalog__text catalog__text--green">Đang chiếu</div>
+									<?php endif; ?>
 									</td>
 									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">05.02.2023</div>
+										<div class="catalog__text"><div class="play_trailer" data-trailer="<?php echo $movie['trailer']; ?>">Trailer</div></div>
 									</td>
 									<td>
 										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
+											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view" 
+												data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>"
+												data-movie='<?php echo htmlspecialchars(json_encode($movie, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>'>
+												<i class="ti ti-eye"></i>
 											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
+											<a href="cap-nhat-phim-<?php echo $movie['id_movie'] ?>.html" class="catalog__btn catalog__btn--edit">
 												<i class="ti ti-edit"></i>
 											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
+											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-movie-id="<?php echo $movie['id_movie'] ?>" data-movie-name="<?php echo $movie['movie_name'] ?>" data-bs-target="#modal-delete">
 												<i class="ti ti-trash"></i>
 											</button>
 										</div>
 									</td>
 								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">12</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Gene Graham</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">05.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">13</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Rosa Lee</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">6</div>
-									</td>
-									<td>
-										<div class="catalog__text">6</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">14</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Matt Jones</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">11</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Brian Cranston</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Basic</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">04.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">16</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Louis Leterrier</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">2</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">03.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">17</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Son Gun</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Cinematic</div>
-									</td>
-									<td>
-										<div class="catalog__text">65</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">02.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">18</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Jordana Brewster</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text">0</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">02.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">19</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Tyreese Gibson</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Premium</div>
-									</td>
-									<td>
-										<div class="catalog__text">13</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--green">Approved</div>
-									</td>
-									<td>
-										<div class="catalog__text">01.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<div class="catalog__text">20</div>
-									</td>
-									<td>
-										<div class="catalog__user">
-											<div class="catalog__avatar">
-												<img src="img/user.svg" alt="">
-											</div>
-											<div class="catalog__meta">
-												<h3>Charlize Theron</h3>
-												<span>email@email.com</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="catalog__text">Username</div>
-									</td>
-									<td>
-										<div class="catalog__text">Free</div>
-									</td>
-									<td>
-										<div class="catalog__text">1</div>
-									</td>
-									<td>
-										<div class="catalog__text">15</div>
-									</td>
-									<td>
-										<div class="catalog__text catalog__text--red">Banned</div>
-									</td>
-									<td>
-										<div class="catalog__text">01.02.2023</div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
-											<a href="edit-user.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
+							<?php } ?>
 							</tbody>
 						</table>
 					</div>
@@ -571,96 +152,94 @@
 	</main>
 	<!-- end main content -->
 
-	<!-- user modal -->
-	<div class="modal fade" id="modal-user" tabindex="-1" aria-labelledby="modal-user" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
+	<!-- view modal -->
+	<div class="modal fade" id="modal-view" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered">
 			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Add movie</h4>
-
-						<div class="row">
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="email0">Email</label>
-									<input id="email0" type="text" name="email0" class="sign__input">
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="pass0">Password</label>
-									<input id="pass0" type="password" name="pass0" class="sign__input">
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="subscription">Subscription</label>
-									<select class="sign__select" id="subscription">
-										<option value="Basic">Basic</option>
-										<option value="Premium">Premium</option>
-										<option value="Cinematic">Cinematic</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-12">
-								<div class="sign__group">
-									<label class="sign__label" for="rights">Rights</label>
-									<select class="sign__select" id="rights">
-										<option value="User">User</option>
-										<option value="Moderator">Moderator</option>
-										<option value="Admin">Admin</option>
-									</select>
-								</div>
-							</div>
-
-							<div class="col-12 col-lg-6 offset-lg-3">
-								<button type="button" class="sign__btn sign__btn--modal">Add</button>
-							</div>	
+				<div class="modal-header" style="background-color: black; border: 2px solid #ff55a5; border-bottom: none;">
+					<h5 class="modal-title movie-name" style="color: #ff55a5;"></h5>
+					<button type="button" class="btn-close" style="background-color: #fff;" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal__content modal__content--view" style="border: 2px solid #ff55a5; border-top: none; border-top-left-radius: 0; border-top-right-radius: 0;">
+					<!-- Phần chứa ảnh và các thông tin khác -->
+					<div class="row p-3">
+						<!-- Cột chứa poster -->
+						<div class="col-md-4 col-sm-12 d-flex justify-content-center">
+							<img src="" alt="Poster" class="movie-poster" style="width: 100%; max-width: 200px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
 						</div>
-					</form>
+
+						<div class="col-md-8 col-sm-12">
+
+							<!-- Thông tin phim với nhãn và nội dung -->
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Thời lượng:</strong>
+								</div>
+								<div class="col-9 movie-duration text-white"></div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Ngày phát hành:</strong>
+								</div>
+								<div class="col-9 movie-release-date text-white"></div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Thể loại:</strong>
+								</div>
+								<div class="col-9 movie-genre text-white"></div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Quốc gia:</strong>
+								</div>
+								<div class="col-9 movie-nation text-white"></div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Tác giả:</strong>
+								</div>
+								<div class="col-9 movie-director text-white"></div>
+							</div>
+
+							<div class="row mb-3">
+								<div class="col-3">
+									<strong style="color: #ff55a5;">Diễn viên:</strong>
+								</div>
+								<div class="col-9 movie-actor text-white"></div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-12">
+							<p class="movie-description m-3 px-3 text-white"></p>
+						</div>
+					</div>
+
 				</div>
 			</div>
 		</div>
 	</div>
-	<!-- end user modal -->
-
-	<!-- status modal -->
-	<div class="modal fade" id="modal-status" tabindex="-1" aria-labelledby="modal-status" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Status change</h4>
-
-						<p class="modal__text">Are you sure about immediately change status?</p>
-
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Apply</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end status modal -->
+	<!-- end view modal -->
 
 	<!-- delete modal -->
 	<div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">User delete</h4>
-
-						<p class="modal__text">Are you sure to permanently delete this user?</p>
+					<form action="xoa-bo-phim.html" class="modal__form" method="post">
+						<h6 class="modal__title">Xóa phim: <span id="movie-name"></span></h6>
+						<h6 class="modal__title">ID: <span id="movie-id"></span></h6>
+						<input type="hidden" name="id_movie" id="movie-id-input" value="">
+						<p class="modal__text">Bạn chắc chắn xóa vĩnh viễn bộ phim này không?</p>
 
 						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
+							<input type="submit" value="Xóa" class="sign__btn sign__btn--small m-2" name="deleteMovie">
+							<input type="button" value="Hủy" class="sign__btn sign__btn--small m-2" data-bs-dismiss="modal" aria-label="Close" name="close">
 						</div>
 					</form>
 				</div>
@@ -668,3 +247,156 @@
 		</div>
 	</div>
 	<!-- end delete modal -->
+
+
+	<!-- Popup video-->
+	<div class="popupvideo" id="popupvideo">
+        <div class="popupvideo_inner">
+            <div class="popupvideo_inner_iframe">
+                <iframe id="videoIframe" width="100%" height="100%"
+                    src="" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                </iframe>
+            </div>
+            <div class="popupvideo_inner_close" id="closeVideoPopup">
+                <img src="<?php echo _WEB_ROOT ?>/public/admin/img/icons8-close.svg" alt="close">
+            </div>
+        </div>
+    </div>
+	<!-- Popup video-->
+
+
+	<!-- Popup hiện poster -->
+	<div class="popup-poster" id="popupPoster">
+		<span class="close-popup">&times;</span>
+		<img src="" alt="Movie Poster" class="popup-poster-image" id="popupPosterImage">
+	</div>
+	<!-- Popup hiện poster -->
+
+	<script>
+		// <-------------Trailer--------------->
+		const trailerLinks = document.querySelectorAll('.play_trailer'); // Chọn tất cả các link Trailer
+		const popupVideo = document.getElementById('popupvideo'); // Popup container
+		const videoIframe = document.getElementById('videoIframe'); // iframe chứa video
+		const closeVideoPopupBtn = document.getElementById('closeVideoPopup'); // Nút đóng popup video
+
+		// Gắn sự kiện click cho từng thẻ a (link trailer)
+		trailerLinks.forEach(link => {
+			link.addEventListener('click', function(event) {
+				const trailerUrl = link.getAttribute('data-trailer'); // Lấy URL trailer từ thuộc tính data
+				videoIframe.src = `${trailerUrl}?autoplay=1`; // Gán URL vào iframe và tự động phát video
+				popupVideo.classList.add('active'); // Kích hoạt popup
+			});
+		});
+
+		// Đóng popup video khi nhấn vào nút close hoặc ra ngoài khung video
+		closeVideoPopupBtn.addEventListener('click', function() {
+			popupVideo.classList.remove('active');
+			videoIframe.src = ''; // Xóa URL để dừng video
+		});
+
+		popupVideo.addEventListener('click', function(e) {
+			if (e.target === popupVideo) {
+				popupVideo.classList.remove('active');
+				videoIframe.src = ''; // Xóa URL để dừng video
+			}
+		});
+		// <-------------Trailer--------------->
+
+		// <-------------Poster--------------->
+		const posterLinks = document.querySelectorAll('.view-poster'); // Chọn tất cả các link xem poster
+		const popupPoster = document.getElementById('popupPoster'); // Popup container cho poster
+		const popupPosterImage = document.getElementById('popupPosterImage'); // Hình ảnh trong popup poster
+		const closePosterPopupBtn = document.querySelector('.close-popup'); // Nút đóng popup poster
+
+		// Gắn sự kiện click cho từng link poster
+		posterLinks.forEach(link => {
+			link.addEventListener('click', function(event) {
+
+				// Lấy URL của ảnh poster từ thuộc tính data-poster
+				const posterUrl = link.getAttribute('data-poster');
+
+				// Gán URL poster vào thẻ img trong popup
+				popupPosterImage.src = posterUrl;
+
+				// Hiển thị popup bằng cách đổi style display
+				popupPoster.style.display = 'flex';
+			});
+		});
+
+		// Gắn sự kiện click cho nút đóng popup poster
+		closePosterPopupBtn.addEventListener('click', function() {
+			popupPoster.style.display = 'none'; // Ẩn popup khi nhấn nút đóng
+			popupPosterImage.src = ''; // Xóa URL để tránh lỗi khi đóng
+		});
+
+		// Ẩn popup poster khi nhấn ra ngoài ảnh
+		popupPoster.addEventListener('click', function(e) {
+			if (e.target === popupPoster) {
+				popupPoster.style.display = 'none'; // Ẩn popup khi nhấn ra ngoài ảnh
+				popupPosterImage.src = ''; // Xóa URL khi đóng popup
+			}
+		});
+		// <-------------Poster--------------->
+
+		// <-------------Modal view detail movie--------------->
+		// Gán sự kiện click cho từng nút button
+		const posterButtons = document.querySelectorAll('.catalog__btn--view');
+
+		posterButtons.forEach(button => {
+			button.addEventListener('click', function() {
+				// Lấy thông tin
+				const movieData = JSON.parse(button.getAttribute('data-movie'));
+				const posterUrl = button.getAttribute('data-poster');
+				// Gọi hàm loadModalDataMovie và truyền vào dữ liệu
+				loadModalDataMovie(movieData, posterUrl);
+			});
+		});
+
+		function loadModalDataMovie(movie, posterUrl) {
+			// Tên phim
+			document.querySelector('.movie-name').textContent = movie.movie_name;
+			// Ảnh Poster
+			document.querySelector('.movie-poster').src = posterUrl; // Cập nhật với posterUrl
+			//Thời lượng
+			document.querySelector('.movie-duration').textContent = movie.duration+" phút";
+			//Ngày phát hành
+			const releaseDate = new Date(movie.release_date);
+			const formattedDate = releaseDate.getDate().toString().padStart(2, '0') + '/' +
+								(releaseDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+								releaseDate.getFullYear(); // Định dạng ngày/tháng/năm
+
+			document.querySelector('.movie-release-date').textContent = formattedDate;
+			//Thể loại
+			document.querySelector('.movie-genre').textContent = movie.genre;
+			//Quốc gia
+			document.querySelector('.movie-nation').textContent = movie.nation;
+			//Tác giả
+			document.querySelector('.movie-director').textContent = movie.director;
+			//Diễn viên
+			document.querySelector('.movie-actor').textContent = movie.actor;
+			//Mô tả
+			document.querySelector('.movie-description').textContent = movie.description;
+		}
+		// <-------------Modal view detail movie--------------->
+
+		// <-------------Modal delete movie--------------->
+		document.addEventListener('DOMContentLoaded', function () {
+			// Lấy tất cả các nút xóa
+			var deleteButtons = document.querySelectorAll('.catalog__btn--delete');
+
+			// Thêm sự kiện click cho từng nút xóa
+			deleteButtons.forEach(function (button) {
+				button.addEventListener('click', function () {
+					var movieId = this.getAttribute('data-movie-id');
+					var movieName = this.getAttribute('data-movie-name');
+					document.getElementById('movie-id').textContent = movieId;
+					document.getElementById('movie-name').textContent = movieName;
+					document.getElementById('movie-id-input').value = movieId;
+				});
+			});
+		});
+
+	</script>
+

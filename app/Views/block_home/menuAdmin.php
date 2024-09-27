@@ -37,35 +37,26 @@
 
 			<li class="sidebar__nav-item">
 				<a class="sidebar__nav-link" href="quan-ly-rap-phim.html" role="button" aria-expanded="false"><i
-						class="ti ti-video-camera"></i> <span>Quản lý Rạp phim</span> <i
-						class="ti ti-chevron-down"></i></a>
+						class="ti ti-movie"></i><span>Quản lý Rạp phim</span> <i class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
 					<li><a href="them-rap-phim.html">Thêm rạp phim</a></li>
 					<li><a href="them-phong-chieu.html">Thêm phòng chiếu</a></li>
 					<li><a href="quan-ly-rap-phim.html">Danh sách rạp phim</a></li>
 				</ul>
 			</li>
+
 			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="quan-ly-rap-phim.html" role="button" aria-expanded="false"><i
-						class="ti ti-video-camera"></i> <span>Quản lý lịch chiếu</span> <i
+				<a class="sidebar__nav-link" href="quan-ly-phim.html" role="button" aria-expanded="false"><i
+						class="ti ti-movie"></i> <span>Quản lý phim</span> <i class="ti ti-chevron-down"></i></a>
+				<ul class="dropdown-menu sidebar__dropdown-menu">
+					<li><a href="them-bo-phim.html">Thêm phim mới</a></li>
+				</ul>
+			</li>
+
+			<li class="sidebar__nav-item">
+				<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+						class="ti ti-video-camera"></i> <span>Quản lý suất chiếu</span> <i
 						class="ti ti-chevron-down"></i></a>
-				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="">Thêm suất chiếu</a></li>
-
-				</ul>
-			</li>
-			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-						class="ti ti-movie"></i> <span>Movies</span> <i class="ti ti-chevron-down"></i></a>
-				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="add-item.html">Add movies</a></li>
-					<li><a href="edit-user.html">Edit movies</a></li>
-				</ul>
-			</li>
-
-			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-						class="ti ti-video-camera"></i> <span>Rooms</span> <i class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
 					<li><a href="add-item.html">Add cinema</a></li>
 					<li><a href="edit-user.html">Edit cinema</a></li>
