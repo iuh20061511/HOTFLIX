@@ -1,12 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<!-- Mirrored from hotflix.volkovdesign.com/main/forgot.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 12 Aug 2024 15:29:17 GMT -->
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/splide.min.css">
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/slimselect.css">
@@ -15,45 +10,62 @@
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/default-skin.css">
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/main.css">
 
-    <!-- Icon font -->
-    <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/webfont/tabler-icons.min.css">
-
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="<?php echo _WEB_ROOT ?>/public/assets/icon/favicon-32x32.png" sizes="32x32">
-    <link rel="apple-touch-icon" href="<?php echo _WEB_ROOT ?>/public/assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" href="<?php echo _WEB_ROOT ?>/public/assets/icon/logo_edited_v2.svg"
+        sizes="32x32">
+    <link rel="apple-touch-icon" href="<?php echo _WEB_ROOT ?>/public/assets/icon/logo_edited_v2.svg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css" rel="stylesheet" />
     <meta name="description" content="Online Movies, TV Shows & Cinema HTML Template">
     <meta name="keywords" content="">
     <meta name="author" content="Dmitry Volkov">
-    <title>HotFlix – Online Movies, TV Shows & Cinema HTML Template</title>
+    <title>HOTFLIX</title>
 </head>
 
 <body>
+    <?php
+    if (empty($_SESSION['csrf_token'])) {
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+    }
+    $csrf_token = $_SESSION['csrf_token'];
+    ?>
     <div class="sign section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/account.jpg">
+
         <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="sign__content">
-
+                        <!-- authorization form -->
                         <form action="" class="sign__form" method="POST">
                             <a href="index.html" class="sign__logo">
                                 <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo.svg" alt="">
                             </a>
-                            <?php if (!empty($result['success'])) { ?>
-                                <h6 class="alert alert-success text-center" role="alert"><?php echo $result['success']; ?>
-                                </h6>
-                            <?php } ?>
-                            <div class="sign__group">
-                                <input type="text" class="sign__input" placeholder="Email" name="email">
-                            </div>
-                            <?php if (isset($error['email'])) { ?>
-                                <p class="error text-danger m-1"><b><?php echo $error['email']; ?></b></p>
-                            <?php } ?>
-                            <input type="submit" value="Xác nhận" name="submit" class="btn btn-danger sign__group">
+                            <input type="hidden" name="token" value="<?php if (isset($_GET['token'])) {
+                                echo $_GET['token'];
+                            } ?>">
 
-                            <span class="sign__text">Chúng tôi sẽ gửi đến Email của bạn</span>
+                            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                            <div class="sign__group">
+                                <input type="password" name="password" class="sign__input" placeholder="Nhập mật khẩu">
+                                <?php if (isset($error['password'])) { ?>
+                                    <p class="error text-danger m-1"><b><?php echo $error['password']; ?></b></p>
+                                <?php } ?>
+                            </div>
+
+                            <div class="sign__group">
+                                <input type="password" name="confirmPassword" class="sign__input"
+                                    placeholder="Nhập lại mật khẩu">
+                                <?php if (isset($error['confirmPassword'])) { ?>
+                                    <p class="error text-danger m-1"><b><?php echo $error['confirmPassword']; ?></b></p>
+                                <?php } ?>
+                            </div>
+
+                            <input type="submit" name="submit" value="Xác nhận" class="btn btn-danger sign__group">
                         </form>
-                        <!-- end forgot form -->
+
                     </div>
                 </div>
             </div>

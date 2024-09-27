@@ -15,6 +15,8 @@ $routes['trang-chu.html'] = 'home';
 $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
+$routes['dat-lai-mat-khau.html'] = "account/reset";
+
 
 //ADMIN
 //--USER
