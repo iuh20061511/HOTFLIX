@@ -16,20 +16,6 @@
 						<a href="them-phong-chieu.html">
 							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm phòng chiếu</button>
 						</a>
-							<!-- <select class="filter__select" name="sort" id="filter__sort">
-								<option value="0">Date created</option>
-								<option value="1">Pricing plan</option>
-								<option value="2">Status</option>
-							</select> -->
-
-							<!-- search -->
-							<form action="#" class="main__title-form">
-								<input type="text" placeholder="Find user..">
-								<button type="button">
-									<i class="ti ti-search"></i>
-								</button>
-							</form>
-							<!-- end search -->
 						</div>
 					</div>
 				</div>

@@ -93,18 +93,6 @@
                                             </div>
 										</div>
 									</div>
-
-									<div class="col-12" style="margin-top: 15px">
-										<div class="sign__group">
-												<input type="number" class="sign__input" placeholder="Số lượng ghế ngồi của phòng" name="number_seat" value="<?php echo isset($_POST['number_seat']) ? $_POST['number_seat'] : ''; ?>">
-                                                <div>
-                                                    <?php if (isset($error['number_seat'])): ?>
-                                                        <p class="error text-danger"><?php echo $error['number_seat']; ?></p>
-                                                    <?php endif; ?>
-                                                </div>
-										</div>
-									</div>
-
 								</div>
 							</div>
 
