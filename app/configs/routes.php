@@ -37,7 +37,11 @@ $routes['quan-ly-phim.html'] = 'admin/movies';
 $routes['them-bo-phim.html'] = 'admin/movies/addNewMovie';
 $routes['cap-nhat-phim-(.+).html'] = 'admin/movies/updateMovie/$1';
 $routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
-
+//Menu_items
+$routes['quan-ly-bap-nuoc.html'] = 'admin/menu_items';
+$routes['them-bap-nuoc.html'] = 'admin/menu_items/addNewItem';
+$routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/menu_items/updateItem/$1';
+$routes['xoa-bap-nuoc.html'] = 'admin/menu_items/deleteItem';
 
 
 

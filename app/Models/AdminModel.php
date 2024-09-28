@@ -29,55 +29,10 @@ class AdminModel extends Model
         return $this->model->getListFromTwoTables('room','room_type','id_roomType');
     }
 
-    public function checkCinemaExist($name_cinema)
-    {
-        $listCinema = $this->model->getListTable('cinemas');
-        foreach ($listCinema as $cinema) {
-            if (strcasecmp($cinema['cinema_name'], $name_cinema) == 0) {
-                return "Tên rạp phim này đã được sử dụng!";
-            }
-        }
-        return '';
-    }
-
-    public function checkMovieExist($movie_name)
-    {
-        $listMovie = $this->model->getListTable('movie');
-        foreach ($listMovie as $movie) {
-            if (strcasecmp($movie['movie_name'], $movie_name) == 0) {
-                return "Tên bộ phim này đã được sử dụng!";
-            }
-        }
-        return '';
-    }
-
-    public function checkRoomOfCinemaExist($room_name, $id_cinema, $id_room='',$isEdit=false)
-    {  
-        if($isEdit){
-            $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and id_room='$id_room'");
-            if($room){
-                $roomNameOld = $room[0]["room_name"];
-                if (strcasecmp($room_name, $roomNameOld) != 0) {
-                    $roomResult = $this->model->getListTable('room', "where id_cinema='$id_cinema' AND room_name = '$room_name' AND room_name != '$roomNameOld'");
-                    if (!empty($roomResult)) {
-                        return "Tên phòng đã được sử dụng cho rạp này!";
-                    }
-                }
-            }
-        }else{
-            $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and room_name='$room_name'");
-            if($room){
-                return "Tên phòng đã được sử dụng cho rạp bạn chọn!";
-            }
-        }
-        return '';
-    }
-
-
-    function splitAddress($address) {
+    public function splitAddress($address) {
         // Tách chuỗi thành mảng dựa trên dấu phẩy
         $parts = array_map('trim', explode(',', $address));
-    
+
         // Lấy các phần tử ngược lại và gán cho biến
         $district = $parts[count($parts) - 2];
         $ward = $parts[count($parts) - 3];
@@ -89,7 +44,7 @@ class AdminModel extends Model
         $number = str_replace("Số ", "", $number);
         $street = str_replace("Đường ", "", $street);
         $ward = str_replace("P.", "", $ward);
-    
+
         // Trả về dưới dạng mảng hoặc có thể xuất ra tùy ý
         return [
             'number_address' => $number,

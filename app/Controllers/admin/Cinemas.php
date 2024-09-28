@@ -31,7 +31,7 @@ class Cinemas extends Controller
 
         if (isset($_POST['addCinema'])) {
             if(!empty($_POST['cinema_name']) && strlen($_POST['cinema_name'])>=3){
-                $this->data['sub']['error']['cinema_name'] = $this->model->checkCinemaExist($_POST['cinema_name']);
+                $this->data['sub']['error']['cinema_name'] = $this->validate->checkCinemaExist($_POST['cinema_name']);
             }else{
                 $this->data['sub']['error']['cinema_name'] = $this->validate->checkFullName($_POST['cinema_name']);
             }
@@ -136,7 +136,7 @@ class Cinemas extends Controller
             $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
             $this->data['sub']['error']['type_room'] = $this->validate->checkSelect($_POST['type_room']);
             if($_POST['cinema']!=0 && strlen($_POST['room_name'])>=3){
-                $this->data['sub']['error']['room_name'] = $this->model->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema']);
+                $this->data['sub']['error']['room_name'] = $this->validate->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema']);
             }else{
                 $this->data['sub']['error']['room_name'] = $this->validate->checkFullName($_POST['room_name']);
             }
@@ -188,7 +188,7 @@ class Cinemas extends Controller
 
         if (isset($_POST['updateRoom'])) {
             if($_POST['cinema']!=0 && strlen($_POST['room_name'])>=3){
-                $this->data['sub']['error']['room_name'] = $this->model->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema'],$id_room,true);
+                $this->data['sub']['error']['room_name'] = $this->validate->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema'],$id_room,true);
             }else{
                 $this->data['sub']['error']['room_name'] = $this->validate->checkFullName($_POST['room_name']);
             }

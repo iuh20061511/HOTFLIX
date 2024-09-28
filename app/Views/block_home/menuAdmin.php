@@ -34,7 +34,7 @@
 				</li>
 
 				<li class="sidebar__nav-item">
-					<a class="sidebar__nav-link" href="quan-ly-rap-phim.html" role="button" aria-expanded="false"><i class="ti ti-movie"></i><span>Quản lý Rạp phim</span> <i class="ti ti-chevron-down"></i></a>
+					<a class="sidebar__nav-link" href="quan-ly-rap-phim.html" role="button" aria-expanded="false"><i class="ti ti-device-tv"></i><span>Quản lý Rạp phim</span> <i class="ti ti-chevron-down"></i></a>
 					<ul class="dropdown-menu sidebar__dropdown-menu">
 						<li><a href="them-rap-phim.html">Thêm rạp phim</a></li>
 						<li><a href="them-phong-chieu.html">Thêm phòng chiếu</a></li>
@@ -50,10 +50,17 @@
 				</li>
 
 				<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="ti ti-video-camera"></i> <span>Quản lý suất chiếu</span> <i class="ti ti-chevron-down"></i></a>
+				<a class="sidebar__nav-link" href="#" role="button" aria-expanded="false"><i class="ti ti-calendar"></i> <span>Quản lý suất chiếu</span> <i class="ti ti-chevron-down"></i></a>
 					<ul class="dropdown-menu sidebar__dropdown-menu">
 						<li><a href="add-item.html">Add cinema</a></li>
 						<li><a href="edit-user.html">Edit cinema</a></li>
+					</ul>
+				</li>
+
+				<li class="sidebar__nav-item">
+				<a class="sidebar__nav-link" href="quan-ly-bap-nuoc.html" role="button" aria-expanded="false"><i class="ti ti-paper-bag"></i> <span>Quản lý Bắp-nước</span> <i class="ti ti-chevron-down"></i></a>
+					<ul class="dropdown-menu sidebar__dropdown-menu">
+						<li><a href="them-bap-nuoc.html">Thêm mặt hàng</a></li>
 					</ul>
 				</li>
 
