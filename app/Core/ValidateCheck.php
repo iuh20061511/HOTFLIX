@@ -46,6 +46,17 @@ class ValidateCheck extends Model
     return false;
     }
 
+    public function checkCinemaExist($cinema_name)
+    {
+        $result = $this->model->getListTable('cinemas', "WHERE cinema_name LIKE '%$cinema_name%' LIMIT 1");
+
+        if (!empty($result)) {
+            return "Tên rạp phim này đã được sử dụng!";
+        }
+
+        return '';
+    }
+
     public function checkNameCinemaExistsEdit($name_cinema,$id_cinema)
     {
         $cinema = $this->model->getListTable('cinemas', "where id_cinema = '$id_cinema'");
@@ -66,6 +77,17 @@ class ValidateCheck extends Model
 
     // Không có số điện thoại trùng lặp
     return false;
+    }
+
+    public function checkMovieExist($movie_name)
+    {
+        $result = $this->model->getListTable('movie', "WHERE movie_name LIKE '%$movie_name%' LIMIT 1");
+
+        if (!empty($result)) {
+            return "Tên bộ phim này đã được sử dụng!";
+        }
+
+        return '';
     }
 
     public function checkNameMovieExistsEdit($name_movie,$id_movie)
@@ -103,15 +125,61 @@ class ValidateCheck extends Model
             return false;
     }
 
+    public function checkRoomOfCinemaExist($room_name, $id_cinema, $id_room='',$isEdit=false)
+    {
+        if($isEdit){
+            $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and id_room='$id_room'");
+            if($room){
+                $roomNameOld = $room[0]["room_name"];
+                if (strcasecmp($room_name, $roomNameOld) != 0) {
+                    $roomResult = $this->model->getListTable('room', "where id_cinema='$id_cinema' AND room_name = '$room_name' AND room_name != '$roomNameOld'");
+                    if (!empty($roomResult)) {
+                        return "Tên phòng đã được sử dụng cho rạp này!";
+                    }
+                }
+            }
+        }else{
+            $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and room_name='$room_name'");
+            if($room){
+                return "Tên phòng đã được sử dụng cho rạp bạn chọn!";
+            }
+        }
+        return '';
+    }
 
-    // public function checkEmailExistsEdit($email){
-    //     $id_user = openssl_decrypt(base64_decode($_GET['id']), 'AES-128-ECB', 'Lampart');
-    //     $user = $this->model->selectData( 'users','*' ,"id_user = $id_user");
-    //     $emailAccount= $user[0]["email"];
-    //     return $this->model->selectData(  'users', '*', "email = '$email' AND email != '$emailAccount'"
-    //     );
-    // }
+    public function checkItemExist($item_name)
+    {
+        $result = $this->model->getListTable('menu_items', "WHERE item_name LIKE '%$item_name%' LIMIT 1");
 
+        // Nếu tìm thấy kết quả, trả về thông báo, ngược lại trả về chuỗi rỗng
+        if (!empty($result)) {
+            return "Tên mặt hàng này đã được sử dụng!";
+        }
+
+        return '';
+    }
+
+    public function checkNameItemExistsEdit($item_name,$id_item)
+    {
+        $item = $this->model->getListTable('menu_items', "where id_item = '$id_item'");
+
+        if ($item) {
+            $itemName = $item[0]["item_name"];
+        } else {
+            return false;
+        }
+
+        // Kiểm tra số tên rập có tồn tại, nhưng bỏ qua tên cũ
+        $itemResult = $this->model->getListTable('menu_items', "where item_name = '$item_name' AND item_name != '$itemName'");
+
+        // Nếu tên đã tồn tại
+        if (!empty($itemResult)) {
+            return true;
+        }
+
+    // Không có số điện thoại trùng lặp
+    return false;
+    }
 
 }
 

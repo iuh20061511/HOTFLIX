@@ -31,7 +31,7 @@ class Cinemas extends Controller
 
         if (isset($_POST['addCinema'])) {
             if(!empty($_POST['cinema_name']) && strlen($_POST['cinema_name'])>=3){
-                $this->data['sub']['error']['cinema_name'] = $this->model->checkCinemaExist($_POST['cinema_name']);
+                $this->data['sub']['error']['cinema_name'] = $this->validate->checkCinemaExist($_POST['cinema_name']);
             }else{
                 $this->data['sub']['error']['cinema_name'] = $this->validate->checkFullName($_POST['cinema_name']);
             }
@@ -133,19 +133,29 @@ class Cinemas extends Controller
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
 
         if (isset($_POST['addRoom'])) {
-            $this->data['sub']['error']['number_seat'] = $this->validate->checkEmptyNumber($_POST['number_seat'], 20);
             $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
             $this->data['sub']['error']['type_room'] = $this->validate->checkSelect($_POST['type_room']);
             if($_POST['cinema']!=0 && strlen($_POST['room_name'])>=3){
-                $this->data['sub']['error']['room_name'] = $this->model->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema']);
+                $this->data['sub']['error']['room_name'] = $this->validate->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema']);
             }else{
                 $this->data['sub']['error']['room_name'] = $this->validate->checkFullName($_POST['room_name']);
             }
 
             if (array_filter($this->data['sub']['error']) == []) {
+                if($_POST['type_room']==1){
+                    $number_seat = 48;
+                }else if($_POST['type_room']==2){
+                    $number_seat = 175;
+                }else if($_POST['type_room']==3){
+                    $number_seat = 250;
+                }else if($_POST['type_room']==4){
+                    $number_seat = 358;
+                }else{
+                    $number_seat = 1;
+                }
                 $data = [
                     'room_name' => $_POST['room_name'],
-                    'number_seat' => $_POST['number_seat'],
+                    'number_seat' => $number_seat,
                     'id_roomType' => $_POST['type_room'],
                     'id_cinema' => $_POST['cinema'],
                     'status'=>1
@@ -168,7 +178,7 @@ class Cinemas extends Controller
 
 
     public function updateRoomForCinema($id_room){
-        $this->data['sub']['title'] = "Thêm phòng cho rạp phim";
+        $this->data['sub']['title'] = "Cập nhật phòng cho rạp phim";
         $this->data['sub']['listRoom'] = $this->model->getListTable('room', "where id_room=".$id_room);
         $room = $this->model->getListTable('room', "where id_room=".$id_room);
         $id_cinema = $room[0]['id_cinema'];
@@ -177,17 +187,27 @@ class Cinemas extends Controller
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
 
         if (isset($_POST['updateRoom'])) {
-            $this->data['sub']['error']['number_seat'] = $this->validate->checkEmptyNumber($_POST['number_seat'], 20);
             if($_POST['cinema']!=0 && strlen($_POST['room_name'])>=3){
-                $this->data['sub']['error']['room_name'] = $this->model->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema'],$id_room,true);
+                $this->data['sub']['error']['room_name'] = $this->validate->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema'],$id_room,true);
             }else{
                 $this->data['sub']['error']['room_name'] = $this->validate->checkFullName($_POST['room_name']);
             }
 
             if (array_filter($this->data['sub']['error']) == []) {
+                if($_POST['type_room']==1){
+                    $number_seat = 48;
+                }else if($_POST['type_room']==2){
+                    $number_seat = 175;
+                }else if($_POST['type_room']==3){
+                    $number_seat = 250;
+                }else if($_POST['type_room']==4){
+                    $number_seat = 358;
+                }else{
+                    $number_seat = 1;
+                }
                 $data = [
                     'room_name' => $_POST['room_name'],
-                    'number_seat' => $_POST['number_seat'],
+                    'number_seat' => $number_seat,
                     'id_roomType' => $_POST['type_room'],
                     'id_cinema' => $_POST['cinema'],
                     'status'=>1

@@ -42,6 +42,11 @@ $routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
 
 $routes['them-suat-chieu.html'] = 'admin/Showtime/addShowTime';
 
+//Menu_items
+$routes['quan-ly-bap-nuoc.html'] = 'admin/menu_items';
+$routes['them-bap-nuoc.html'] = 'admin/menu_items/addNewItem';
+$routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/menu_items/updateItem/$1';
+$routes['xoa-bap-nuoc.html'] = 'admin/menu_items/deleteItem';
 
 
 

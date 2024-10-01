@@ -59,11 +59,9 @@ class Movies extends Controller
     {
         $this->data['sub']['title'] = "Thêm bộ phim mới";
 
-
-
         if (isset($_POST['addMovie'])) {
             if (!empty($_POST['movie_name']) && strlen($_POST['movie_name']) > 2) {
-                $this->data['sub']['error']['movie_name'] = $this->model->checkMovieExist($_POST['movie_name']);
+                $this->data['sub']['error']['movie_name'] = $this->validate->checkMovieExist($_POST['movie_name']);
             } else {
                 $this->data['sub']['error']['movie_name'] = $this->validate->checkFullName($_POST['movie_name']);
             }
