@@ -11,22 +11,22 @@ class AdminModel extends Model
 
     public function getListStaff()
     {
-        return $this->model->getListFromThreeTables('role','staff','cinemas','id_role','id_cinema');
+        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema');
     }
 
     public function getListMember()
     {
-        return $this->model->getListFromThreeTables('role','customer','rank','id_role','id_rank');
+        return $this->model->getListFromThreeTables('role', 'customer', 'rank', 'id_role', 'id_rank');
     }
 
     public function infoStaff($id_staff)
     {
-        return $this->model->getListFromThreeTables('role','staff','cinemas','id_role','id_cinema',"WHERE staff.id_staff = $id_staff");
+        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema', "WHERE staff.id_staff = $id_staff");
     }
 
     public function getListRoom()
     {
-        return $this->model->getListFromTwoTables('room','room_type','id_roomType');
+        return $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType');
     }
 
     public function checkCinemaExist($name_cinema)
@@ -51,11 +51,11 @@ class AdminModel extends Model
         return '';
     }
 
-    public function checkRoomOfCinemaExist($room_name, $id_cinema, $id_room='',$isEdit=false)
-    {  
-        if($isEdit){
+    public function checkRoomOfCinemaExist($room_name, $id_cinema, $id_room = '', $isEdit = false)
+    {
+        if ($isEdit) {
             $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and id_room='$id_room'");
-            if($room){
+            if ($room) {
                 $roomNameOld = $room[0]["room_name"];
                 if (strcasecmp($room_name, $roomNameOld) != 0) {
                     $roomResult = $this->model->getListTable('room', "where id_cinema='$id_cinema' AND room_name = '$room_name' AND room_name != '$roomNameOld'");
@@ -64,9 +64,9 @@ class AdminModel extends Model
                     }
                 }
             }
-        }else{
+        } else {
             $room = $this->model->getListTable('room', "where id_cinema=$id_cinema and room_name='$room_name'");
-            if($room){
+            if ($room) {
                 return "Tên phòng đã được sử dụng cho rạp bạn chọn!";
             }
         }
@@ -74,10 +74,11 @@ class AdminModel extends Model
     }
 
 
-    function splitAddress($address) {
+    function splitAddress($address)
+    {
         // Tách chuỗi thành mảng dựa trên dấu phẩy
         $parts = array_map('trim', explode(',', $address));
-    
+
         // Lấy các phần tử ngược lại và gán cho biến
         $district = $parts[count($parts) - 2];
         $ward = $parts[count($parts) - 3];
@@ -89,7 +90,7 @@ class AdminModel extends Model
         $number = str_replace("Số ", "", $number);
         $street = str_replace("Đường ", "", $street);
         $ward = str_replace("P.", "", $ward);
-    
+
         // Trả về dưới dạng mảng hoặc có thể xuất ra tùy ý
         return [
             'number_address' => $number,
@@ -99,19 +100,17 @@ class AdminModel extends Model
         ];
     }
 
-    public function upload($name,$tmp_name,$fd)
+    public function upload($name, $tmp_name, $fd)
     {
-        if($name!='')
-        {
-            $des= $fd."/".$name;
-            if(move_uploaded_file($tmp_name,$des))
-            {
+        if ($name != '') {
+            $des = $fd . "/" . $name;
+            if (move_uploaded_file($tmp_name, $des)) {
                 return 1;
-            }
-            else
-            {
+            } else {
                 return 0;
             }
         }
     }
+
+
 }

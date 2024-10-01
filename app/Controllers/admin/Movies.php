@@ -37,7 +37,7 @@ class Movies extends Controller
                     $getConditions[] = "status = '$status_sort'";
                     break;
                 case 3: // Tất cả
-                    $redirectUrl ="quan-ly-phim.html";
+                    $redirectUrl = "quan-ly-phim.html";
                     header("refresh:0.5; url=$redirectUrl");
                     break;
                 default:
@@ -59,12 +59,12 @@ class Movies extends Controller
     {
         $this->data['sub']['title'] = "Thêm bộ phim mới";
 
-        $this->data['sub']['listGenre'] = $this->model->getListTable('genre');
+
 
         if (isset($_POST['addMovie'])) {
-            if(!empty($_POST['movie_name']) && strlen($_POST['movie_name'])>2){
+            if (!empty($_POST['movie_name']) && strlen($_POST['movie_name']) > 2) {
                 $this->data['sub']['error']['movie_name'] = $this->model->checkMovieExist($_POST['movie_name']);
-            }else{
+            } else {
                 $this->data['sub']['error']['movie_name'] = $this->validate->checkFullName($_POST['movie_name']);
             }
             $this->data['sub']['error']['genre'] = $this->validate->checkSelect($_POST['genre']);
@@ -79,37 +79,36 @@ class Movies extends Controller
             if (empty($_FILES['poster']) || $_FILES['poster']['error'] !== UPLOAD_ERR_OK) {
                 $this->data['sub']['error']['poster'] = "Vui lòng chọn poster cho phim!";
             } else {
-                $name = time()."_".$_FILES['poster']['name'];
+                $name = time() . "_" . $_FILES['poster']['name'];
                 $tmp_name = $_FILES['poster']['tmp_name'];
             }
 
             if (array_filter($this->data['sub']['error']) == []) {
                 $des_upload = "app/public/admin/img/movies";
-                if($this->model->upload($name,$tmp_name,$des_upload)!=1)
-					{
-						echo "<script>alert('Lưu poster phim thất bại!');</script>";
-					}else{
-						$genre_string = implode(',', $_POST['genre']);
-                        $data = [
-                            'movie_name' => $_POST['movie_name'],
-                            'genre' => $genre_string,
-                            'description' => $_POST['description'],
-                            'actor' => $_POST['actor'],
-                            'director' => $_POST['director'],
-                            'trailer' => $_POST['trailer'],
-                            'duration' => $_POST['duration'],
-                            'release_date' => $_POST['release_date'],
-                            'nation' => $_POST['nation'],
-                            'poster' => $name,
-                            'status' => "Sắp chiếu"
-                        ];
-                        $result = $this->model->InsertData('movie', $data);
-                        if ($result) {
-                            echo "<script>alert('Thêm phim mới thành công')</script>";
-                            $redirectUrl ="quan-ly-phim.html";
-                            header("refresh:0.5; url=$redirectUrl");
-                        }
-					}
+                if ($this->model->upload($name, $tmp_name, $des_upload) != 1) {
+                    echo "<script>alert('Lưu poster phim thất bại!');</script>";
+                } else {
+                    $genre_string = implode(',', $_POST['genre']);
+                    $data = [
+                        'movie_name' => $_POST['movie_name'],
+                        'genre' => $genre_string,
+                        'description' => $_POST['description'],
+                        'actor' => $_POST['actor'],
+                        'director' => $_POST['director'],
+                        'trailer' => $_POST['trailer'],
+                        'duration' => $_POST['duration'],
+                        'release_date' => $_POST['release_date'],
+                        'nation' => $_POST['nation'],
+                        'poster' => $name,
+                        'status' => "Sắp chiếu"
+                    ];
+                    $result = $this->model->InsertData('movie', $data);
+                    if ($result) {
+                        echo "<script>alert('Thêm phim mới thành công')</script>";
+                        $redirectUrl = "quan-ly-phim.html";
+                        header("refresh:0.5; url=$redirectUrl");
+                    }
+                }
             }
         }
 
@@ -122,14 +121,14 @@ class Movies extends Controller
     public function updateMovie($id_movie)
     {
         $this->data['sub']['title'] = "Cập nhật phim";
-        $this->data['sub']['movieUpdate'] = $this->model->getListTable('movie',"where id_movie=$id_movie");
+        $this->data['sub']['movieUpdate'] = $this->model->getListTable('movie', "where id_movie=$id_movie");
 
         if (isset($_POST['updateMovie'])) {
-            if(!empty($_POST['movie_name']) && strlen($_POST['movie_name'])>=3){
-                if($this->validate->checkNameMovieExistsEdit($_POST['movie_name'], $id_movie)){
+            if (!empty($_POST['movie_name']) && strlen($_POST['movie_name']) >= 3) {
+                if ($this->validate->checkNameMovieExistsEdit($_POST['movie_name'], $id_movie)) {
                     $this->data['sub']['error']['movie_name'] = "Tên bộ phim này đã được sử dụng!";
                 }
-            }else{
+            } else {
                 $this->data['sub']['error']['movie_name'] = $this->validate->checkFullName($_POST['movie_name']);
             }
             $this->data['sub']['error']['genre'] = $this->validate->checkSelect($_POST['genre']);
@@ -146,7 +145,7 @@ class Movies extends Controller
                 $poster_old = $movie[0]['poster'];
 
                 if (!empty($_FILES['poster']['name'])) {
-                    $name = time()."_".$_FILES['poster']['name'];
+                    $name = time() . "_" . $_FILES['poster']['name'];
                     $tmp_name = $_FILES['poster']['tmp_name'];
                     $des_upload = "app/public/admin/img/movies";
                     $des_unload = "app/public/admin/img/movies/$poster_old";
@@ -194,7 +193,7 @@ class Movies extends Controller
     public function deleteMovie()
     {
         $this->data['sub']['title'] = "Xóa bộ phim";
-        if(isset($_POST['deleteMovie'])){
+        if (isset($_POST['deleteMovie'])) {
             $id_movie = $_POST['id_movie'];
             $movie = $this->model->getListTable('movie', "where id_movie=$id_movie");
             $poster_old = $movie[0]['poster'];
@@ -205,11 +204,11 @@ class Movies extends Controller
                 unlink($des_unload);
             }
             $result = $this->model->deleteData('movie', "where id_movie = $id_movie");
-                    if ($result) {
-                        echo "<script>alert('Xóa bộ phim thành công')</script>";
-                        $redirectUrl ="quan-ly-phim.html";
-                        header("refresh:0.5; url=$redirectUrl");
-                    }
+            if ($result) {
+                echo "<script>alert('Xóa bộ phim thành công')</script>";
+                $redirectUrl = "quan-ly-phim.html";
+                header("refresh:0.5; url=$redirectUrl");
+            }
         }
 
         $this->view("layout/admin", $this->data);

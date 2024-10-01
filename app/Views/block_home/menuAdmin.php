@@ -58,7 +58,7 @@
 						class="ti ti-video-camera"></i> <span>Quản lý suất chiếu</span> <i
 						class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="add-item.html">Add cinema</a></li>
+					<li><a href="them-suat-chieu.html">Thêm mới suất chiếu</a></li>
 					<li><a href="edit-user.html">Edit cinema</a></li>
 				</ul>
 			</li>

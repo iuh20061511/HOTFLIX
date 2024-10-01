@@ -32,4 +32,3 @@ require_once "./app/Core/Validates.php";
 
 require_once "./app/Core/Controller.php";
 
-

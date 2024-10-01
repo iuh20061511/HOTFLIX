@@ -40,6 +40,8 @@ $routes['them-bo-phim.html'] = 'admin/movies/addNewMovie';
 $routes['cap-nhat-phim-(.+).html'] = 'admin/movies/updateMovie/$1';
 $routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
 
+$routes['them-suat-chieu.html'] = 'admin/Showtime/addShowTime';
+
 
 
 

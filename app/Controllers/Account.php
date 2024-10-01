@@ -49,6 +49,8 @@ class Account extends Controller
                     $_SESSION['is_login']['gender'] = $user['gender'];
                     $_SESSION['is_login']['id_role'] = $user['id_role'];
                     $_SESSION['is_login']['name_role'] = $user['name_role'];
+                    $_SESSION['is_login']['id_cinema'] = $user['id_cinema'];
+
                     header("Location: trang-chu.html");
                     exit;
                 }
