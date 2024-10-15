@@ -11,23 +11,23 @@ require __DIR__ . "/src/SMTP.php";
 
 $mail = new PHPMailer(true);
 try {
-  // Cấu hình server email
-  $mail->SMTPDebug = 0;
-  $mail->isSMTP();
-  $mail->CharSet = "utf-8";
-  $mail->SMTPAuth = true;
-  $mail->SMTPSecure = 'tls';
-  $mail->Host = 'smtp.gmail.com';
-  $mail->Port = 587;
-  $mail->Username = 'minhhuan190102@gmail.com';                     //SMTP username
-  $mail->Password = 'vcho tlpc agae yome';
+    // Cấu hình server email
+    $mail->SMTPDebug = 0;
+    $mail->isSMTP();
+    $mail->CharSet = "utf-8";
+    $mail->SMTPAuth = true;
+    $mail->SMTPSecure = 'tls';
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 587;
+    $mail->Username = 'minhhuan190102@gmail.com';                     //SMTP username
+    $mail->Password = 'vcho tlpc agae yome';
 
-  // Thiết lập thông tin người gửi và người nhận
-  $mail->setFrom('minhhuan190102@gmail.com', 'HOTFLIX');
-  $mail->addAddress($email);
-
-  // Nội dung email
-  $html = "
+    // Thiết lập thông tin người gửi và người nhận
+    $mail->setFrom('minhhuan190102@gmail.com', 'HOTFLIX');
+    $mail->addAddress($email);
+    $link = _LINK;
+    // Nội dung email
+    $html = "
  <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -157,9 +157,10 @@ try {
       </div>
       <div class='card-body'>
         <p>Xin chào bạn!</p>
-        <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Để hoàn tất quá trình, vui lòng nhấp vào liên kết dưới đây:</p>
-        <a class='btn' href='http://localhost/hotflix/dat-lai-mat-khau.html?token=$token'>Tạo mật khẩu mới</a>
-        <p class='note'>Liên kết này sẽ hết hạn trong 15 phút. Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
+        <p>Chúng tôi đã nhận được yêu cầu tạo tài khoản của bạn. Để hoàn tất quá trình, vui lòng nhấp vào liên kết bên dưới:</p>
+<a class='btn btn-primary' href='$link/xac-thuc-tai-khoan.html?token=$token' role='button'>Xác nhận tài khoản</a>
+<p class='mt-3 text-muted'>Lưu ý: Liên kết này sẽ hết hạn trong vòng 24 giờ. Nếu bạn không yêu cầu tạo tài khoản, bạn có thể bỏ qua email này.</p>
+
       </div>
       <div class='card-footer'>
         &copy; 2024 HOTFLIX cinema All rights reserved.
@@ -174,14 +175,14 @@ try {
 
     ";
 
-  $mail->isHTML(true);
-  $mail->Subject = "Khôi phục mật khẩu";
-  $mail->Body = $html;
+    $mail->isHTML(true);
+    $mail->Subject = "Khôi phục mật khẩu";
+    $mail->Body = $html;
 
-  $mail->send();
+    $mail->send();
 
 } catch (Exception $e) {
-  echo "<script>alert('Lỗi ! Email không được gửi');</script>";
+    echo "<script>alert('Lỗi ! Email không được gửi');</script>";
 }
 
 

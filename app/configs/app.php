@@ -3,6 +3,14 @@ function timKhoangThoiGianKhaDung($lichPhim, $thoiLuongPhimMoi, $gioLamViecBatDa
 {
     $khoangThoiGianKhaDung = [];
 
+    // Kiểm tra nếu không có lịch phim nào thì tạo khoảng trống từ giờ làm việc bắt đầu đến kết thúc
+    if (empty($lichPhim)) {
+        for ($gio = $gioLamViecBatDau; $gio + $thoiLuongPhimMoi <= $gioLamViecKetThuc; $gio += $thoiLuongPhimMoi) {
+            $khoangThoiGianKhaDung[] = [$gio, $gio + $thoiLuongPhimMoi];
+        }
+        return $khoangThoiGianKhaDung;
+    }
+
     // Sắp xếp lịch phim theo thời gian bắt đầu để dễ dàng xác định khoảng trống
     usort($lichPhim, function ($a, $b) {
         return $a['batDau'] - $b['batDau'];
@@ -46,7 +54,7 @@ $lichPhim = [
     ['batDau' => 21, 'ketThuc' => 22]  // Phim 3: 21h - 22h
 ];
 
-$thoiLuongPhimMoi = 3; // Bộ phim mới có thời lượng 2 giờ
+$thoiLuongPhimMoi = 1.5; // Bộ phim mới có thời lượng 3 giờ
 
 $khoangThoiGian = timKhoangThoiGianKhaDung($lichPhim, $thoiLuongPhimMoi);
 

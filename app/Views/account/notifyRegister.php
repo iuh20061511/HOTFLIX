@@ -37,34 +37,11 @@
                             <a href="index.html" class="sign__logo">
                                 <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" alt="">
 
-
                             </a>
+                            <h5 class=" text-center fs-5 fw-semibold text-light">Vui lòng xác
+                                minh tài khoản qua email
+                                bạn đã đăng kí. </h5>
 
-                            <div class="sign__group">
-                                <input type="text" name="email" class="sign__input" placeholder="Email">
-                            </div>
-
-                            <div class="sign__group">
-                                <input type="password" name="password" class="sign__input" placeholder="Password">
-
-                            </div>
-                            <?php if (isset($error['dangnhap'])): ?>
-                                <p class="error text-danger"><?php echo $error['dangnhap']; ?></p>
-                            <?php endif; ?>
-                            <?php if (isset($error['empty'])): ?>
-                                <p class="error text-danger"><?php echo $error['empty']; ?></p>
-                            <?php endif; ?>
-
-                            <input type="submit" name="btn_signin" value="Đăng nhập" class="btn btn-danger sign__group">
-
-
-                            <span class="sign__text">Bạn chưa có tài khoản?
-                                <a href="<?php echo _LINK ?>/dang-ki.html">Đăng ký ngay!
-                                </a></span>
-
-                            <span class="sign__text">
-                                <a href="<?php echo _LINK ?>/quen-mat-khau.html">Quên mật khẩu?</a>
-                            </span>
                         </form>
 
                     </div>

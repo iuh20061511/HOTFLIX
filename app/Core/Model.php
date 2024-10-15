@@ -60,8 +60,7 @@ class Model extends Database
     {
         $this->connectIfNeeded();
 
-        $query = "SELECT * FROM $tableName1
-        INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
+        $query = "SELECT * FROM $tableName1 INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
 
         $result = mysqli_query($this->connection, $query);
 

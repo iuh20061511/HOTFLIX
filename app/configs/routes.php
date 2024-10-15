@@ -16,8 +16,7 @@ $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
-
-
+$routes['xac-thuc-tai-khoan.html'] = "account/verify";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
@@ -26,6 +25,9 @@ $routes['them-tai-khoan.html'] = 'admin/users/addNewStaff';
 $routes['cap-nhat-tai-khoan-(.+).html'] = 'admin/users/updateStaff/$1';
 $routes['xoa-tai-khoan.html'] = 'admin/users/deleteStaff';
 $routes['danh-sach-thanh-vien.html'] = 'admin/users/listMembers';
+
+
+
 //--Cinema
 $routes['quan-ly-rap-phim.html'] = 'admin/cinemas';
 $routes['them-rap-phim.html'] = 'admin/cinemas/addNewCinema';
@@ -40,15 +42,12 @@ $routes['them-bo-phim.html'] = 'admin/movies/addNewMovie';
 $routes['cap-nhat-phim-(.+).html'] = 'admin/movies/updateMovie/$1';
 $routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
 
-$routes['them-suat-chieu.html'] = 'admin/Showtime/addShowTime';
+$routes['quan-ly-suat-chieu.html'] = 'admin/Showtime/addShowTime';
+$routes['xoa-suat-chieu-(.+).html'] = 'admin/Showtime/deleteShowTime/$1';
+
 
 //Menu_items
 $routes['quan-ly-bap-nuoc.html'] = 'admin/menu_items';
 $routes['them-bap-nuoc.html'] = 'admin/menu_items/addNewItem';
 $routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/menu_items/updateItem/$1';
 $routes['xoa-bap-nuoc.html'] = 'admin/menu_items/deleteItem';
-
-
-
-
-

@@ -3,7 +3,7 @@
 class Validate extends ValidateCheck
 {
 
-    public function checkPhone($phone, $edit = false, $isForgot = false, $id_user='')
+    public function checkPhone($phone, $edit = false, $isForgot = false, $id_user = '')
     {
         if (empty($phone)) {
             return "Vui lòng nhập số điện thoại!";
@@ -11,7 +11,7 @@ class Validate extends ValidateCheck
         if (!preg_match("/^0\d{9}$/", $phone)) {
             return "Số điện thoại phải bắt đầu từ số 0 và có 10 chữ số!";
         }
-        if (($edit ? $this->checkPhoneExistsEdit($phone,$id_user) : $this->checkPhoneExists($phone)) && $isForgot==false) {
+        if (($edit ? $this->checkPhoneExistsEdit($phone, $id_user) : $this->checkPhoneExists($phone)) && $isForgot == false) {
             return "Số điện thoại đã tồn tại, vui lòng chọn số điện thoại khác!";
         }
         return '';
@@ -30,14 +30,15 @@ class Validate extends ValidateCheck
         return '';
     }
 
-    public function checkEmail($email, $edit = false, $isForgot = false) {
+    public function checkEmail($email, $edit = false, $isForgot = false)
+    {
         if (empty($email)) {
             return "Email không được để trống!";
         }
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return "Email không hợp lệ, vui lòng nhập lại!";
         }
-        if (($edit ? $this->checkEmailExistsEdit($email) : $this->checkEmailExists($email)) && $isForgot==false) {
+        if (($edit ? $this->checkEmailExistsEdit($email) : $this->checkEmailExists($email)) && $isForgot == false) {
             return "Email đã tồn tại, vui lòng chọn email khác!";
         }
         return '';
@@ -47,7 +48,6 @@ class Validate extends ValidateCheck
     {
         if (empty($date)) {
             return "Vui lòng nhập ngày sinh !";
-
         } else {
             $born_date = new DateTime($date);
             $current_date = new DateTime();
@@ -63,7 +63,6 @@ class Validate extends ValidateCheck
     {
         if (empty($date)) {
             return "Vui lòng chọn ngày phát hành!";
-
         } else {
             $release_date = new DateTime($date);
             $current_date = new DateTime();
@@ -98,7 +97,6 @@ class Validate extends ValidateCheck
     {
         if (empty($password)) {
             return " Vui lòng nhập mật khẩu !";
-
         } else {
             if (strlen($password) < 6) {
                 return " Mật khẩu phải có ít nhất 6 kí tự !";
@@ -121,20 +119,20 @@ class Validate extends ValidateCheck
         }
     }
 
-    function checkStringEmpty($description){
+    function checkStringEmpty($description)
+    {
         if (empty($description)) {
             return "Vui lòng đầy đủ nội dung cần thiết!";
-        }
-        else{
+        } else {
             return '';
         }
     }
 
-    function checkEmpty($string1, $string2){
-        if (empty($string1) || empty($string2) ) {
+    function checkEmpty($string1, $string2)
+    {
+        if (empty($string1) || empty($string2)) {
             return "Vui lòng nhập đầy đủ thông tin!";
-        }
-        else{
+        } else {
             return '';
         }
     }
@@ -152,14 +150,10 @@ class Validate extends ValidateCheck
     {
         if (empty($number)) {
             return "Vui lòng nhập số lượng!";
-        }else if(!empty($number) && $number<$quantity){
+        } else if (!empty($number) && $number < $quantity) {
             return "Vui lòng nhập số lượng khác (>=$quantity)!";
-        }
-        else {
+        } else {
             return '';
         }
     }
 }
-
-
-?>

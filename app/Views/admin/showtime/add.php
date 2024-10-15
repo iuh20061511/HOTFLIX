@@ -22,7 +22,7 @@
                                             $selectedMovie = isset($_POST['movie']) ? $_POST['movie'] : '';
                                             foreach ($listMovie as $movie) {
                                                 $isSelected = ($selectedMovie === ($movie['id_movie'] . ',' . $movie['duration'])) ? 'selected' : '';
-                                                ?>
+                                            ?>
                                                 <option value='<?php echo $movie['id_movie'] . ',' . $movie['duration']; ?>'
                                                     <?php echo $isSelected; ?>>
                                                     <?php echo $movie['movie_name']; ?>
@@ -42,30 +42,30 @@
                                             </label>
                                             <input type="date" class="sign__input" name="start_date" id="startDate"
                                                 value="<?php
-                                                if (isset($_POST['start_date']))
-                                                    echo $_POST['start_date']
+                                                        if (isset($_POST['start_date']))
+                                                            echo $_POST['start_date']
                                                         ?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-xl-6" style="margin-top: 15px">
-                                            <div class="sign__group" style="display: flex; align-items: center;">
-                                                <label for="number_address" style="margin-right: 5px;color: #fff">Ngày kết
-                                                    thúc:
-                                                </label>
-                                                <input type="date" class="sign__input" name="finish_date" id="finishDate"
-                                                    value="<?php
-                                                if (isset($_POST['finish_date']))
-                                                    echo $_POST['finish_date']
-                                                        ?>">
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-12" style="margin-top: 15px">
-                                        <div class="sign__group d-flex align-items-center mb-3">
-                                            <!-- Sử dụng d-flex để sắp xếp ngang -->
-                                            <label for="number_address" style="margin-right: 5px; color: #fff">Chọn
-                                                phòng:</label>
+
+                                    <div class="col-12 col-xl-6" style="margin-top: 15px">
+                                        <div class="sign__group" style="display: flex; align-items: center;">
+                                            <label for="number_address" style="margin-right: 5px;color: #fff">Ngày kết
+                                                thúc:
+                                            </label>
+                                            <input type="date" class="sign__input" name="finish_date" id="finishDate"
+                                                value="<?php
+                                                        if (isset($_POST['finish_date']))
+                                                            echo $_POST['finish_date']
+                                                        ?>">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="margin-top: 15px">
+                                    <div class="sign__group d-flex align-items-center mb-3">
+                                        <!-- Sử dụng d-flex để sắp xếp ngang -->
+                                        <label for="number_address" style="margin-right: 5px; color: #fff">Chọn
+                                            phòng:</label>
                                         <?php foreach ($listRoom as $rom) { ?>
                                             <div class="form-check me-3"> <!-- Thêm khoảng cách giữa các checkbox -->
                                                 <input type="radio" class="form-check-input" name="room"
@@ -78,28 +78,23 @@
                                             </div>
                                         <?php } ?>
                                     </div>
-                                    <div class="row" id="timeSlots" style="display: none;">
-                                        <div class="d-flex">
-                                            <div class="col-2 m-1">
-                                                <div class="border rounded p-2 text-center">
-                                                    <input type="checkbox" class="form-check-input" />
-                                                    <label class="form-check-label text-light">10-12h</label>
+                                    <div class="row" id="timeSlots">
+                                        <?php
+                                        if (!empty($time)) {
+                                            foreach ($time as $item) {
+
+                                        ?>
+                                                <div class="col-2 m-1">
+                                                    <div class="border rounded p-2 text-center">
+                                                        <input type="checkbox" class="form-check-input" />
+                                                        <label
+                                                            class="form-check-label text-light"><?php echo $item[0] . 'h' . ' - ' . $item[1] . 'h' ?></label>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-2 m-1">
-                                                <div class="border rounded p-2 text-center">
-                                                    <input type="checkbox" class="form-check-input" />
-                                                    <label class="form-check-label text-light">12-14h</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 m-1">
-                                                <div class="border rounded p-2 text-center">
-                                                    <input type="checkbox" class="form-check-input" />
-                                                    <label class="form-check-label text-light">14-16h</label>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <?php }
+                                        } ?>
                                     </div>
+
                                 </div>
 
 
@@ -125,7 +120,7 @@
 
     function checkAndSubmit() {
         if (movieSelect.value !== '#' && startDateInput.value && finishDateInput.value) {
-            submitButton.click();  // Tự động ấn nút submit
+            submitButton.click(); // Tự động ấn nút submit
         }
     }
 

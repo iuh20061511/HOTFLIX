@@ -65,11 +65,12 @@ class Users extends Controller
                     'password' => password_hash('123456', PASSWORD_DEFAULT),
                     'id_cinema' => $_POST['cinema'],
                     'id_role' => $_POST['role'],
+                    'status' => 1
                 ];
 
                 $result = $this->model->InsertData('staff', $data);
                 if ($result) {
-                    echo "<script>alert('Đăng ký thành công')</script>";
+                    echo "<script>alert('Thêm nhân viên thành công')</script>";
                 }
             }
         }
@@ -90,7 +91,7 @@ class Users extends Controller
             $this->data['sub']['error']['birthday'] = $this->validate->checkDateOfBirth($_POST['birthday']);
             $this->data['sub']['error']['role'] = $this->validate->checkSelect($_POST['role']);
             $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
-            $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone'],true, false, $id_staff);
+            $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone'], true, false, $id_staff);
 
             if (array_filter($this->data['sub']['error']) == []) {
                 $data = [
@@ -118,33 +119,22 @@ class Users extends Controller
     public function deleteStaff()
     {
         $this->data['sub']['title'] = "Xóa nhân viên";
-        if(isset($_POST['deleteUser'])){
+        if (isset($_POST['deleteUser'])) {
             if (isset($_POST['id_staff'])) {
                 $id_staff = $_POST['id_staff'];
                 $result = $this->model->deleteData('staff', "where id_staff = $id_staff");
-                    if ($result) {
-                        echo "<script>alert('Xóa thành công')</script>";
-                        $redirectUrl ="quan-ly-tai-khoan.html";
-                        header("refresh:0.5; url=$redirectUrl");
-                    }
+                if ($result) {
+                    echo "<script>alert('Xóa thành công')</script>";
+                    $redirectUrl = "quan-ly-tai-khoan.html";
+                    header("refresh:0.5; url=$redirectUrl");
+                }
             }
         }
 
-        $this->view("layout/admin", $this->data);
-    }
-
-    public function ok()
-    {
-
-        echo "p";
 
     }
 
-    public function pages()
-    {
 
-
-    }
 
 
 }

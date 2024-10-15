@@ -19,8 +19,9 @@
     <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/webfont/tabler-icons.min.css">
 
     <!-- Favicons -->
-    <link rel="icon" type="image/png" href="<?php echo _WEB_ROOT ?>/public/assets/icon/favicon-32x32.png" sizes="32x32">
-    <link rel="apple-touch-icon" href="<?php echo _WEB_ROOT ?>/public/assets/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" href="<?php echo _WEB_ROOT ?>/public/assets/icon/logo_edited_v2.svg"
+        sizes="32x32">
+    <link rel="apple-touch-icon" href="<?php echo _WEB_ROOT ?>/public/assets/icon/logo_edited_v2.svg">
 
     <meta name="description" content="Online Movies, TV Shows & Cinema HTML Template">
     <meta name="keywords" content="">
@@ -37,7 +38,8 @@
 
                         <form action="" class="sign__form" method="POST">
                             <a href="index.html" class="sign__logo">
-                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo.svg" alt="">
+                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" alt="">
+
                             </a>
                             <?php if (!empty($result['success'])) { ?>
                                 <h6 class="alert alert-success text-center" role="alert"><?php echo $result['success']; ?>

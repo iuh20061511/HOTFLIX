@@ -11,6 +11,7 @@ define('_WEB_ROOT', $web_root);
 
 
 require_once "./app/configs/routes.php";
+require_once "./app/Core/Handler.php";
 
 require_once "./app/Core/Route.php";
 
@@ -31,4 +32,3 @@ require_once "./app/Core/Validates.php";
 
 
 require_once "./app/Core/Controller.php";
-

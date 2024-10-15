@@ -41,7 +41,8 @@
                         <!-- authorization form -->
                         <form action="" class="sign__form" method="POST">
                             <a href="index.html" class="sign__logo">
-                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo.svg" alt="">
+                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" alt="">
+
                             </a>
                             <input type="hidden" name="token" value="<?php if (isset($_GET['token'])) {
                                 echo $_GET['token'];

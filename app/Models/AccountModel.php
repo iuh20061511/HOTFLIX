@@ -6,6 +6,7 @@ class AccountModel extends Model
     public function __construct()
     {
         $this->model = new Model();
+        $this->delAccountNoVerify();
     }
 
     public function checkPhoneExists($phone)
@@ -16,14 +17,14 @@ class AccountModel extends Model
 
     public function checkLogin($email, $password)
     {
-        $customerResult = $this->model->getListTable('customer', "where email = '$email'");
-        $staffResult = $this->model->getListTable('staff', "where email = '$email'");
+        $customerResult = $this->model->getListTable('customer', "where email = '$email' and status = 1");
+        $staffResult = $this->model->getListTable('staff', "where email = '$email' and status = 1");
 
         if ($customerResult) {
             $customer = $customerResult[0];
             if (password_verify($password, $customer['password'])) {
                 $name_role = $this->model->getListTable('role', "where id_role =" . $customer['id_role']);
-                $customer['name_role'] = $name_role[0]['ten_role'];
+                $customer['name_role'] = $name_role[0]['name_role'];
                 return $customer;
             }
         }
@@ -31,7 +32,7 @@ class AccountModel extends Model
             $staff = $staffResult[0];
             if (password_verify($password, $staff['password'])) {
                 $name_role = $this->model->getListTable('role', "where id_role =" . $staff['id_role']);
-                $staff['name_role'] = $name_role[0]['ten_role'];
+                $staff['name_role'] = $name_role[0]['name_role'];
                 return $staff;
             }
         }
@@ -90,5 +91,19 @@ class AccountModel extends Model
         }
 
 
+    }
+
+    public function verifyAccount($updates, $token)
+    {
+        $customer = $this->model->getListTable('customer', "where reset_token = '$token'");
+        if (!empty($customer)) {
+            return $this->model->updateData('customer', $updates, "where reset_token = '$token'");
+        }
+
+    }
+
+    public function delAccountNoVerify()
+    {
+        return $this->model->deleteData("customer", "where status = 0  and  token_expiration < NOW()");
     }
 }
