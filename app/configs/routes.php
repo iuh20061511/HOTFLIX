@@ -12,6 +12,7 @@ $routes['xep-hang/.+-(\d+).html'] = 'admin/auth/dashboard/new/$1';  ///tin-tuc/t
 
 
 $routes['trang-chu.html'] = 'home';
+$routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';

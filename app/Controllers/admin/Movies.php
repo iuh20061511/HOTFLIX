@@ -86,7 +86,7 @@ class Movies extends Controller
                 if ($this->model->upload($name, $tmp_name, $des_upload) != 1) {
                     echo "<script>alert('Lưu poster phim thất bại!');</script>";
                 } else {
-                    $genre_string = implode(',', $_POST['genre']);
+                    $genre_string = implode(', ', $_POST['genre']);
                     $data = [
                         'movie_name' => $_POST['movie_name'],
                         'genre' => $genre_string,
@@ -113,7 +113,6 @@ class Movies extends Controller
         $this->data['content'] = 'admin/movies/addMovie';
 
         $this->view("layout/admin", $this->data);
-
     }
 
     public function updateMovie($id_movie)
@@ -161,7 +160,7 @@ class Movies extends Controller
                 } else {
                     $name = $poster_old; // Không có file mới, giữ nguyên poster cũ
                 }
-                $genre_string = implode(',', $_POST['genre']);
+                $genre_string = implode(', ', $_POST['genre']);
                 $data = [
                     'movie_name' => $_POST['movie_name'],
                     'genre' => $genre_string,
@@ -211,5 +210,4 @@ class Movies extends Controller
 
         $this->view("layout/admin", $this->data);
     }
-
 }

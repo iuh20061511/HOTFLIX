@@ -99,8 +99,8 @@
 										<div class="sign__group">
 										<?php
 											$listGenre = [
-												"Phim kinh dị", "Phim giật gân", "Phim phiêu lưu", "Phim hài", "Phim hoạt hình", "Phim Tài liệu",
-												"Phim gia đình", "Phim hành động", "Phim lãng mạn", "Phim ly kì", "Phim giả tưởng", "Phim hồi hộp", "Phim tâm lý", "Phim tội phạm"];
+												"Kinh dị", "Giật gân", "Phiêu lưu", "Phim hài", "Hoạt hình", "Tài liệu",
+												"Gia đình", "Hành động", "Lãng mạn", "Ly kì", "Giả tưởng", "Hồi hộp", "Tâm lý", "Tội phạm"];
 												$selected_genre = isset($_POST['genre']) ? $_POST['genre'] : [];
 										?>
                                             <select class="sign__selectjs" id="sign__genre" name="genre[]" multiple>

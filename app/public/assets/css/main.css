@@ -976,7 +976,7 @@ body::-webkit-scrollbar-thumb {
   -webkit-backface-visibility: hidden;
 }
 
-.hero__slide:before {
+/* .hero__slide:before {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1;
 }
@@ -984,7 +984,7 @@ body::-webkit-scrollbar-thumb {
 .hero__slide:after {
   background: linear-gradient(270deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
   z-index: 2;
-}
+} */
 
 .hero__content {
   display: flex;
@@ -1471,7 +1471,7 @@ body::-webkit-scrollbar-thumb {
   width: 12px;
   border-radius: 4px;
   background: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
-  transition: 0.5s ease;
+  transition: width 0.5s ease, opacity 0.5s ease;
   opacity: 0.5;
   margin: 0;
 }
@@ -2587,24 +2587,28 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 56px;
-  height: 56px;
+  width: 80%;
+  height: 50px;
   border: 2px solid #fff;
-  border-radius: 50%;
-  top: 50%;
-  left: 50%;
-  margin: -28px 0 0 -28px;
+  border-radius: .25rem;
+  /* top: 50%; */
+  /* left: 50%;
+  margin: -28px 0 0 -28px; */
   z-index: 3;
   transition: 0.5s ease;
   opacity: 0;
   transform: scale(0.8);
+  cursor: pointer;
 }
 
-.item__play svg {
-  width: 24px;
-  height: auto;
-  fill: #fff;
-  margin-left: 1px;
+/* Đặt vị trí cho nút "Xem chi tiết" */
+.item__play:first-of-type {
+  top: 55%;
+}
+
+/* Đặt vị trí cho nút "Mua vé ngay" */
+.item__play:last-of-type {
+  bottom: 5%;
 }
 
 .item__content {
@@ -2625,8 +2629,8 @@ body::-webkit-scrollbar-thumb {
   color: #fff;
   margin-bottom: 0;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  /* white-space: nowrap;
+  text-overflow: ellipsis; */
   word-wrap: break-word;
   transition: color 0.5s ease;
 }
@@ -6120,4 +6124,8 @@ body::-webkit-scrollbar-thumb {
   height: 4px !important;
   border-radius: 4px !important;
   cursor: pointer;
+}
+
+.text-pink {
+  color: #ff55a5;
 }

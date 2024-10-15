@@ -5,8 +5,8 @@
 class Home extends Controller
 {
 
-    private $model;
 
+    private $model;
     private $data = [];
 
 
@@ -16,8 +16,9 @@ class Home extends Controller
     }
     public function index()
     {
-        $this->data['d'] = 'okw';
-        $this->data['sub']['con'] = $this->model->getList();
+        // $this->data['sub']['con'] = $this->model->getList();
+        $this->data['sub']['listComingSoon'] = $this->model->getListTable('movie', "where status=0");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
         $this->data['sub']['text'] = "Danh sách text";
 
 
@@ -35,12 +36,15 @@ class Home extends Controller
 
     }
 
-    public function details()
+    public function movieDetail($id_movie)
     {
-        $this->data['sub']['text'] = "Danh sách text";
-        $this->data['content'] = 'home/detail';
+        $this->data['sub']['text'] = "Chi tiết phim";
+        $this->data['sub']['movieDetail'] = $this->model->getListTable('movie', "where id_movie=$id_movie");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1 and id_movie!=$id_movie");
+        $this->data['content'] = 'home/movieDetail';
         $this->view("layout/client", $this->data);
     }
+
     public function roomAgv()
     {
         $this->data['sub']['text'] = "Danh sách text";
