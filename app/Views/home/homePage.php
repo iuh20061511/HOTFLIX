@@ -78,7 +78,7 @@
             <div class="row">
                 <div class="col-12">
                     <!-- content title -->
-                    <h2 class="content__title">Recently Updated</h2>
+                    <h2 class="content__title">Kho phim</h2>
                     <!-- end content title -->
 
                     <!-- content tabs nav -->
@@ -201,11 +201,11 @@
         </div> -->
         <!-- end content tabs -->
 
-        <div class="row">
+        <!-- <div class="row">
             <div class="col-12">
                 <a href="catalog1.html" class="section__btn"><span>to catalog</span></a>
             </div>
-        </div>
+        </div> -->
     </div>
 </section>
 <!-- end content -->
@@ -216,7 +216,7 @@
         <div class="row">
             <!-- section title -->
             <div class="col-12">
-                <h2 class="section__title section__title--carousel">Now Watching</h2>
+                <h2 class="section__title section__title--carousel">Xem ngay</h2>
             </div>
             <!-- end section title -->
 

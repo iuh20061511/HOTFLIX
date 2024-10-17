@@ -148,7 +148,7 @@ class Menu_Items extends Controller
 
     public function deleteItem()
     {
-        $this->data['sub']['title'] = "Xóa mặt hàng";
+        $this->data['sub']['title'] = "Xóa voucher";
 
         if(isset($_POST['deleteItem'])){
             $id_item = $_POST['id_movie'];

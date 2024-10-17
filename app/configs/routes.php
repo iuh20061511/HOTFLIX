@@ -42,7 +42,7 @@ $routes['quan-ly-phim.html'] = 'admin/movies';
 $routes['them-bo-phim.html'] = 'admin/movies/addNewMovie';
 $routes['cap-nhat-phim-(.+).html'] = 'admin/movies/updateMovie/$1';
 $routes['xoa-bo-phim.html'] = 'admin/movies/deleteMovie';
-
+//ShowTimes
 $routes['quan-ly-suat-chieu.html'] = 'admin/Showtime/addShowTime';
 $routes['xoa-suat-chieu-(.+).html'] = 'admin/Showtime/deleteShowTime/$1';
 
@@ -52,3 +52,9 @@ $routes['quan-ly-bap-nuoc.html'] = 'admin/menu_items';
 $routes['them-bap-nuoc.html'] = 'admin/menu_items/addNewItem';
 $routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/menu_items/updateItem/$1';
 $routes['xoa-bap-nuoc.html'] = 'admin/menu_items/deleteItem';
+
+//Voucher
+$routes['quan-ly-voucher.html'] = 'admin/voucher';
+$routes['them-voucher.html'] = 'admin/voucher/addNewVoucher';
+$routes['xoa-voucher.html'] = 'admin/voucher/deleteVoucher';
+$routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';

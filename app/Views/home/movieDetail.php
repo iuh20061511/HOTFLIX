@@ -108,11 +108,77 @@
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab" tabindex="0">
                             <div class="row">
-                                <!-- comments -->
-                                <div class="col-12">
-                                    
+                               <!-- Chọn rạp -->
+                                <div class="d-flex align-items-center">
+                                    <label for="cinema-select" class="text-white me-2">Chọn Rạp:</label>
+                                    <form action="chi-tiet-phim-<?php echo $movieDetail[0]['id_movie']?>.html" method='get' style="width: 45%;">
+                                        <select id="cinema-select" class="form-control sign__select" name="select-cinema" onchange="this.form.submit()" style="border-color: #ff55a5;">
+                                        <?php
+                                        // Lấy tên rạp đã chọn và ID
+                                        $selectedCinemaId = $selectedCinema;
+                                        ?>
+                                        <?php foreach ($listCinema as $cinema) : ?>
+                                            <option value="<?php echo $cinema['id_cinema']; ?>" 
+                                                <?php echo $cinema['id_cinema'] == $selectedCinemaId ? 'selected' : ''; ?>>
+                                                <?php echo $cinema['cinema_name']; ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                        </select>
+                                	</form>
                                 </div>
-                                <!-- end comments -->
+                                <!-- Chọn rạp -->
+                                <div class="col-12 mt-4">
+                                    <div class="showtime-list">
+                                    <?php
+
+                                        // Lấy ngày hôm nay và ngày cuối tuần (Chủ Nhật)
+                                        $today = new DateTime();
+
+                                        // Mảng lưu trữ suất chiếu theo ngày
+                                        $showtimesByDate = [];
+
+                                        // Duyệt qua danh sách suất chiếu
+                                        foreach ($listShowTime as $date => $formats) {
+                                            // Chuyển đổi ngày từ chuỗi thành đối tượng DateTime
+                                            $showDate = new DateTime($date);
+
+                                            // Kiểm tra xem suất chiếu có nằm trong tuần hiện tại không
+                                            if ($showDate >= $today) {
+                                                $showtimesByDate[$date] = $formats;
+                                            }
+                                        }
+
+                                        // Sắp xếp mảng theo thứ tự
+                                        uksort($showtimesByDate, function($a, $b) {
+                                            return strtotime($a) - strtotime($b); // So sánh ngày
+                                        });
+
+                                        // Duyệt qua các suất chiếu đã sắp xếp
+                                        foreach ($showtimesByDate as $date => $formats) :
+                                            $formattedDate = date('d/m/Y', strtotime($date));
+                                        ?>
+                                            <div class="day-row">
+                                                <h5 class="text-white"><?php echo $formattedDate; ?></h5>
+
+                                                <?php foreach ($formats as $format => $showtimes) : ?>
+                                                    <div class="row mt-3">
+                                                        <div class="col-2">
+                                                            <h6 class="text-white"><?php echo $format; ?>:</h6>
+                                                        </div>
+                                                        <div class="col-9">
+                                                            <?php foreach ($showtimes as $showtime) : ?>
+                                                                <a href="dat-ve.html?showtime_id=<?php echo $showtime['id_showTime']; ?>&cinema_id=<?php echo $showtime['id_cinema']; ?>" class="btn btn-outline-light inline mt-2 me-2">
+                                                                    <?php echo date('H:i', strtotime($showtime['start_time'])); ?>
+                                                                </a>
+                                                            <?php endforeach; ?>
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach; ?>
+                                            </div>
+                                            <hr style="border: 2px solid #ff55a5;"/>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

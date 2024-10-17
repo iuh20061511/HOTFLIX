@@ -74,6 +74,21 @@ class Validate extends ValidateCheck
         }
     }
 
+    public function checkEndDate($end_date, $start_date)
+    {
+        if (empty($end_date)) {
+            return "Vui lòng chọn ngày kết thúc!";
+        } else {
+            $start_date = new DateTime($start_date);
+            $end_date = new DateTime($end_date);
+            if ($end_date <= $start_date) {
+                return "Ngày kết thúc phải lớn hơn ngày phát hành !";
+            } else {
+                return '';
+            }
+        }
+    }
+
     function checkGender($gender)
     {
         if (empty($gender)) {
@@ -122,7 +137,7 @@ class Validate extends ValidateCheck
     function checkStringEmpty($description)
     {
         if (empty($description)) {
-            return "Vui lòng đầy đủ nội dung cần thiết!";
+            return "Vui lòng nhập đầy đủ nội dung này!";
         } else {
             return '';
         }

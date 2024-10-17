@@ -54,7 +54,7 @@
 			</li>
 
 			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="#" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
+				<a class="sidebar__nav-link" href="quan-ly-suat-chieu.html" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
 					<span>Quản lý suất chiếu</span> <i class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
 					<li><a href="add-item.html">Add cinema</a></li>
@@ -68,6 +68,15 @@
 						class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
 					<li><a href="them-bap-nuoc.html">Thêm mặt hàng</a></li>
+				</ul>
+			</li>
+
+			<li class="sidebar__nav-item">
+				<a class="sidebar__nav-link" href="quan-ly-voucher.html" role="button" aria-expanded="false"><i
+						class="ti ti-paper-bag"></i> <span>Quản lý Voucher</span> <i
+						class="ti ti-chevron-down"></i></a>
+				<ul class="dropdown-menu sidebar__dropdown-menu">
+					<li><a href="them-voucher.html">Thêm voucher</a></li>
 				</ul>
 			</li>
 

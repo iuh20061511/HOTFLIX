@@ -41,6 +41,18 @@ class Home extends Controller
         $this->data['sub']['text'] = "Chi tiết phim";
         $this->data['sub']['movieDetail'] = $this->model->getListTable('movie', "where id_movie=$id_movie");
         $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1 and id_movie!=$id_movie");
+        $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas', "ORDER BY id_cinema asc");
+        // Kiểm tra xem có giá trị cinema từ GET không, nếu không thì lấy giá trị mặc định
+        $id_cinema_default = isset($_GET['select-cinema']) ? $_GET['select-cinema'] : $this->data['sub']['listCinema'][0]['id_cinema'];
+        // Lấy danh sách suất chiếu dựa trên rạp đã chọn
+        $showtimes = $this->model->getListFromThreeTables('show_time', 'room', 'cinemas', 'id_room', 'id_cinema', "where cinemas.id_cinema=$id_cinema_default and id_movie=$id_movie");
+        // Tổ chức suất chiếu theo ngày và định dạng
+        $showtimesByDate = [];
+        foreach ($showtimes as $showtime) {
+            $showtimesByDate[$showtime['show_date']][$showtime['projection_format']][] = $showtime;
+        }
+        $this->data['sub']['listShowTime']= $showtimesByDate;
+        $this->data['sub']['selectedCinema'] = $id_cinema_default;
         $this->data['content'] = 'home/movieDetail';
         $this->view("layout/client", $this->data);
     }

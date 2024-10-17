@@ -181,6 +181,40 @@ class ValidateCheck extends Model
     return false;
     }
 
+    public function checkPromotionExist($promotion_name)
+    {
+        $result = $this->model->getListTable('promotion', "WHERE promotion_name LIKE '%$promotion_name%' LIMIT 1");
+
+        // Nếu tìm thấy kết quả, trả về thông báo, ngược lại trả về chuỗi rỗng
+        if (!empty($result)) {
+            return "Tên chương trình khuyến mãi này đã được sử dụng!";
+        }
+
+        return '';
+    }
+
+    public function checkPromotionExistsEdit($promotion_name, $id_promotion)
+    {
+        $promotion = $this->model->getListTable('promotion', "where id_promotion = '$id_promotion'");
+
+        if ($promotion) {
+            $promotionName = $promotion[0]["promotion_name"];
+        } else {
+            return false;
+        }
+
+        // Kiểm tra số tên rập có tồn tại, nhưng bỏ qua tên cũ
+        $promotionResult = $this->model->getListTable('promotion', "where promotion_name = '$promotion_name' AND promotion_name != '$promotionName'");
+
+        // Nếu tên đã tồn tại
+        if (!empty($promotionResult)) {
+            return true;
+        }
+
+    // Không có số điện thoại trùng lặp
+    return false;
+    }
+
 }
 
 ?>
