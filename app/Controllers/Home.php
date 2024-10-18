@@ -21,7 +21,6 @@ class Home extends Controller
         $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
         $this->data['sub']['text'] = "Danh sách text";
 
-
         $this->data['content'] = 'home/homePage';
 
         $this->view("layout/client", $this->data);
@@ -54,6 +53,27 @@ class Home extends Controller
         $this->data['sub']['listShowTime']= $showtimesByDate;
         $this->data['sub']['selectedCinema'] = $id_cinema_default;
         $this->data['content'] = 'home/movieDetail';
+        $this->view("layout/client", $this->data);
+    }
+
+    public function cinemaDetail($id_cinema)
+    {
+        $this->data['sub']['text'] = "Chi tiết rạp";
+        $this->data['sub']['cinema'] = $this->model->getListTable('cinemas', "where id_cinema=$id_cinema");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie' , "order by id_movie desc");
+        $folder = 'app/public/assets/img/cinema/'.$id_cinema; // Thư mục cần lấy danh sách file
+        $this->data['sub']['listCinemaImage'] = array_map('basename', glob($folder . '/*'));
+        // Kiểm tra id_rạp là chẵn hay lẻ
+        // $is_even = ($id_cinema % 2 === 0);
+        // $filteredFiles = array_filter($files, function($key) use ($is_even) {
+        //     return ($is_even) ? ($key % 2 === 0) : ($key % 2 !== 0);
+        // }, ARRAY_FILTER_USE_KEY);
+        // $this->data['sub']['listCinemaImage'] = array_slice($filteredFiles, 0, 6);
+
+
+
+        $this->data['content'] = 'home/cinemaDetail';
         $this->view("layout/client", $this->data);
     }
 

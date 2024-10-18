@@ -2247,7 +2247,6 @@ body::-webkit-scrollbar-thumb {
   right: 20px;
   left: 20px;
   border-radius: 4px;
-  background: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
 }
 
 .section__item-filter {
@@ -4123,45 +4122,14 @@ body::-webkit-scrollbar-thumb {
 
 .roadmap:before,
 .roadmap:after {
-  content: '';
-  position: absolute;
-  display: block;
-  border-radius: 50%;
-}
-
-.roadmap:before {
-  width: 24px;
-  height: 24px;
-  left: 0;
-  top: 42px;
-  background-color: #fff;
-  opacity: 0.12;
-  z-index: 1;
-}
-
-.roadmap:after {
-  width: 10px;
-  height: 10px;
-  left: 7px;
-  top: 49px;
-  background-color: #fff;
-  z-index: 2;
+  content: none;
+  /* Ẩn các pseudo-element */
 }
 
 .roadmap--active:before,
 .roadmap--active:after {
-  background: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
-}
-
-.roadmap--active:after {
-  width: 16px;
-  height: 16px;
-  left: 4px;
-  top: 46px;
-}
-
-.roadmap--active .roadmap__list li:before {
-  background: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+  content: none;
+  /* Ẩn các pseudo-element */
 }
 
 .roadmap__title {
@@ -4201,34 +4169,11 @@ body::-webkit-scrollbar-thumb {
 }
 
 .roadmap__list li:before {
-  content: '';
-  position: absolute;
-  width: 4px;
-  height: 4px;
-  background-color: #fff;
-  opacity: 1;
-  top: 11px;
-  left: 0;
-  border-radius: 50%;
+  content: none;
+  /* Ẩn dấu chấm tròn */
 }
 
 @media (min-width: 768px) {
-  .roadmap:before {
-    top: 47px;
-  }
-
-  .roadmap:after {
-    top: 54px;
-  }
-
-  .roadmap--active:before {
-    top: 47px;
-  }
-
-  .roadmap--active:after {
-    top: 51px;
-  }
-
   .roadmap__title {
     margin-bottom: 60px;
   }
@@ -4241,6 +4186,7 @@ body::-webkit-scrollbar-thumb {
     margin-bottom: 0;
   }
 }
+
 
 /*==============================
 	Filter

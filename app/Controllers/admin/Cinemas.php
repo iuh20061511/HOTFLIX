@@ -35,6 +35,7 @@ class Cinemas extends Controller
                 $this->data['sub']['error']['cinema_name'] = $this->validate->checkFullName($_POST['cinema_name']);
             }
             $this->data['sub']['error']['contact'] = $this->validate->checkPhone($_POST['contact']);
+            $this->data['sub']['error']['description'] = $this->validate->checkStringEmpty($_POST['description']);
             if (empty($_POST['number_address']) || empty($_POST['street_address']) || empty($_POST['ward_address'])) {
                 $this->data['sub']['error']['address'] = "Vui lòng nhập đầy đủ địa chỉ!";
             }
@@ -44,6 +45,7 @@ class Cinemas extends Controller
                 $data = [
                     'cinema_name' => $_POST['cinema_name'],
                     'contact' => $_POST['contact'],
+                    'description' => $$_POST['description'],
                     'address' => $address,
                     'status' => 1
                 ];
@@ -78,6 +80,7 @@ class Cinemas extends Controller
                 $this->data['sub']['error']['cinema_name'] = $this->validate->checkFullName($_POST['cinema_name']);
             }
             $this->data['sub']['error']['contact'] = $this->validate->checkPhone($_POST['contact']);
+            $this->data['sub']['error']['description'] = $this->validate->checkStringEmpty($_POST['description']);
             if (empty($_POST['number_address']) || empty($_POST['street_address']) || empty($_POST['ward_address'])) {
                 $this->data['sub']['error']['address'] = "Vui lòng nhập đầy đủ địa chỉ!";
             }
@@ -87,6 +90,7 @@ class Cinemas extends Controller
                 $data = [
                     'cinema_name' => $_POST['cinema_name'],
                     'contact' => $_POST['contact'],
+                    'description' => $_POST['description'],
                     'address' => $address,
                 ];
 

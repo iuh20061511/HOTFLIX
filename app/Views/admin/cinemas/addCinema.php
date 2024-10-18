@@ -89,6 +89,14 @@
                                			 <?php } ?>
 										</div>
 									</div>
+									<div class="col-12">
+										<div class="sign__group">
+											<textarea id="text" name="description" class="sign__textarea" placeholder="Mô tả - Thông tin thêm về rạp"><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea>
+											<?php if (isset($error['description'])): ?>
+                                            	<p class="error text-danger"><?php echo $error['description']; ?></p>
+                                        	<?php endif; ?>
+										</div>
+									</div>
 								</div>
 							</div>
 

@@ -58,17 +58,17 @@
                         <!-- dropdown -->
                         <li class="header__nav-item">
                             <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Catalog <svg xmlns="http://www.w3.org/2000/svg"
+                                aria-expanded="false">Rạp <svg xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24">
                                     <path
                                         d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
                                 </svg></a>
 
                             <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="catalog1.html">Catalog Grid</a></li>
-                                <li><a href="catalog2.html">Catalog List</a></li>
-                                <li><a href="details1.html">Details Movie</a></li>
-                                <li><a href="details2.html">Details TV Series</a></li>
+                                <li><a href="details2.html">HotFlix Quận 1</a></li>
+                                <li><a href="thong-tin-rap-10.html">HotFlix Quận 7</a></li>
+                                <li><a href="catalog1.html">HotFlix Gò Vấp</a></li>
+                                <li><a href="catalog2.html">HotFlix Thủ Đức</a></li>
                             </ul>
                         </li>
                         <!-- end dropdown -->
