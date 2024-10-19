@@ -27,14 +27,7 @@ class Home extends Controller
         $this->view("layout/client", $this->data);
     }
 
-    public function detail($id, $a, $b)
-    {
-        echo $id;
-        echo $a;
-        echo $b;
-        echo $_GET['a'];
 
-    }
 
     public function movieDetail($id_movie)
     {
@@ -51,7 +44,7 @@ class Home extends Controller
         foreach ($showtimes as $showtime) {
             $showtimesByDate[$showtime['show_date']][$showtime['projection_format']][] = $showtime;
         }
-        $this->data['sub']['listShowTime']= $showtimesByDate;
+        $this->data['sub']['listShowTime'] = $showtimesByDate;
         $this->data['sub']['selectedCinema'] = $id_cinema_default;
         $this->data['content'] = 'home/movieDetail';
         $this->view("layout/client", $this->data);
@@ -119,5 +112,4 @@ class Home extends Controller
 
         $this->view("layout/client", $this->data);
     }
-
 }

@@ -116,18 +116,18 @@
                 <div class="row ms-5">
                     <!-- item -->
                     <?php
-                        $stt = 0;
-                        foreach ($listShowing as $index => $movieShowing) { ?>
+                    $stt = 0;
+                    foreach ($listShowing as $index => $movieShowing) { ?>
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3">
                             <div class="item">
                                 <div class="item__cover">
                                     <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movieShowing['poster']; ?>" alt="">
-                                        <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
-                                            <div class="text-white">Xem chi tiết</div>
-                                        </div>
-                                        <div class="item__play" onclick="location.href='#';">
-                                            <div class="text-white">Mua vé ngay</div>
-                                        </div>
+                                    <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
+                                        <div class="text-white">Xem chi tiết</div>
+                                    </div>
+                                    <div class="item__play" onclick="location.href='dat-ve-<?php echo $movieShowing['id_movie']; ?>.html';">
+                                        <div class="text-white">Mua vé ngay</div>
+                                    </div>
                                 </div>
                                 <div class="item__content">
                                     <h3 class="item__title mb-3"><a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html"><?php echo mb_strtoupper($movieShowing['movie_name'], 'UTF-8'); ?></a></h3>
@@ -149,21 +149,21 @@
                 <div class="row ms-5">
                     <!-- item -->
                     <?php
-                        $stt = 0;
-                        foreach ($listComingSoon as $index => $movieComing) { ?>
+                    $stt = 0;
+                    foreach ($listComingSoon as $index => $movieComing) { ?>
                         <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3">
                             <div class="item">
                                 <a href="chi-tiet-phim-<?php echo $movieComing['id_movie']; ?>.html" class="item__cover">
                                     <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movieComing['poster']; ?>" alt="">
-                                        <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieComing['id_movie']; ?>.html';">
-                                            <div class="text-white">Xem chi tiết</div>
-                                        </div>
+                                    <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieComing['id_movie']; ?>.html';">
+                                        <div class="text-white">Xem chi tiết</div>
+                                    </div>
                                 </a>
                                 <div class="item__content">
-                                    <h2 class="item__title mb-3"><a href="chi-tiet-phim-<?php echo $movieComing['id_movie']; ?>.html"><?php echo mb_strtoupper($movieComing['movie_name'], 'UTF-8');?></a></h2>
+                                    <h2 class="item__title mb-3"><a href="chi-tiet-phim-<?php echo $movieComing['id_movie']; ?>.html"><?php echo mb_strtoupper($movieComing['movie_name'], 'UTF-8'); ?></a></h2>
                                     <h6 style="color: #fff">Thể loại: <span class="text-pink"><?php echo $movieComing['genre']; ?></span></h6>
                                     <h6 style="color: #fff">Thời lượng: <span class="text-pink"><?php echo $movieComing['duration']; ?> phút</span></h6>
-                                    <h6 style="color: #fff">Khởi chiếu: <span class="text-pink"><?php echo date('d/m/Y', strtotime($movieComing['release_date']));?></span></h6>
+                                    <h6 style="color: #fff">Khởi chiếu: <span class="text-pink"><?php echo date('d/m/Y', strtotime($movieComing['release_date'])); ?></span></h6>
                                 </div>
                             </div>
                         </div>
@@ -199,14 +199,14 @@
                 </div>
             </div>
         </div> -->
-        <!-- end content tabs -->
+            <!-- end content tabs -->
 
-        <!-- <div class="row">
+            <!-- <div class="row">
             <div class="col-12">
                 <a href="catalog1.html" class="section__btn"><span>to catalog</span></a>
             </div>
         </div> -->
-    </div>
+        </div>
 </section>
 <!-- end content -->
 

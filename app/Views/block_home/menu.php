@@ -14,25 +14,40 @@
                             <span></span>
                             <span></span>
                         </button>
-                        <a href="#" class="header__nav-link p-3">FLIXGO GÒ VẤP</a>
+                        <a href="#" class="header__nav-link p-3">
+                            <?php if (isset($_POST['cinema_name'])) {
+                                $_SESSION['id_cinema_customer'] =  $_POST['id_cinema'];
+                                $_SESSION['name_cinema_customer'] =  $_POST['cinema_name'];
+                                echo $_SESSION['name_cinema_customer'];
+                            } elseif (isset($_SESSION['name_cinema_customer'])) {
+                                echo  $_SESSION['name_cinema_customer'];
+                            } else {
+                                $cinema =   (new Model())->getListTable('cinemas');
+                                $_SESSION['id_cinema_customer'] =  $cinema[0]['id_cinema'];
+                                $_SESSION['name_cinema_customer'] =  $cinema[0]['cinema_name'];
+                                echo  $_SESSION['name_cinema_customer'];
+                            } ?>
+                        </a>
                         <div class="header__categories">
+                            <?php
+                            $cinemas = (new Model())->getListTable('cinemas');
 
+                            ?>
 
                             <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories">
                                 <ul class="header__categories-list">
-                                    <li><a href="catalog1.html">Films</a></li>
-                                    <li><a href="catalog2.html">TV Series</a></li>
-                                    <li><a href="catalog1.html">Anime</a></li>
-                                    <li><a href="catalog2.html">Cartoons</a></li>
-                                </ul>
-                                <ul class="header__categories-list">
-                                    <li><a href="catalog1.html">Catalog Grid</a></li>
-                                    <li><a href="catalog2.html">Catalog List</a></li>
-                                    <li><a href="details1.html">Details Film</a></li>
-                                    <li><a href="details2.html">Details TV Series</a></li>
-                                    <li><a href="details2.html">Details TV Series</a></li>
+                                    <?php foreach ($cinemas as $cinema) { ?>
+                                        <li>
+                                            <form action="" method="post">
+                                                <input type="hidden" name="id_cinema" value="<?php echo $cinema['id_cinema'] ?>">
+                                                <input type="hidden" name="cinema_name" value="<?php echo $cinema['cinema_name'] ?>">
 
+                                                <input type="submit" name="cinema_btn" class="border-0 text-light" style="background: none;" value="<?php echo $cinema['cinema_name']; ?>">
+                                            </form>
+                                        </li>
+                                    <?php } ?>
                                 </ul>
+
                             </div>
                         </div>
 
@@ -148,7 +163,7 @@
                                 </div>
                                 <div class="header__info">
                                     <p>Xin chào,</p>
-                                    <p><?php echo $_SESSION['is_login']['fullname']?></p>
+                                    <p><?php echo $_SESSION['is_login']['fullname'] ?></p>
                                 </div>
                                 <ul class="dropdown-user">
                                     <li><a href="#">Tài khoản</a></li>
@@ -164,9 +179,9 @@
 
                         <?php if (!isset($_SESSION['is_login'])) { ?>
                             <a href="dang-nhap.html" class="header__sign-in"">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />
+                                <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path
+                                    d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />
                                 </svg>
                                 <span>Đăng nhập</span>
                             </a>

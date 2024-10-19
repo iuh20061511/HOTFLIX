@@ -192,8 +192,16 @@
                             </thead>
                             <tbody>
                                 <tr class="border-3">
-                                    <td class="text-center align-middle bg-warning"><b>Sáng</b></td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t2')">
+                                    <td class="text-center align-middle bg-warning"></td>
+                                    <?php
+                                    $currentDate = new DateTime();
+                                    $compareDate = DateTime::createFromFormat('d/m/Y', "$t2");
+                                    if ($compareDate > $currentDate) { ?>
+                                        <td class="bg-light" style="height: 200px;" onclick="handleClick('t2')">
+                                        <?php  } else { ?>
+                                        <td class="bg-light" style="height: 200px;">
+
+                                        <?php } ?>
                                         <?php
                                         if (isset($show_time_t2)) {
                                             foreach ($show_time_t2 as $show) {
@@ -207,97 +215,145 @@
                                             }
                                         }
                                         ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t3')">
+                                        </td>
                                         <?php
-                                        if (isset($show_time_t3)) {
-                                            foreach ($show_time_t3 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
+                                        $currentDate = new DateTime();
+                                        $compareDate = DateTime::createFromFormat('d/m/Y', "$t3");
+                                        if ($compareDate > $currentDate) { ?>
+                                            <td class="bg-light" style="height: 200px;" onclick="handleClick('t3')">
+                                            <?php  } else { ?>
+                                            <td class="bg-light" style="height: 200px;">
+
+                                            <?php } ?>
+                                            <?php
+                                            if (isset($show_time_t3)) {
+                                                foreach ($show_time_t3 as $show) {
+                                            ?>
+                                                    <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                        <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                        <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                        <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                    </div>
+                                            <?php
+                                                }
                                             }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t4')">
-                                        <?php
-                                        if (isset($show_time_t4)) {
-                                            foreach ($show_time_t4 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t5')">
-                                        <?php
-                                        if (isset($show_time_t5)) {
-                                            foreach ($show_time_t5 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t6')">
-                                        <?php
-                                        if (isset($show_time_t6)) {
-                                            foreach ($show_time_t6 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t7')">
-                                        <?php
-                                        if (isset($show_time_t7)) {
-                                            foreach ($show_time_t7 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t8')">
-                                        <?php
-                                        if (isset($show_time_t8)) {
-                                            foreach ($show_time_t8 as $show) {
-                                        ?>
-                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
-                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
-                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
-                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
-                                                </div>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </td>
+                                            ?>
+                                            </td>
+                                            <?php
+                                            $currentDate = new DateTime();
+                                            $compareDate = DateTime::createFromFormat('d/m/Y', "$t4");
+                                            if ($compareDate > $currentDate) { ?>
+                                                <td class="bg-light" style="height: 200px;" onclick="handleClick('t4')">
+                                                <?php  } else { ?>
+                                                <td class="bg-light" style="height: 200px;">
+
+                                                <?php } ?>
+                                                <?php
+                                                if (isset($show_time_t4)) {
+                                                    foreach ($show_time_t4 as $show) {
+                                                ?>
+                                                        <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                            <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                            <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                            <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                        </div>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
+                                                </td>
+                                                <?php
+                                                $currentDate = new DateTime();
+                                                $compareDate = DateTime::createFromFormat('d/m/Y', "$t5");
+                                                if ($compareDate > $currentDate) { ?>
+                                                    <td class="bg-light" style="height: 200px;" onclick="handleClick('t5')">
+                                                    <?php  } else { ?>
+                                                    <td class="bg-light" style="height: 200px;">
+
+                                                    <?php } ?>
+                                                    <?php
+                                                    if (isset($show_time_t5)) {
+                                                        foreach ($show_time_t5 as $show) {
+                                                    ?>
+                                                            <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                                <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                                <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                                <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                            </div>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    </td>
+                                                    <?php
+                                                    $currentDate = new DateTime();
+                                                    $compareDate = DateTime::createFromFormat('d/m/Y', "$t6");
+                                                    if ($compareDate > $currentDate) { ?>
+                                                        <td class="bg-light" style="height: 200px;" onclick="handleClick('t6')">
+                                                        <?php  } else { ?>
+                                                        <td class="bg-light" style="height: 200px;">
+
+                                                        <?php } ?>
+                                                        <?php
+                                                        if (isset($show_time_t6)) {
+                                                            foreach ($show_time_t6 as $show) {
+                                                        ?>
+                                                                <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                                    <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                                    <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                                    <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                                </div>
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                        </td>
+                                                        <?php
+                                                        $currentDate = new DateTime();
+                                                        $compareDate = DateTime::createFromFormat('d/m/Y', "$t7");
+                                                        if ($compareDate > $currentDate) { ?>
+                                                            <td class="bg-light" style="height: 200px;" onclick="handleClick('t7')">
+                                                            <?php  } else { ?>
+                                                            <td class="bg-light" style="height: 200px;">
+
+                                                            <?php } ?>
+                                                            <?php
+                                                            if (isset($show_time_t7)) {
+                                                                foreach ($show_time_t7 as $show) {
+                                                            ?>
+                                                                    <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                                        <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                                        <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                                        <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                                    </div>
+                                                            <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                            </td>
+                                                            <?php
+                                                            $currentDate = new DateTime();
+                                                            $compareDate = DateTime::createFromFormat('d/m/Y', "$t8");
+                                                            if ($compareDate > $currentDate) { ?>
+                                                                <td class="bg-light" style="height: 200px;" onclick="handleClick('t8')">
+                                                                <?php  } else { ?>
+                                                                <td class="bg-light" style="height: 200px;">
+
+                                                                <?php } ?>
+                                                                <?php
+                                                                if (isset($show_time_t8)) {
+                                                                    foreach ($show_time_t8 as $show) {
+                                                                ?>
+                                                                        <div class="  shadow-lg rounded m-1" onclick="event.stopPropagation();" style="background-color: <?php echo $show['color_code'] ?>;">
+                                                                            <span style="font-size: 14px;"><?php echo $show['movie_name']; ?></span>
+                                                                            <h6 style="font-size: 14px;" class="text-danger"><b><?php echo substr($show['start_time'], 0, 5) . ' - ' .   substr($show['end_time'], 0, 5); ?></b></h6>
+                                                                            <a href="xoa-suat-chieu-<?php echo $show['id_showTime'] . '.html'; ?>"><i class="bi bi-trash-fill text-dark"></i></a>
+                                                                        </div>
+                                                                <?php
+                                                                    }
+                                                                }
+                                                                ?>
+                                                                </td>
                                 </tr>
                             </tbody>
                         </table>

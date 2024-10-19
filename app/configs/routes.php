@@ -58,3 +58,6 @@ $routes['quan-ly-voucher.html'] = 'admin/voucher';
 $routes['them-voucher.html'] = 'admin/voucher/addNewVoucher';
 $routes['xoa-voucher.html'] = 'admin/voucher/deleteVoucher';
 $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
+
+//đặt vé
+$routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
