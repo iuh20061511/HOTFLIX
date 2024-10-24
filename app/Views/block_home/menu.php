@@ -66,7 +66,7 @@
 
                             <ul class="dropdown-menu header__dropdown-menu">
                                 <li><a href="details2.html">HotFlix Quận 1</a></li>
-                                <li><a href="thong-tin-rap-10.html">HotFlix Quận 7</a></li>
+                                <li><a href="<?php echo _LINK ?>/thong-tin-rap-10.html">HotFlix Quận 7</a></li>
                                 <li><a href="catalog1.html">HotFlix Gò Vấp</a></li>
                                 <li><a href="catalog2.html">HotFlix Thủ Đức</a></li>
                             </ul>
@@ -74,7 +74,7 @@
                         <!-- end dropdown -->
 
                         <li class="header__nav-item">
-                            <a href="pricing.html" class="header__nav-link">Pricing plans</a>
+                            <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê rạp</a>
                         </li>
 
                         <!-- dropdown -->
@@ -153,7 +153,7 @@
                                 <ul class="dropdown-user">
                                     <li><a href="#">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
-                                        <li><a href="quan-ly.html">Chức năng</a></li>
+                                        <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
                                     <?php } ?>
                                     <li><a href="#">Lịch sử</a></li>
                                     <li><a href="<?php echo _LINK ?>/account/logout">Đăng xuất</a></li>
@@ -163,7 +163,7 @@
 
 
                         <?php if (!isset($_SESSION['is_login'])) { ?>
-                            <a href="dang-nhap.html" class="header__sign-in"">
+                            <a href="<?php echo _LINK ?>/dang-nhap.html" class="header__sign-in"">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />

@@ -14,6 +14,7 @@ $routes['xep-hang/.+-(\d+).html'] = 'admin/auth/dashboard/new/$1';  ///tin-tuc/t
 $routes['trang-chu.html'] = 'home';
 $routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['thong-tin-rap-(.+).html'] = 'home/cinemaDetail/$1';
+$routes['khuyen-mai.html'] = 'home/promotion/';
 $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
@@ -59,3 +60,7 @@ $routes['quan-ly-voucher.html'] = 'admin/voucher';
 $routes['them-voucher.html'] = 'admin/voucher/addNewVoucher';
 $routes['xoa-voucher.html'] = 'admin/voucher/deleteVoucher';
 $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
+
+//Rent_Room
+$routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
+$routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';

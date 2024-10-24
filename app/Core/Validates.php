@@ -171,4 +171,19 @@ class Validate extends ValidateCheck
             return '';
         }
     }
+
+    public function checkRoomRentDate($date)
+    {
+        if (empty($date)) {
+            return "Vui lòng chọn ngày thuê !";
+        } else {
+            $born_date = new DateTime($date);
+            $current_date = new DateTime();
+            if ($born_date <= $current_date) {
+                return "Ngày thuê phải lớn hơn ngày hiện tại !";
+            } else {
+                return '';
+            }
+        }
+    }
 }

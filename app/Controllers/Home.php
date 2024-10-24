@@ -1,7 +1,5 @@
 <?php
 
-
-
 class Home extends Controller
 {
 
@@ -72,8 +70,18 @@ class Home extends Controller
         // $this->data['sub']['listCinemaImage'] = array_slice($filteredFiles, 0, 6);
 
 
-
         $this->data['content'] = 'home/cinemaDetail';
+        $this->view("layout/client", $this->data);
+    }
+
+    public function promotion()
+    {
+        $this->data['sub']['text'] = "Chương trình khuyến mãi";
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie' , "order by id_movie desc");
+        $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion');
+
+
+        $this->data['content'] = 'home/promotion';
         $this->view("layout/client", $this->data);
     }
 
