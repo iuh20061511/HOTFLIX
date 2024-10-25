@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/book/css/book.css">
 
-<form action="" method="GET">
+<form action="thanh-toan.html" method="POST">
     <section class="content" style="margin-top: 150px;">
         <div class="container mt-4">
             <div class="row">
@@ -59,17 +59,15 @@
                 <div class="col-md-4">
 
                     <div class="card ">
-                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ ghế: <span
-                                id="countdown">06:00</span></div>
+                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ ghế:<span id="countdown"></span></div>
 
                         <table>
-                            <th> <img src="<?php echo _WEB_ROOT ?>/public/assets/img/covers/12.png"
+                            <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $image ?>"
                                     class="card-img-top movie-poster" alt="Ma Da"></th>
                             <th>
                                 <div class="m-3">
-                                    <h5 class="card-title">Thám Tử Lừng Danh Conan: Ngôi Sao 5 Cánh 1 Triệu Đô<span
-                                            class="age-rating">T16</span></h5>
-                                    <p class="card-text">2D Phụ Đề</p>
+                                    <h5 class="card-title"><?php echo $movie_name ?></h5>
+                                    <p class="card-text"><?php echo $projection_format ?></p>
                                 </div>
 
                         </table>
@@ -78,21 +76,31 @@
 
                         <div class="card-body">
 
-                            <p>Galaxy Nguyễn Du - RAP 3</p>
-                            <p>Suất: 17:15 - Thứ Hai, 19/08/2024</p>
+                            <p><?php echo $cinema ?></p>
+                            <p>Suất: <?php echo $time ?></p>
                             <hr>
-                            <p>1x Người Lớn - Member</p>
-                            <p>Ghế: H4</p>
-                            <p>80.000 đ</p>
+                            <p>Ghế: <?php echo $seats ?></p>
                             <hr>
                             <div id="selected-combos">
-                                <!-- Selected combos will be added here dynamically -->
+                                <?php foreach ($_POST['item'] as $item) { ?>
+                                    <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
+                                    <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
+
+                                <?php } ?>
                             </div>
                             <hr>
                             <p class="d-flex justify-content-between"><strong>Tổng cộng</strong> <span
-                                    class="text-danger" id="total-price">80.000 đ</span></p>
+                                    class="text-danger" id="total-price"><?php echo $total ?></span></p>
                             <div class="d-flex justify-content-between">
-                                <button class="btn btn-outline-secondary">Quay lại</button>
+                                <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
+                                <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+                                <input type="hidden" name="id_room" value="<?php echo  $id_room ?>">
+                                <input type="hidden" name="seats" value="<?php echo  $seats ?>">
+                                <input type="hidden" name="total" value="<?php echo  $total ?>">
+
+
+
+
                                 <button class="btn btn-primary">Thanh toán</button>
                             </div>
                         </div>

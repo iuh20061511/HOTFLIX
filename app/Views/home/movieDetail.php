@@ -377,3 +377,7 @@
         </div>
     </div>
 </section>
+<script>
+    localStorage.removeItem('endTime');
+    localStorage.removeItem('remainingTime');
+</script>

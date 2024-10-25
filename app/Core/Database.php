@@ -7,7 +7,7 @@ class Database
     public function connect()
     {
         if (!$this->connection) {
-            $this->connection = mysqli_connect('localhost', 'root', '', 'hotflix');
+            $this->connection = mysqli_connect('localhost', 'root', '', 'hotflix3');
 
             if (!$this->connection) {
                 die('Connection failed: ' . mysqli_connect_error());
@@ -27,5 +27,3 @@ class Database
         }
     }
 }
-
-?>

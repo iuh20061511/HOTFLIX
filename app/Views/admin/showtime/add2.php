@@ -149,6 +149,7 @@
                         </div>
 
                         <div class="col-6" style="display: flex;">
+
                             <?php foreach ($listRoom as $room) { ?>
                                 <?php
 
@@ -165,6 +166,7 @@
                             <?php }
                             }
                             ?>
+
                         </div>
 
                         <input type="submit" class="btn btn-success" style="width: 100px; margin-left: 50%;" value="xác nhận">
@@ -448,6 +450,3 @@
         });
     });
 </script>
-<?php
-echo "<pre>";
-print_r($_SESSION);

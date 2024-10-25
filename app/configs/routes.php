@@ -62,3 +62,7 @@ $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
 
 //đặt vé
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
+$routes['chon-ghe.html'] = 'client/BookTickets/selectSeat';
+$routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
+$routes['thanh-toan.html'] = 'client/BookTickets/successful_payment';
+$routes['pay.html'] = 'client/BookTickets/pay';

@@ -112,4 +112,9 @@ class Model extends Database
     {
         $this->close();
     }
+
+    public function getInsertId()
+    {
+        return $this->connection->insert_id;
+    }
 }

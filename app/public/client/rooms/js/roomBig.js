@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const seatInputs = document.querySelectorAll("input[name='seat[]']");
     const doubleSeatInputs = document.querySelectorAll("input[name='seat_double[]']");
     const seatDisplay = document.querySelector(".count_seat_buy"); // Chỗ hiển thị ghế ngồi
-    const totalDisplay = document.querySelector(".total"); // Chỗ hiển thị tổng tiền
+    const totalDisplay = document.querySelector(".total"); // Input hiển thị tổng tiền
 
     let selectedSeats = [];
     let totalPrice = 0;
@@ -10,30 +10,30 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hàm cập nhật thông tin ghế ngồi và tổng tiền
     function updateSeatInfo() {
         seatDisplay.innerText = `Ghế ngồi: ${selectedSeats.join(', ')}`;
-        totalDisplay.innerText = `Tổng tiền: ${totalPrice.toLocaleString('vi-VN')} VNĐ`;
+        totalDisplay.value = `${totalPrice.toLocaleString('vi-VN')}`; // Cập nhật giá trị vào input
     }
 
     // Hàm xử lý chọn ghế
     function handleSeatSelection(event) {
         const seatElement = event.target;
         const seatLabel = seatElement.nextElementSibling.innerText; // Lấy giá trị của ghế
-        let seatPrice = a;
+        let seatPrice = a; // Giá ghế mặc định
 
         if (seatElement.closest("label").classList.contains("seat-vip")) {
-            seatPrice = b;
+            seatPrice = b; // Giá ghế VIP
         } else if (seatElement.closest("label").classList.contains("seat_double")) {
-            seatPrice = c;
+            seatPrice = c; // Giá ghế đôi
         }
 
         if (seatElement.checked) {
-            selectedSeats.push(seatLabel);
-            totalPrice += seatPrice;
+            selectedSeats.push(seatLabel); // Thêm ghế vào danh sách ghế đã chọn
+            totalPrice += seatPrice; // Tăng tổng tiền
         } else {
-            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel);
-            totalPrice -= seatPrice;
+            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel); // Xóa ghế khỏi danh sách ghế đã chọn
+            totalPrice -= seatPrice; // Giảm tổng tiền
         }
 
-        updateSeatInfo();
+        updateSeatInfo(); // Cập nhật lại thông tin ghế ngồi và tổng tiền
     }
 
     // Gán sự kiện thay đổi cho các ghế

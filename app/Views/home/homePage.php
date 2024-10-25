@@ -125,9 +125,13 @@
                                     <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
                                         <div class="text-white">Xem chi tiết</div>
                                     </div>
-                                    <div class="item__play" onclick="location.href='dat-ve-<?php echo $movieShowing['id_movie']; ?>.html';">
+                                    <?php
+                                    $date = date('Y-m-d');
+                                    ?>
+                                    <div class="item__play" onclick="location.href='dat-ve-<?php echo $movieShowing['id_movie']; ?>.html?day=<?php echo $date; ?>';">
                                         <div class="text-white">Mua vé ngay</div>
                                     </div>
+
                                 </div>
                                 <div class="item__content">
                                     <h3 class="item__title mb-3"><a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html"><?php echo mb_strtoupper($movieShowing['movie_name'], 'UTF-8'); ?></a></h3>
@@ -289,3 +293,7 @@
         </div>
     </div>
 </section>
+<script>
+    localStorage.removeItem('endTime');
+    localStorage.removeItem('remainingTime');
+</script>

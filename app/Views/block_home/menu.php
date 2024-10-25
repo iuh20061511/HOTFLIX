@@ -15,19 +15,23 @@
                             <span></span>
                         </button>
                         <a href="#" class="header__nav-link p-3">
-                            <?php if (isset($_POST['cinema_name'])) {
+                            <?php
+                            $cinema =   (new Model())->getListTable('cinemas');
+
+                            if (isset($_POST['cinema_name'])) {
                                 $_SESSION['id_cinema_customer'] =  $_POST['id_cinema'];
                                 $_SESSION['name_cinema_customer'] =  $_POST['cinema_name'];
                                 echo $_SESSION['name_cinema_customer'];
                             } elseif (isset($_SESSION['name_cinema_customer'])) {
+                                $_SESSION['id_cinema_customer'] =  $cinema[0]['id_cinema'];
                                 echo  $_SESSION['name_cinema_customer'];
                             } else {
-                                $cinema =   (new Model())->getListTable('cinemas');
                                 $_SESSION['id_cinema_customer'] =  $cinema[0]['id_cinema'];
                                 $_SESSION['name_cinema_customer'] =  $cinema[0]['cinema_name'];
                                 echo  $_SESSION['name_cinema_customer'];
                             } ?>
                         </a>
+
                         <div class="header__categories">
                             <?php
                             $cinemas = (new Model())->getListTable('cinemas');
@@ -178,7 +182,7 @@
 
 
                         <?php if (!isset($_SESSION['is_login'])) { ?>
-                            <a href="dang-nhap.html" class="header__sign-in"">
+                            <a href="<?php echo _LINK ?>/dang-nhap.html" class="header__sign-in"">
                                 <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                 <path
                                     d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />
