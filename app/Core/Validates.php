@@ -121,13 +121,42 @@ class Validate extends ValidateCheck
         }
     }
 
+    function checkOldPassword($input_password, $old_password)
+    {
+        if (empty($input_password)) {
+            return "Vui lòng nhập mật khẩu hiện tại!";
+        } else {
+            if (password_verify($input_password, $old_password)) {
+                return '';
+            } else {
+                return 'Mật khẩu hiện tại nhập sai !';
+            }
+        }
+    }
+
+    function checkNewPassword($new_password, $old_password)
+    {
+        if (empty($new_password)) {
+            return "Vui lòng nhập mật khẩu mới!";
+        }else if(strlen($new_password) < 6){
+            return " Mật khẩu phải có ít nhất 6 kí tự !";
+        }
+         else {
+            if (password_verify($new_password, $old_password)) {
+                return 'Mật khẩu mới không được trùng với mật khẩu cũ!';
+            } else {
+                return '';
+            }
+        }
+    }
+
     function confirmPassword($confirm_password, $password)
     {
         if (empty($confirm_password)) {
-            return " Vui lòng nhập lại mật khẩu !";
+            return " Vui lòng nhập lại mật khẩu xác nhận!";
         } else {
             if ($confirm_password != $password) {
-                return " Mật khẩu không khớp !";
+                return " Mật khẩu xác nhận không khớp !";
             } else {
                 return '';
             }

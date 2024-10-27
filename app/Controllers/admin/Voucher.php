@@ -13,14 +13,42 @@ class Voucher extends Controller
         $this->validate = new Validate();
     }
 
+    // public function index()
+    // {
+    //     $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
+    //     $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion'," ORDER BY id_promotion asc");
+    //     $this->data['content'] = 'admin/voucher/listVoucher';
+
+    //     $this->view("layout/admin", $this->data);
+    // }
     public function index()
     {
         $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
-        $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion'," ORDER BY id_promotion asc");
-        $this->data['content'] = 'admin/voucher/listVoucher';
 
+        // Thiết lập phân trang
+        $itemsPerPage = 5; // Số khuyến mãi trên mỗi trang
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
+
+        // Tổng số khuyến mãi và tính tổng số trang
+        $totalPromotions = count($this->model->getListTable('promotion')); // Đếm tổng số khuyến mãi
+        $totalPages = ceil($totalPromotions / $itemsPerPage);
+
+        // Lấy danh sách khuyến mãi theo trang hiện tại
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion', " ORDER BY id_promotion ASC LIMIT $itemsPerPage OFFSET $offset");
+
+        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+        $this->data['sub']['pagination'] = [
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'itemsPerPage' => $itemsPerPage,
+            'totalPromotions' => $totalPromotions,
+        ];
+
+        $this->data['content'] = 'admin/voucher/listVoucher';
         $this->view("layout/admin", $this->data);
     }
+
 
     public function addNewVoucher()
     {

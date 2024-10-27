@@ -44,15 +44,36 @@ class Movies extends Controller
                     break;
             }
         }
+        
         // Tạo điều kiện cho câu truy vấn
         if (!empty($getConditions)) {
             $conditions = " WHERE " . implode(" AND ", $getConditions);
         }
 
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $conditions . " ORDER BY id_movie");
+        // Thiết lập phân trang
+        $itemsPerPage = 5; // Số phim trên mỗi trang
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
+
+        // Tổng số phim và tính tổng số trang
+        $totalMovies = count($this->model->getListTable('movie', $conditions)); // Đếm tổng số phim với điều kiện
+        $totalPages = ceil($totalMovies / $itemsPerPage);
+
+        // Lấy danh sách phim theo trang hiện tại
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $conditions . " ORDER BY id_movie LIMIT $itemsPerPage OFFSET $offset");
+
+        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+        $this->data['sub']['pagination'] = [
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'itemsPerPage' => $itemsPerPage,
+            'totalMovies' => $totalMovies,
+        ];
+
         $this->data['content'] = 'admin/movies/listMovie';
         $this->view("layout/admin", $this->data);
     }
+
 
 
     public function addNewMovie()

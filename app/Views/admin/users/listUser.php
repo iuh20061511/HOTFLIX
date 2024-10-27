@@ -7,7 +7,7 @@
 				<div class="main__title">
 					<h2>Người dùng</h2>
 
-					<span class="main__title-stat">Số lượng: <?php echo count($listStaff); ?></span>
+					<span class="main__title-stat">Số lượng: <?php echo $pagination['totalStaff']; ?></span>
 
 					<div class="main__title-wrap">
 						<a href="them-tai-khoan.html">
@@ -53,7 +53,7 @@
 
 						<tbody>
 							<?php
-							$stt = 0;
+							$stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'] ;
 							foreach ($listStaff as $index => $staff) { ?>
 								<tr>
 									<td>
@@ -112,38 +112,40 @@
 			<!-- paginator -->
 			<div class="col-12">
 				<div class="main__paginator">
-					<!-- amount -->
-					<span class="main__paginator-pages">10 of 169</span>
-					<!-- end amount -->
+					<!-- Số lượng hiển thị -->
+					<span class="main__paginator-pages invisible"><?= $pagination['itemsPerPage']; ?> of <?= $pagination['totalStaff']; ?></span>
 
+					<!-- Điều hướng phân trang -->
 					<ul class="main__paginator-list">
+						<!-- Trang trước -->
 						<li>
-							<a href="#">
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>">
 								<i class="ti ti-chevron-left"></i>
 								<span>Prev</span>
 							</a>
 						</li>
+						<!-- Trang kế tiếp -->
 						<li>
-							<a href="#">
+							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>">
 								<span>Next</span>
 								<i class="ti ti-chevron-right"></i>
 							</a>
 						</li>
 					</ul>
-
+					
 					<ul class="paginator">
 						<li class="paginator__item paginator__item--prev">
-							<a href="#"><i class="ti ti-chevron-left"></i></a>
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>"><i class="ti ti-chevron-left"></i></a>
 						</li>
-						<li class="paginator__item"><a href="#">1</a></li>
-						<li class="paginator__item paginator__item--active"><a href="#">2</a></li>
-						<li class="paginator__item"><a href="#">3</a></li>
-						<li class="paginator__item"><a href="#">4</a></li>
-						<li class="paginator__item"><span>...</span></li>
-						<li class="paginator__item"><a href="#">29</a></li>
-						<li class="paginator__item"><a href="#">30</a></li>
+						
+						<?php for ($i = 1; $i <= $pagination['totalPages']; $i++): ?>
+							<li class="paginator__item <?= $i == $pagination['currentPage'] ? 'paginator__item--active' : ''; ?>">
+								<a href="?page=<?= $i; ?>"><?= $i; ?></a>
+							</li>
+						<?php endfor; ?>
+						
 						<li class="paginator__item paginator__item--next">
-							<a href="#"><i class="ti ti-chevron-right"></i></a>
+							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>"><i class="ti ti-chevron-right"></i></a>
 						</li>
 					</ul>
 				</div>
@@ -154,61 +156,6 @@
 </main>
 <!-- end main content -->
 
-<!-- user modal -->
-<div class="modal fade" id="modal-user" tabindex="-1" aria-labelledby="modal-user" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal__content">
-				<form action="#" class="modal__form">
-					<h4 class="modal__title">Add User</h4>
-
-					<div class="row">
-						<div class="col-12">
-							<div class="sign__group">
-								<label class="sign__label" for="email0">Email</label>
-								<input id="email0" type="text" name="email0" class="sign__input">
-							</div>
-						</div>
-
-						<div class="col-12">
-							<div class="sign__group">
-								<label class="sign__label" for="pass0">Password</label>
-								<input id="pass0" type="password" name="pass0" class="sign__input">
-							</div>
-						</div>
-
-						<div class="col-12">
-							<div class="sign__group">
-								<label class="sign__label" for="subscription">Subscription</label>
-								<select class="sign__select" id="subscription">
-									<option value="Basic">Basic</option>
-									<option value="Premium">Premium</option>
-									<option value="Cinematic">Cinematic</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-12">
-							<div class="sign__group">
-								<label class="sign__label" for="rights">Rights</label>
-								<select class="sign__select" id="rights">
-									<option value="User">User</option>
-									<option value="Moderator">Moderator</option>
-									<option value="Admin">Admin</option>
-								</select>
-							</div>
-						</div>
-
-						<div class="col-12 col-lg-6 offset-lg-3">
-							<button type="button" class="sign__btn sign__btn--modal">Add</button>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- end user modal -->
 
 <!-- status modal -->
 <div class="modal fade" id="modal-status" tabindex="-1" aria-labelledby="modal-status" aria-hidden="true">
@@ -246,8 +193,6 @@
 						<input type="submit" value="Xóa" class="sign__btn sign__btn--small m-2" name="deleteUser">
 						<input type="button" value="Hủy" class="sign__btn sign__btn--small m-2" data-bs-dismiss="modal"
 							aria-label="Close" name="close">
-						<!-- <button class="modal__btn modal__btn--apply" name="deleteStaff" type="button"><span>Xóa</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Hủy</span></button> -->
 					</div>
 				</form>
 			</div>

@@ -20,6 +20,7 @@ $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
+$routes['thong-tin-tai-khoan.html'] = "account/profileInfo";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';

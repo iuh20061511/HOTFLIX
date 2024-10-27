@@ -16,18 +16,56 @@ class Users extends Controller
     public function index()
     {
         $this->data['sub']['title'] = "Trang Danh sách Nhân viên";
+        
+        // Thiết lập phân trang
+        $itemsPerPage = 5; // Số nhân viên trên mỗi trang
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
+        
+        // Tổng số nhân viên và tính tổng số trang
+        $totalStaff = count($this->model->getListTable('staff'));// Hàm để đếm tổng số nhân viên
+        $totalPages = ceil($totalStaff / $itemsPerPage);
+        
+        // Lấy danh sách nhân viên theo trang hiện tại
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $this->data['sub']['listStaff'] = $this->model->getListStaff("LIMIT 5 OFFSET $offset");
+        
+        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+        $this->data['sub']['pagination'] = [
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'itemsPerPage'=>$itemsPerPage,
+            'totalStaff' => $totalStaff,
+        ];
 
         $this->data['content'] = 'admin/users/listUser';
-        $this->data['sub']['listStaff'] = $this->model->getListStaff();
         $this->view("layout/admin", $this->data);
     }
+
 
     public function listMembers()
     {
         $this->data['sub']['title'] = "Trang Danh sách Thành viên";
+         // Thiết lập phân trang
+         $itemsPerPage = 5; // Số nhân viên trên mỗi trang
+         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
+         
+         // Tổng số nhân viên và tính tổng số trang
+         $totalStaff = count($this->model->getListTable('customer'));// Hàm để đếm tổng số nhân viên
+         $totalPages = ceil($totalStaff / $itemsPerPage);
+
+                 // Lấy danh sách nhân viên theo trang hiện tại
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $this->data['sub']['listMember'] = $this->model->getListMember("LIMIT 5 OFFSET $offset");
+        
+        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+        $this->data['sub']['pagination'] = [
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'itemsPerPage'=>$itemsPerPage,
+            'totalStaff' => $totalStaff,
+        ];
 
         $this->data['content'] = 'admin/users/listMember';
-        $this->data['sub']['listMember'] = $this->model->getListMember();
         $this->view("layout/admin", $this->data);
     }
 

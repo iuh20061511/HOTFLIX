@@ -190,4 +190,57 @@ class Account extends Controller
             return $this->view('errors/403', $this->data);
         }
     }
+
+    public function profileInfo() {
+        $this->data['sub']['title'] = "Trang thông tin người dùng";
+
+        // Kiểm tra đăng nhập
+        if (isset($_SESSION['is_login']['id_account'])) {
+            $id_account = $_SESSION['is_login']['id_account'];
+            $table = ($_SESSION['is_login']['id_role'] == 1) ? 'customer' : 'staff';
+
+            // Lấy thông tin người dùng
+            $this->data['sub']['user'] = $this->model->getListTable($table, "where id_{$table} = $id_account");
+            // Xử lý cập nhật thông tin cá nhân
+            if (isset($_POST['updateInfor'])) {
+                $this->data['sub']['error']['fullname'] = $this->validate->checkFullName($_POST['fullname']);
+                $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone'], true, false, $id_account);
+                if (empty(array_filter($this->data['sub']['error']))) {
+                    $data = [
+                        'full_name' => $_POST['fullname'],
+                        'phone' => $_POST['phone'],
+                        'gender' => $_POST['gender'],
+                    ];
+                    $result = $this->model->updateData($table, $data, "where id_{$table} = $id_account");
+                    if ($result) {
+                        echo "<script>alert('Cập nhật thông tin cá nhân thành công');</script>";
+                        header("refresh:0.5; url=thong-tin-tai-khoan.html");
+                        exit();
+                    }
+                }
+            }
+            // Xử lý đổi mật khẩu
+            if (isset($_POST['changePassword'])) {
+                $oldPassword = $this->data['sub']['user'][0]['password'];
+                $this->data['sub']['error']['oldpass'] = $this->validate->checkOldPassword($_POST['oldpass'], $oldPassword);
+                $this->data['sub']['error']['newPassword'] = $this->validate->checkNewPassword($_POST['newPassword'], $oldPassword);
+                $this->data['sub']['error']['confirmPassword'] = $this->validate->confirmPassword($_POST['confirmPassword'], $_POST['newPassword']);
+                if (empty(array_filter($this->data['sub']['error']))) {
+                    $data = [
+                        'password' => password_hash($_POST['newPassword'], PASSWORD_DEFAULT),
+                    ];
+                    $result = $this->model->updateData($table, $data, "where id_{$table} = $id_account");
+                    if ($result) {
+                        echo "<script>alert('Đổi mật khẩu thành công, vui lòng đăng nhập lại');</script>";
+                        $this->logout();
+                    }
+                }
+            }
+        } else {
+            header("refresh:0.5; url=" . _LINK . "/dang-nhap.html");
+            exit();
+        }
+        $this->data['content'] = 'client/profile';
+        $this->view("layout/client", $this->data);
+    }
 }

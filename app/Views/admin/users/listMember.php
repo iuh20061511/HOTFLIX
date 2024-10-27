@@ -7,7 +7,7 @@
 				<div class="main__title">
 					<h2>Thành viên</h2>
 
-					<span class="main__title-stat">Số lượng: <?php echo count($listMember); ?></span>
+					<span class="main__title-stat">Số lượng: <?php echo $pagination['totalStaff']; ?></span>
 
 					<div class="main__title-wrap">
 
@@ -50,7 +50,7 @@
 
 						<tbody>
 							<?php
-							$stt = 0;
+							$stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'] ;
 							foreach ($listMember as $index => $member) { ?>
 								<tr>
 									<td>
@@ -109,38 +109,40 @@
 			<!-- paginator -->
 			<div class="col-12">
 				<div class="main__paginator">
-					<!-- amount -->
-					<span class="main__paginator-pages">10 of 169</span>
-					<!-- end amount -->
+					<!-- Số lượng hiển thị -->
+					<span class="main__paginator-pages invisible"><?= $pagination['itemsPerPage']; ?> of <?= $pagination['totalStaff']; ?></span>
 
+					<!-- Điều hướng phân trang -->
 					<ul class="main__paginator-list">
+						<!-- Trang trước -->
 						<li>
-							<a href="#">
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>">
 								<i class="ti ti-chevron-left"></i>
 								<span>Prev</span>
 							</a>
 						</li>
+						<!-- Trang kế tiếp -->
 						<li>
-							<a href="#">
+							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>">
 								<span>Next</span>
 								<i class="ti ti-chevron-right"></i>
 							</a>
 						</li>
 					</ul>
-
+					
 					<ul class="paginator">
 						<li class="paginator__item paginator__item--prev">
-							<a href="#"><i class="ti ti-chevron-left"></i></a>
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>"><i class="ti ti-chevron-left"></i></a>
 						</li>
-						<li class="paginator__item"><a href="#">1</a></li>
-						<li class="paginator__item paginator__item--active"><a href="#">2</a></li>
-						<li class="paginator__item"><a href="#">3</a></li>
-						<li class="paginator__item"><a href="#">4</a></li>
-						<li class="paginator__item"><span>...</span></li>
-						<li class="paginator__item"><a href="#">29</a></li>
-						<li class="paginator__item"><a href="#">30</a></li>
+						
+						<?php for ($i = 1; $i <= $pagination['totalPages']; $i++): ?>
+							<li class="paginator__item <?= $i == $pagination['currentPage'] ? 'paginator__item--active' : ''; ?>">
+								<a href="?page=<?= $i; ?>"><?= $i; ?></a>
+							</li>
+						<?php endfor; ?>
+						
 						<li class="paginator__item paginator__item--next">
-							<a href="#"><i class="ti ti-chevron-right"></i></a>
+							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>"><i class="ti ti-chevron-right"></i></a>
 						</li>
 					</ul>
 				</div>

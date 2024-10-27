@@ -1,17 +1,17 @@
 	<!-- page title -->
-	<section class="section section--first section--bg" data-bg="img/bg/section__bg.jpg">
+	<section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 					<div class="section__wrap">
 						<!-- section title -->
-						<h1 class="section__title section__title--head">My FlixGo</h1>
+						<h1 class="section__title section__title--head">HOTFLIX</h1>
 						<!-- end section title -->
 
 						<!-- breadcrumbs -->
 						<ul class="breadcrumbs">
-							<li class="breadcrumbs__item"><a href="index.html">Home</a></li>
-							<li class="breadcrumbs__item breadcrumbs__item--active">Profile</li>
+							<li class="breadcrumbs__item"><a href="<?php echo _LINK ?>">Home</a></li>
+							<li class="breadcrumbs__item breadcrumbs__item--active">Hồ sơ cá nhân</li>
 						</ul>
 						<!-- end breadcrumbs -->
 					</div>
@@ -31,22 +31,21 @@
 						<div class="profile__content">
 							<div class="profile__user">
 								<div class="profile__avatar">
-									<img src="img/user.svg" alt="">
+									<img width="40px" src="<?php echo _WEB_ROOT ?>/public/assets/img/user/user_account.png" alt="User avatar">
 								</div>
 								<div class="profile__meta">
-									<h3>Username</h3>
-									<span>FlixGo ID: 23562</span>
+									<h3><?php echo $user[0]['full_name']?></h3>
 								</div>
 							</div>
 
 							<!-- content tabs nav -->
 							<ul class="nav nav-tabs content__tabs content__tabs--profile" id="content__tabs" role="tablist">
 								<li class="nav-item" role="presentation">
-									<button id="1-tab" class="active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">Profile</button>
+									<button id="1-tab" class="active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">Thông tin cá nhân</button>
 								</li>
 
 								<li class="nav-item" role="presentation">
-									<button id="2-tab" data-bs-toggle="tab" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Subscription</button>
+									<button id="2-tab" data-bs-toggle="tab" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Lịch sử giao dịch</button>
 								</li>
 
 								<li class="nav-item" role="presentation">
@@ -54,11 +53,6 @@
 								</li>
 							</ul>
 							<!-- end content tabs nav -->
-
-							<button class="profile__logout" type="button">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4,12a1,1,0,0,0,1,1h7.59l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0l4-4a1,1,0,0,0,.21-.33,1,1,0,0,0,0-.76,1,1,0,0,0-.21-.33l-4-4a1,1,0,1,0-1.42,1.42L12.59,11H5A1,1,0,0,0,4,12ZM17,2H7A3,3,0,0,0,4,5V8A1,1,0,0,0,6,8V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V19a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V16a1,1,0,0,0-2,0v3a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V5A3,3,0,0,0,17,2Z"/></svg>
-								<span>Logout</span>
-							</button>
 						</div>
 					</div>
 				</div>
@@ -71,6 +65,208 @@
 			<div class="tab-content">
 				<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab" tabindex="0">
 					<div class="row">
+						<!-- details form -->
+						<div class="col-12 col-lg-6">
+							<form action="#" class="sign__form sign__form--profile" method="post">
+								<div class="row">
+									<div class="col-12">
+										<!-- <h4 class="sign__title">Profile details</h4> -->
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="fullname">Họ và tên</label>
+											<input id="fullname" type="text" name="fullname" class="sign__input" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : $user[0]['full_name'] ?>">
+										</div>
+										<?php if (isset($error['fullname'])): ?>
+											<p class="error text-danger"><?php echo $error['fullname']; ?></p>
+										<?php endif; ?>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="birthday">Ngày sinh</label>
+											<input id="birthday" type="text" name="birthday" class="sign__input" value="<?php echo date('d/m/Y', strtotime($user[0]['birthday']))?>" readonly>
+										</div>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="email">Email</label>
+											<input id="email" type="text" name="email" class="sign__input" value="<?php echo $user[0]['email']?>" readonly>
+										</div>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="phone">Số điện thoại</label>
+											<input id="phone" type="text" name="phone" class="sign__input" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : $user[0]['phone']; ?>">
+										</div>
+										<?php if (isset($error['phone'])): ?>
+											<p class="error text-danger"><?php echo $error['phone']; ?></p>
+										<?php endif; ?>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label">Giới tính:</label>
+											<ul class="sign__radio" style=" flex-direction: row; gap: 15px; align-items: center;">
+												<li>
+													<input id="type1" type="radio" name="gender" value="Khác"
+													<?php
+														if(!isset($_POST['gender']) && $user[0]['gender']=='Khác'){
+															echo 'checked';
+														}
+														if(isset($_POST['gender']) && $_POST['gender']=='Khác'){
+															echo 'checked';
+														}
+													?>
+													>
+													<label for="type1">Khác</label>
+												</li>
+												<li>
+													<input id="type2" type="radio" name="gender" value="Nữ" 
+													<?php
+														if(!isset($_POST['gender']) && $user[0]['gender']=='Nữ'){
+															echo 'checked';
+														}
+														if(isset($_POST['gender']) && $_POST['gender']=='Nữ'){
+															echo 'checked';
+														}
+													?>
+													>
+													<label for="type2">Nữ</label>
+												</li>
+												<li>
+													<input id="type3" type="radio" name="gender" value="Nam" 
+													<?php
+														if(!isset($_POST['gender']) && $user[0]['gender']=='Nam'){
+															echo 'checked';
+														}
+														if(isset($_POST['gender']) && $_POST['gender']=='Nam'){
+															echo 'checked';
+														}
+													?>
+													>
+													<label for="type3">Nam</label>
+												</li>
+											</ul>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<input type="submit" value="Cập nhật" class="sign__btn sign__btn--small" name="updateInfor">
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- end details form -->
+
+						<!-- password form -->
+						<div class="col-12 col-lg-6">
+							<form action="#" class="sign__form sign__form--profile" method="POST">
+								<div class="row">
+									<div class="col-12">
+										<h4 class="sign__title">Đổi mật khẩu</h4>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="oldpass">Mật khẩu hiện tại</label>
+											<input id="oldpass" type="password" name="oldpass" class="sign__input" value="<?php echo isset($_POST['oldpass']) ? $_POST['oldpass'] : '' ?>">
+										</div>
+										<?php if (isset($error['oldpass'])): ?>
+											<p class="error text-danger"><?php echo $error['oldpass']; ?></p>
+										<?php endif; ?>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="password">Mật khẩu mới</label>
+											<input id="password" type="password" name="newPassword" class="sign__input" value="<?php echo isset($_POST['newPassword']) ? $_POST['newPassword'] : '' ?>">
+										</div>
+										<?php if (isset($error['newPassword'])): ?>
+											<p class="error text-danger"><?php echo $error['newPassword']; ?></p>
+										<?php endif; ?>
+									</div>
+
+									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
+										<div class="sign__group">
+											<label class="sign__label" for="confirmPassword">Xác nhận mật khẩu mới</label>
+											<input id="confirmPassword" type="password" name="confirmPassword" class="sign__input">
+										</div>
+										<?php if (isset($error['confirmPassword'])): ?>
+											<p class="error text-danger"><?php echo $error['confirmPassword']; ?></p>
+										<?php endif; ?>
+									</div>
+
+									<div class="col-12">
+										<input type="submit" value="Lưu" class="sign__btn sign__btn--small" name="changePassword">
+									</div>
+								</div>
+							</form>
+						</div>
+						<!-- end password form -->
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
+					<div class="row">
+						<!-- active price plan -->
+						<div class="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
+							<div class="plan plan--active">
+								<h3 class="plan__title">Starter</h3>
+								<span class="plan__price">Free</span>
+								<ul class="plan__list">
+									<li>7 days</li>
+									<li>720p Resolution</li>
+									<li>Limited Availability</li>
+									<li>Desktop Only</li>
+									<li>Limited Support</li>
+								</ul>
+								<button type="button" class="plan__btn"><span>Current plan</span></button>
+							</div>
+						</div>
+						<!-- end active price plan -->
+
+						<!-- price -->
+						<div class="col-12 col-lg-4 order-md-1 order-lg-2">
+							<div class="plan plan--premium">
+								<h3 class="plan__title">Premium</h3>
+								<span class="plan__price">$19.99</span>
+								<ul class="plan__list">
+									<li>1 Month</li>
+									<li>Full HD</li>
+									<li>Lifetime Availability</li>
+									<li>TV & Desktop</li>
+									<li>24/7 Support</li>
+								</ul>
+								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
+							</div>
+						</div>
+						<!-- end price -->
+
+						<!-- price -->
+						<div class="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
+							<div class="plan">
+								<h3 class="plan__title">Cinematic</h3>
+								<span class="plan__price">$39.99</span>
+								<ul class="plan__list">
+									<li>2 Months</li>
+									<li>Ultra HD</li>
+									<li>Lifetime Availability</li>
+									<li>Any Device</li>
+									<li>24/7 Support</li>
+								</ul>
+								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
+							</div>
+						</div>
+						<!-- end price -->
+					</div>
+				</div>
+
+				<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab" tabindex="0">
+				<div class="row">
 						<!-- stats -->
 						<div class="col-12 col-sm-6 col-xl-3">
 							<div class="stats">
@@ -310,146 +506,6 @@
 							</div>
 						</div>
 						<!-- end dashbox -->
-					</div>
-				</div>
-
-				<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
-					<div class="row">
-						<!-- active price plan -->
-						<div class="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
-							<div class="plan plan--active">
-								<h3 class="plan__title">Starter</h3>
-								<span class="plan__price">Free</span>
-								<ul class="plan__list">
-									<li>7 days</li>
-									<li>720p Resolution</li>
-									<li>Limited Availability</li>
-									<li>Desktop Only</li>
-									<li>Limited Support</li>
-								</ul>
-								<button type="button" class="plan__btn"><span>Current plan</span></button>
-							</div>
-						</div>
-						<!-- end active price plan -->
-
-						<!-- price -->
-						<div class="col-12 col-lg-4 order-md-1 order-lg-2">
-							<div class="plan plan--premium">
-								<h3 class="plan__title">Premium</h3>
-								<span class="plan__price">$19.99</span>
-								<ul class="plan__list">
-									<li>1 Month</li>
-									<li>Full HD</li>
-									<li>Lifetime Availability</li>
-									<li>TV & Desktop</li>
-									<li>24/7 Support</li>
-								</ul>
-								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
-							</div>
-						</div>
-						<!-- end price -->
-
-						<!-- price -->
-						<div class="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
-							<div class="plan">
-								<h3 class="plan__title">Cinematic</h3>
-								<span class="plan__price">$39.99</span>
-								<ul class="plan__list">
-									<li>2 Months</li>
-									<li>Ultra HD</li>
-									<li>Lifetime Availability</li>
-									<li>Any Device</li>
-									<li>24/7 Support</li>
-								</ul>
-								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
-							</div>
-						</div>
-						<!-- end price -->
-					</div>
-				</div>
-
-				<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab" tabindex="0">
-					<div class="row">
-						<!-- details form -->
-						<div class="col-12 col-lg-6">
-							<form action="#" class="sign__form sign__form--profile">
-								<div class="row">
-									<div class="col-12">
-										<h4 class="sign__title">Profile details</h4>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="username">Login</label>
-											<input id="username" type="text" name="username" class="sign__input" placeholder="User 123">
-										</div>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="email">Email</label>
-											<input id="email2" type="text" name="email" class="sign__input" placeholder="email@email.com">
-										</div>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="firstname">First Name</label>
-											<input id="firstname" type="text" name="firstname" class="sign__input" placeholder="John">
-										</div>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="lastname">Last Name</label>
-											<input id="lastname" type="text" name="lastname" class="sign__input" placeholder="Doe">
-										</div>
-									</div>
-
-									<div class="col-12">
-										<button class="sign__btn sign__btn--small" type="button"><span>Save</span></button>
-									</div>
-								</div>
-							</form>
-						</div>
-						<!-- end details form -->
-
-						<!-- password form -->
-						<div class="col-12 col-lg-6">
-							<form action="#" class="sign__form sign__form--profile">
-								<div class="row">
-									<div class="col-12">
-										<h4 class="sign__title">Change password</h4>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="oldpass">Old Password</label>
-											<input id="oldpass" type="password" name="oldpass" class="sign__input">
-										</div>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="newpass">New Password</label>
-											<input id="newpass" type="password" name="newpass" class="sign__input">
-										</div>
-									</div>
-
-									<div class="col-12 col-md-6 col-lg-12 col-xl-6">
-										<div class="sign__group">
-											<label class="sign__label" for="confirmpass">Confirm New Password</label>
-											<input id="confirmpass" type="password" name="confirmpass" class="sign__input">
-										</div>
-									</div>
-
-									<div class="col-12">
-										<button class="sign__btn sign__btn--small" type="button"><span>Change</span></button>
-									</div>
-								</div>
-							</form>
-						</div>
-						<!-- end password form -->
 					</div>
 				</div>
 			</div>
