@@ -193,7 +193,7 @@ class Validate extends ValidateCheck
     function checkEmptyNumber($number, $quantity)
     {
         if (empty($number)) {
-            return "Vui lòng nhập số lượng!";
+            return "Vui lòng nhập số lượng thích hợp!";
         } else if (!empty($number) && $number < $quantity) {
             return "Vui lòng nhập số lượng khác (>=$quantity)!";
         } else {

@@ -61,6 +61,9 @@ $routes['quan-ly-voucher.html'] = 'admin/voucher';
 $routes['them-voucher.html'] = 'admin/voucher/addNewVoucher';
 $routes['xoa-voucher.html'] = 'admin/voucher/deleteVoucher';
 $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
+$routes['quan-ly-qua-tang.html'] = 'admin/voucher/listGift';
+$routes['them-qua-tang.html'] = 'admin/voucher/addNewGift';
+$routes['xoa-qua-tang.html'] = 'admin/voucher/deleteGift';
 
 //Rent_Room
 $routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';

@@ -13,14 +13,6 @@ class Voucher extends Controller
         $this->validate = new Validate();
     }
 
-    // public function index()
-    // {
-    //     $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
-    //     $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion'," ORDER BY id_promotion asc");
-    //     $this->data['content'] = 'admin/voucher/listVoucher';
-
-    //     $this->view("layout/admin", $this->data);
-    // }
     public function index()
     {
         $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
@@ -120,10 +112,9 @@ class Voucher extends Controller
                     if ($result) {
                         echo "<script>alert('Xóa voucher thành công')</script>";
                         $redirectUrl ="quan-ly-voucher.html";
-                        header("refresh:0.5; url=$redirectUrl");
+                        header("refresh:0; url=$redirectUrl");
                     }
         }
-        $this->view("layout/admin", $this->data);
     }
 
     function updateVoucher($id_promotion){
@@ -186,6 +177,78 @@ class Voucher extends Controller
 
         $this->data['content'] = 'admin/voucher/updateVoucher';
         $this->view("layout/admin", $this->data);
+    }
+
+    public function listGift(){
+        $this->data['sub']['title'] = "Danh sách quà tặng";
+        $this->data['sub']['listGift'] = $this->model->getListTable('gifts');
+
+        $this->data['content'] = 'admin/voucher/listGift';
+        $this->view("layout/admin", $this->data);
+    }
+
+    public function addNewGift(){
+        $this->data['sub']['title'] = "Danh sách quà tặng";
+        if (isset($_POST['addGift'])) {
+            if(!empty($_POST['gift_name']) && strlen($_POST['gift_name'])>3){
+                $this->data['sub']['error']['gift_name'] = $this->validate->checkGiftExist($_POST['gift_name']);
+            }else{
+                $this->data['sub']['error']['gift_name'] = $this->validate->checkFullName($_POST['gift_name']);
+            }
+            $this->data['sub']['error']['point'] = $this->validate->checkEmptyNumber($_POST['point'], 2000);
+
+            if (empty($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
+                $this->data['sub']['error']['image'] = "Vui lòng chọn hình ảnh cho quà tặng!";
+            } else {
+                $name = time()."_".$_FILES['image']['name'];
+                $tmp_name = $_FILES['image']['tmp_name'];
+            }
+
+            if (array_filter($this->data['sub']['error']) == []) {
+                $des_upload = "app/public/admin/img/gift";
+                if($this->model->upload($name,$tmp_name,$des_upload)!=1)
+                    {
+                        echo "<script>alert('Lưu hình ảnh quà tặng thất bại!');</script>";
+                    }else{
+                        $data = [
+                            'gift_name' => $_POST['gift_name'],
+                            'point' => $_POST['point'],
+                            'image' => $name
+                        ];
+                        $result = $this->model->InsertData('gifts', $data);
+                        if ($result) {
+                            echo "<script>alert('Thêm quà tặng mới thành công')</script>";
+                            $redirectUrl ="quan-ly-qua-tang.html";
+                            header("refresh:0; url=$redirectUrl");
+                        }
+                    }
+            }
+        }
+
+        $this->data['content'] = 'admin/voucher/addGift';
+        $this->view("layout/admin", $this->data);
+    }
+
+    public function deleteGift()
+    {
+        $this->data['sub']['title'] = "Xóa quà tặng";
+
+        if(isset($_POST['deleteGift'])){
+            $id_gift = $_POST['id_gift'];
+            $gift = $this->model->getListTable('gifts', "where id_gift=$id_gift");
+            $img_old = $gift[0]['image'];
+            $des_unload = "app/public/admin/img/gift/$img_old";
+
+            if (file_exists($des_unload)) {
+                unlink($des_unload);
+            }
+            $result = $this->model->deleteData('gifts', "where id_gift = $id_gift");
+                    if ($result) {
+                        echo "<script>alert('Xóa quà tặng thành công')</script>";
+                        $redirectUrl ="quan-ly-qua-tang.html";
+                        header("refresh:0; url=$redirectUrl");
+                    }
+        }
     }
 
 

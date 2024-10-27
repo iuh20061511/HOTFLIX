@@ -229,6 +229,5 @@ class Movies extends Controller
             }
         }
 
-        $this->view("layout/admin", $this->data);
     }
 }

@@ -209,7 +209,6 @@ class Menu_Items extends Controller
                         header("refresh:0.5; url=$redirectUrl");
                     }
         }
-        $this->view("layout/admin", $this->data);
     }
 
 

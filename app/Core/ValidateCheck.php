@@ -215,6 +215,18 @@ class ValidateCheck extends Model
     return false;
     }
 
+    public function checkGiftExist($gift_name)
+    {
+        $result = $this->model->getListTable('gifts', "WHERE gift_name LIKE '%$gift_name%' LIMIT 1");
+
+        // Nếu tìm thấy kết quả, trả về thông báo, ngược lại trả về chuỗi rỗng
+        if (!empty($result)) {
+            return "Tên quà tặng này đã được sử dụng!";
+        }
+
+        return '';
+    }
+
 }
 
 ?>
