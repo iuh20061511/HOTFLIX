@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/book/css/book.css">
 
-<form action="thanh-toan.html" method="POST">
+<form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
     <section class="content" style="margin-top: 150px;">
         <div class="container mt-4">
             <div class="row">
@@ -20,34 +20,34 @@
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Phương thức thanh toán</h5>
-                            <form>
 
-                                <div class="form-check m-3">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/momo.png" alt=""
-                                        style="width: 40px;">
-                                    <input class="form-check-input" type="radio" name="payment" id="momo">
-                                    <label class="form-check-label" for="momo">
-                                        Ví Điện Tử MoMo
-                                    </label>
-                                </div>
-                                <div class="form-check m-3">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/zalopay.webp" alt=""
-                                        style="width: 40px;">
-                                    <input class="form-check-input" type="radio" name="payment" id="zalopay">
-                                    <label class="form-check-label" for="zalopay">
-                                        ZaloPay - Bạn mới ZaloPay nhập mã GLX50 - Giảm 50k cho đơn từ 200k
-                                    </label>
-                                </div>
-                                <div class="form-check m-3">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/vnpay.png" alt=""
-                                        style="width: 40px;">
-                                    <input class="form-check-input" type="radio" name="payment" id="vnpay">
-                                    <label class="form-check-label" for="vnpay">
-                                        VNPAY
-                                    </label>
-                                </div>
 
-                            </form>
+                            <div class="form-check m-3">
+                                <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/momo.png" alt=""
+                                    style="width: 40px;">
+                                <input class="form-check-input" type="radio" name="payment" id="momo">
+                                <label class="form-check-label" for="momo">
+                                    Ví Điện Tử MoMo
+                                </label>
+                            </div>
+                            <div class="form-check m-3">
+                                <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/zalopay.webp" alt=""
+                                    style="width: 40px;">
+                                <input class="form-check-input" type="radio" name="payment" id="zalopay">
+                                <label class="form-check-label" for="zalopay">
+                                    ZaloPay - Bạn mới ZaloPay nhập mã GLX50 - Giảm 50k cho đơn từ 200k
+                                </label>
+                            </div>
+                            <div class="form-check m-3">
+                                <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/vnpay.png" alt=""
+                                    style="width: 40px;">
+                                <input class="form-check-input" type="radio" name="payment" id="vnpay">
+                                <label class="form-check-label" for="vnpay">
+                                    VNPAY
+                                </label>
+                            </div>
+
+
 
                             <small class="form-text text-muted mt-3"><span class="text-danger">(*)</span> Bằng việc
                                 click/chạm vào THANH TOÁN, bạn đã xác
@@ -112,3 +112,29 @@
 </form>
 <script src="<?php echo _WEB_ROOT ?>/public/client/book/js/book.js"></script>
 <script src="<?php echo _WEB_ROOT ?>/public/client/book/js/time.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const paymentButton = document.querySelector(".btn-primary");
+
+        paymentButton.addEventListener("click", function(event) {
+            const momoOption = document.getElementById("momo");
+            const zalopayOption = document.getElementById("zalopay");
+            const vnpayOption = document.getElementById("vnpay");
+
+            if (!momoOption.checked && !zalopayOption.checked && !vnpayOption.checked) {
+                event.preventDefault();
+                alert("Vui lòng chọn một phương thức thanh toán.");
+                return;
+            }
+
+            if (zalopayOption.checked) {
+                event.preventDefault();
+                alert("Hiện tại chưa hỗ trợ thanh toán qua ZaloPay.");
+            }
+            if (vnpayOption.checked) {
+                event.preventDefault();
+                alert("Hiện tại chưa hỗ trợ thanh toán qua VNPay.");
+            }
+        });
+    });
+</script>

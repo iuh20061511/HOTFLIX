@@ -8,14 +8,14 @@ class BookTickets extends Controller
 
     private $model;
     private $data = [];
-    private $Pay = [];
+    private $ticket = [];
 
 
     public function __construct()
     {
         $this->model = $this->model('HomeModel');
-
-        $result = $this->model->deleteData('seats', "where hold_expiry <= now()");
+        $currentTime = date('Y-m-d H:i:s');
+        $this->model->deleteData('seats', "where hold_expiry <= '$currentTime' AND status = 0 ");
     }
 
     public function book($id_movie)
@@ -39,7 +39,7 @@ class BookTickets extends Controller
             $id_cinema = $_SESSION['id_cinema_customer'];
         }
         $day = $_GET['day'];
-        $this->data['sub']['show_time'] = $this->model->getListFromTwoTables('show_time', 'room', 'id_room', "where room.id_cinema = $id_cinema and show_time.show_date= '$day' and show_time.id_movie= $id_movie");
+        $this->data['sub']['show_time'] = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie', "where room.id_cinema = $id_cinema and show_time.show_date= '$day' and show_time.id_movie= $id_movie");
         $this->data['content'] = 'home/BookTickets';
         $this->view("layout/client", $this->data);
     }
@@ -55,7 +55,7 @@ class BookTickets extends Controller
         $this->data['sub']['id_showTime'] = $id_showTime;
         $id_room = $_GET['id_room'];
         $this->data['sub']['id_room'] =  $id_room;
-        $this->data['sub']['seats_buy'] = $this->model->getListFromThreeTables("seats", "tickets", "show_time", "id_seat", "id_showTime", "WHERE show_time.id_showTime=$id_showTime");
+        $this->data['sub']['seats_buy'] = $this->model->getListTable("seats", "WHERE id_showTime=$id_showTime");
 
         $this->data['sub']['movie'] = $this->model->getListFromTwoTables('movie', 'show_time', 'id_movie', "where show_time.id_movie = $id_movie and show_time.id_showTime  =  $id_showTime");
         $this->data['sub']['cinema'] = $this->model->getListFromTwoTables('room', 'cinemas', 'id_cinema', "where room.id_room = $id_room");
@@ -102,7 +102,9 @@ class BookTickets extends Controller
                 $data = [
                     'location' => $seat,
                     'id_room' => $_POST['id_room'],
-                    'hold_expiry' => date("Y-m-d H:i:s", strtotime("+6 minutes"))
+                    'hold_expiry' => date("Y-m-d H:i:s", strtotime("+6 minutes")),
+                    'id_showTime' => $_POST['id_showtime'],
+                    'status' => 0
 
                 ];
                 $this->model->InsertData('seats', $data);
@@ -136,53 +138,81 @@ class BookTickets extends Controller
         $this->data['sub']['seats']  = $_POST['seats'];
         $this->data['sub']['total']  = $_POST['total'];
         $this->data['sub']['item']  = $_POST['item'];
+
+        $seats = explode(', ', rtrim($_POST['seats'], ', '));
+
+        $id_showTime = $_POST['id_showtime'];
+
+        foreach ($seats as $seat) {
+            $res = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
+            if (!$res) {
+                $redirectUrl = _LINK;
+                header("refresh:0; url=$redirectUrl");
+            }
+        }
+
+
         $this->data['content'] = 'home/pay';
         $this->view("layout/client", $this->data);
     }
 
-
-    public function successful_payment()
+    public function momoPay()
     {
+
+        $check = false;
 
         $seats = explode(', ', rtrim($_POST['seats'], ', '));
         $id_room = $_POST['id_room'];
-
-        $seat_array = array();
-        $id_seat = array();
-        $i = 0;
-        foreach ($seats as $seat) {
-            $seat_array[] = $this->model->getListTable('seats', "where location = '$seat' and id_room = $id_room");
-            $id_seat[] = $seat_array[$i][0]['id_seat'];
-            $i++;
-        }
-
-        $id_tickets = array();
-        $moneyNumber = (int)str_replace(['.', ' ₫'], '', $_POST['total']);
         $id_showtime = $_POST['id_showtime'];
-        $showtime = $this->model->getListTable('show_time', "where id_showtime = $id_showtime ");
-        $date = $showtime[0]['show_date'] . ' ' . $showtime[0]['end_time'];
+        foreach ($seats as $seat) {
+            $res = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showtime");
+            if (!$res) {
+                $redirectUrl = _LINK;
+                header("refresh:0; url=$redirectUrl");
+                $check =  false;
+            } else {
+                $check = true;
+            }
+        }
+        if ($check == true) {
+            $seat_array = array();
+            $id_seat = array();
+            $i = 0;
+            foreach ($seats as $seat) {
+                $seat_array[] = $this->model->getListTable('seats', "where location = '$seat' and id_room = $id_room");
+                $id_seat[] = $seat_array[$i][0]['id_seat'];
+                $i++;
+            }
+
+            $id_tickets = array();
+            $moneyNumber = (int)str_replace(['.', ' ₫'], '', $_POST['total']);
+            $id_showtime = $_POST['id_showtime'];
+            $showtime = $this->model->getListTable('show_time', "where id_showtime = $id_showtime ");
+            $date = $showtime[0]['show_date'] . ' ' . $showtime[0]['end_time'];
 
 
-        $_SESSION['payment_data'] = [
-            'id_seat' => $id_seat,
-            'id_showtime' => $id_showtime,
-            'id_tickets' => $id_tickets,
-            'date' => $date,
-            'moneyNumber' => $moneyNumber,
-            'invoice_data' => [
-                'id_customer' => $_SESSION['is_login']['id_account'],
-                'create_date' => date('Y-m-d H:i:s'),
-                'total_amount' => $moneyNumber,
-                'discount_total' => 1,
-                'final_total' => $moneyNumber * 1,
-                'payment_method' => 'Online',
-            ],
-            'id_items' => $_POST['id_item']
-        ];
+            $_SESSION['payment_data'] = [
+                'id_seat' => $id_seat,
+                'id_showtime' => $id_showtime,
+                'id_tickets' => $id_tickets,
+                'date' => $date,
+                'moneyNumber' => $moneyNumber,
+                'invoice_data' => [
+                    'id_customer' => $_SESSION['is_login']['id_account'],
+                    'create_date' => date('Y-m-d H:i:s'),
+                    'total_amount' => $moneyNumber,
+                    'discount_total' => 1,
+                    'final_total' => $moneyNumber * 1,
+                    'payment_method' => 'Online',
+                ],
+                'id_items' => $_POST['id_item']
+            ];
 
-        $this->Pay['moneyNumber'] =  $moneyNumber;
-
-        $this->payOnline('Momo', $this->Pay);
+            $this->data['moneyNumber'] =  $moneyNumber;
+            $this->library('PayOnline/Momo.php', $this->data);
+            $redirectUrl = "thanh-toan-thanh-cong.html";
+            header("refresh:0.5; url=$redirectUrl");
+        }
     }
 
 
@@ -198,7 +228,6 @@ class BookTickets extends Controller
             $moneyNumber = $payment_data['moneyNumber'];
             $invoice_data = $payment_data['invoice_data'];
             $id_items = $payment_data['id_items'];
-
             foreach ($id_seat as $id) {
                 $name = date("Y-m-d-h-i-s") . '_' . "$id_showtime" . "_$id" . '.png';
                 $data = [
@@ -208,21 +237,41 @@ class BookTickets extends Controller
                 ];
                 $hold_expiry = [
                     'hold_expiry' => $date,
+                    'status' => 1
                 ];
 
                 $this->model->InsertData('tickets', $data);
 
                 // -------------------------QR-----------------------
                 $this->library("PHPQR/qrlib.php");
-                $text = "http://192.168.1.25/QR/";
+
+                $text = _LINK . "/kiem-tra-ve-$id-$id_showtime.html";
                 $path = dirname(__DIR__, 2) . '/public/QR/image/';
                 $qr = $path . $name;
+
+                // Tạo QR code
                 QRcode::png($text, $qr, 'H', 10, 2);
+
+                // Đường dẫn đích cho file được sao chép
+                $user_image_path = dirname(__DIR__, 2) . '/public/QR/image/' . $name; // Thêm '/' trước tên file
+
+                // Kiểm tra và tạo thư mục nếu không tồn tại
+                if (!file_exists(dirname($user_image_path))) {
+                    mkdir(dirname($user_image_path), 0777, true);
+                }
+
+                // Sao chép file QR code
+                if (file_exists($qr)) {
+                    copy($qr, $user_image_path);
+                } else {
+                    echo "Không tìm thấy file QR để sao chép.";
+                }
                 // -------------------------QR-----------------------
 
                 $id_tickets[] = $this->model->getInsertId();
                 $this->model->updateData('seats', $hold_expiry, "where id_seat  = $id");
             }
+
             $this->model->InsertData('invoice', $invoice_data);
             $id_invoice = $this->model->getInsertId();
 
@@ -233,8 +282,14 @@ class BookTickets extends Controller
                     'id_ticket' => $id,
                     'quantity' => 1,
                 ];
+
+                $this->ticket['link_ticket'][$id] = _LINK . "/ve-cua-da-dat-$id.html";
+
+
                 $this->model->InsertData('invoice_detail', $data);
             }
+            $this->library("PHPMailer/sendmailTicket.php", $this->ticket);
+
             foreach ($id_items as $id => $quantity) {
                 $data = [
                     'id_invoice' => $id_invoice,
@@ -246,17 +301,18 @@ class BookTickets extends Controller
 
             unset($_SESSION['payment_data']);
 
-            echo "Thanh Toán thành công";
+            $this->data['content'] = 'home/paySuccess';
+            $this->data['sub']['infor']  = "Thông báo thành công";
+            $this->view("layout/client", $this->data);
         } else {
             echo "Thất bại.";
         }
     }
 
 
-    public function QR($id_ticket)
+    public function QR($id_seat, $id_showTime)
     {
-        $ticket = $this->model->getListFromThreeTables("seats", "tickets", "show_time", "id_seat", "id_showTime", "WHERE tickets.id_ticket= $id_ticket");
-
+        $ticket = $this->model->getListFromThreeTables("seats", "tickets", "show_time", "id_seat", "id_showTime", "WHERE tickets.id_seat = $id_seat AND tickets.id_showTime = $id_showTime");
         $id_movie = $ticket[0]['id_movie'];
         $moives = $this->model->getListTable('movie', "where id_movie = $id_movie");
         $movie_name = $moives[0]['movie_name'];
@@ -297,5 +353,23 @@ class BookTickets extends Controller
         ];
         $library = "PHPQR/render/qr.php";
         $this->library($library, $this->data);
+    }
+
+    public function PDF($id_ticket)
+    {
+
+        $this->data['ticket'] = $this->model->getListFromThreeTables("seats", "tickets", "show_time", "id_seat", "id_showTime", "WHERE tickets.id_ticket= $id_ticket");
+        $id_showTime = $this->data['ticket'][0]['id_showTime'];
+        $movieData = $this->model->getListFromThreeTables("movie", "show_time", "room", "id_movie", "id_room", "WHERE show_time.id_showTime= $id_showTime");
+        $this->data['ticket'] = array_merge($this->data['ticket'], $movieData);
+        $id_cinema = $movieData[0]['id_cinema'];
+        $cinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
+        $this->data['ticket'] = array_merge($this->data['ticket'], $cinema);
+
+
+
+        $this->library("PDF/vendor/autoload.php");
+
+        $this->library("PDF/file/invoice.php", $this->data);
     }
 }

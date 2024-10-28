@@ -7,7 +7,7 @@ class Database
     public function connect()
     {
         if (!$this->connection) {
-            $this->connection = mysqli_connect('localhost', 'root', '', 'hotflix3');
+            $this->connection = mysqli_connect('mysql_db', 'hotflix', 'hotflix', 'hotflix');
 
             if (!$this->connection) {
                 die('Connection failed: ' . mysqli_connect_error());
@@ -23,7 +23,7 @@ class Database
     {
         if ($this->connection) {
             mysqli_close($this->connection);
-            $this->connection = null; // Đặt biến kết nối về null
+            $this->connection = null;
         }
     }
 }

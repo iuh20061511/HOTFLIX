@@ -32,10 +32,10 @@
             <div class="card-body">
                 <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" class="img-fluid movie-poster rounded mb-3"><br>
                 <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie_image; ?>" alt="QR Code" class="img-fluid" style="width: 100px;" alt="Movie Poster">
-                <h6 class="card-title">Tên phim: <strong><?php echo $movie_name ?></strong></h6>
-                <p class="card-text"><strong>Địa Điểm:</strong><?php echo $cinema_name ?></p>
-                <p class="card-text"><strong>Thời gian:</strong><?php echo $start_time ?> <?php echo $time ?> </p>
-                <span class="card-text"><strong>Phòng:</strong> <?php echo $room ?></span>
+                <h6 class="card-title mt-2">Tên phim: <strong><?php echo $movie_name ?></strong></h6>
+                <p class="card-text"><strong>Địa Điểm: </strong><?php echo $cinema_name ?></p>
+                <p class="card-text"><strong>Thời gian: </strong><?php echo date("H:i", strtotime($start_time));  ?> <?php echo date("d/m/Y", strtotime($time));  ?> </p>
+                <span class="card-text"><strong>Phòng: </strong> <?php echo $room ?></span>
                 <span class="card-text"> - Ghế: <?php echo $seat ?></span>
                 <div class="my-3">
                     <img src="<?php echo $file; ?>" alt="QR Code" class="img-fluid qr-code">

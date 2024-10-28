@@ -97,11 +97,11 @@ class Showtime extends Controller
             $this->data['sub']['show_time_t8']  =   $this->model->getListFromThreeTables("movie", "show_time", "room", "id_movie", "id_room", "where show_date='$t8' and room.id_room=$id_room AND room.id_cinema =  $id_cinema ORDER BY  start_time");
 
             if (isset($_POST['prev'])) {
-                header("refresh:0; url=http://localhost/HOTFLIX/quan-ly-suat-chieu.html");
+                header("refresh:0; url=quan-ly-suat-chieu.html");
             } else if (isset($_POST['next'])) {
-                header("refresh:0; url=http://localhost/HOTFLIX/quan-ly-suat-chieu.html");
+                header("refresh:0; url=quan-ly-suat-chieu.html");
             } else if (isset($_POST['current'])) {
-                header("refresh:0; url=http://localhost/HOTFLIX/quan-ly-suat-chieu.html");
+                header("refresh:0; url=quan-ly-suat-chieu.html");
             }
         }
         $time = array();

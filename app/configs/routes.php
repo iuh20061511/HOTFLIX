@@ -14,6 +14,7 @@ $routes['xep-hang/.+-(\d+).html'] = 'admin/auth/dashboard/new/$1';  ///tin-tuc/t
 $routes['trang-chu.html'] = 'home';
 $routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['thong-tin-rap-(.+).html'] = 'home/cinemaDetail/$1';
+$routes['khuyen-mai.html'] = 'home/promotion/';
 $routes['dang-nhap.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
@@ -64,5 +65,16 @@ $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
 $routes['chon-ghe.html'] = 'client/BookTickets/selectSeat';
 $routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
-$routes['thanh-toan.html'] = 'client/BookTickets/successful_payment';
+$routes['thanh-toan.html'] = 'client/BookTickets/momoPay';
+$routes['thanh-toan-thanh-cong.html'] = 'client/BookTickets/success';
 $routes['pay.html'] = 'client/BookTickets/pay';
+$routes['kiem-tra-ve-(.+)-(.+).html'] = 'client/BookTickets/QR/$1/$2';
+$routes['ve-cua-da-dat-(.+).html'] = 'client/BookTickets/PDF/$1/';
+
+
+
+
+
+//Rent_Room
+$routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
+$routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';

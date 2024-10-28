@@ -16,11 +16,7 @@ class Controller extends Validate
         require_once "./app/Views/" . $view . ".php";
     }
 
-    public function payOnline($pay, $payData = [])
-    {
-        extract($payData);
-        require_once "./app/PayOnline/" . $pay . ".php";
-    }
+
 
     public function library($library, $data = [])
     {
