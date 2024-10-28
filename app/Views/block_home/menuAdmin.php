@@ -64,19 +64,14 @@
 
 			<li class="sidebar__nav-item">
 				<a class="sidebar__nav-link" href="quan-ly-bap-nuoc.html" role="button" aria-expanded="false"><i
-						class="ti ti-paper-bag"></i> <span>Quản lý Bắp-nước</span> <i
-						class="ti ti-chevron-down"></i></a>
-				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="them-bap-nuoc.html">Thêm mặt hàng</a></li>
-				</ul>
+						class="ti ti-paper-bag"></i> <span>Quản lý Bắp-nước</span></a>
 			</li>
 
 			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="quan-ly-voucher.html" role="button" aria-expanded="false"><i
-						class="ti ti-paper-bag"></i> <span>Quản lý Voucher</span> <i
-						class="ti ti-chevron-down"></i></a>
+				<a class="sidebar__nav-link" href="quan-ly-voucher.html" role="button" aria-expanded="false"><i class="ti ti-ticket"></i> <span>Quản lý Ưu đãi</span> <i class="ti ti-chevron-down"></i></a>
 				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="them-voucher.html">Thêm voucher</a></li>
+					<li><a href="quan-ly-voucher.html">Voucher</a></li>
+					<li><a href="quan-ly-qua-tang.html">Quà tặng</a></li>
 				</ul>
 			</li>
 

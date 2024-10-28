@@ -9,14 +9,14 @@ class AdminModel extends Model
         $this->model = new Model();
     }
 
-    public function getListStaff()
+    public function getListStaff($condition)
     {
-        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema');
+        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema', $condition);
     }
 
-    public function getListMember()
+    public function getListMember($condition)
     {
-        return $this->model->getListFromThreeTables('role', 'customer', 'rank', 'id_role', 'id_rank');
+        return $this->model->getListFromThreeTables('role', 'customer', 'rank', 'id_role', 'id_rank',$condition);
     }
 
     public function infoStaff($id_staff)

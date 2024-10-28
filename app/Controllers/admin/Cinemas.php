@@ -126,7 +126,6 @@ class Cinemas extends Controller
                 }
             }
         }
-        $this->view("layout/admin", $this->data);
     }
 
     public function addNewRoomForCinema()
@@ -243,6 +242,5 @@ class Cinemas extends Controller
                 }
             }
         }
-        $this->view("layout/admin", $this->data);
     }
 }

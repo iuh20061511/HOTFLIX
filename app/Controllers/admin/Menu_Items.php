@@ -13,10 +13,34 @@ class Menu_Items extends Controller
         $this->validate = new Validate();
     }
 
+    // public function index()
+    // {
+    //     $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
+    //     $this->data['sub']['quantityItem'] = count($this->model->getListTable('menu_items'));
+    //     // Khởi tạo biến điều kiện
+    //     $getConditions = [];
+    //     $conditions = "";
+
+    //     // Xử lý tìm kiếm
+    //     if (isset($_GET['search_nameItem']) && !empty($_GET['search_nameItem'])) {
+    //         $search_nameItem = $_GET['search_nameItem'];
+    //         $getConditions[] = "item_name LIKE '%$search_nameItem%' OR description LIKE '%$search_nameItem%'";
+    //     }
+
+    //     // Tạo điều kiện cho câu truy vấn
+    //     if (!empty($getConditions)) {
+    //         $conditions = " WHERE " . implode(" AND ", $getConditions);
+    //     }
+
+    //     $this->data['sub']['listMenuItem'] = $this->model->getListTable('menu_items', $conditions . " ORDER BY id_item");
+    //     $this->data['content'] = 'admin/menu_items/listMenuItem';
+
+    //     $this->view("layout/admin", $this->data);
+    // }
     public function index()
     {
         $this->data['sub']['title'] = "Trang quản lý bắp nước-combo";
-        $this->data['sub']['quantityItem'] = count($this->model->getListTable('menu_items'));
+        
         // Khởi tạo biến điều kiện
         $getConditions = [];
         $conditions = "";
@@ -32,11 +56,30 @@ class Menu_Items extends Controller
             $conditions = " WHERE " . implode(" AND ", $getConditions);
         }
 
-        $this->data['sub']['listMenuItem'] = $this->model->getListTable('menu_items', $conditions . " ORDER BY id_item");
-        $this->data['content'] = 'admin/menu_items/listMenuItem';
+        // Thiết lập phân trang
+        $itemsPerPage = 5; // Số bắp nước-combo trên mỗi trang
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
 
+        // Tổng số bắp nước-combo và tính tổng số trang
+        $totalItems = count($this->model->getListTable('menu_items', $conditions)); // Đếm tổng số item với điều kiện
+        $totalPages = ceil($totalItems / $itemsPerPage);
+
+        // Lấy danh sách bắp nước-combo theo trang hiện tại
+        $offset = ($currentPage - 1) * $itemsPerPage;
+        $this->data['sub']['listMenuItem'] = $this->model->getListTable('menu_items', $conditions . " ORDER BY id_item LIMIT $itemsPerPage OFFSET $offset");
+
+        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+        $this->data['sub']['pagination'] = [
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage,
+            'itemsPerPage' => $itemsPerPage,
+            'totalItems' => $totalItems,
+        ];
+
+        $this->data['content'] = 'admin/menu_items/listMenuItem';
         $this->view("layout/admin", $this->data);
     }
+
 
     public function addNewItem()
     {
@@ -166,7 +209,6 @@ class Menu_Items extends Controller
                         header("refresh:0.5; url=$redirectUrl");
                     }
         }
-        $this->view("layout/admin", $this->data);
     }
 
 

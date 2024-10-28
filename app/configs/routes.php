@@ -20,6 +20,7 @@ $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
+$routes['thong-tin-tai-khoan.html'] = "account/profileInfo";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
@@ -60,6 +61,9 @@ $routes['quan-ly-voucher.html'] = 'admin/voucher';
 $routes['them-voucher.html'] = 'admin/voucher/addNewVoucher';
 $routes['xoa-voucher.html'] = 'admin/voucher/deleteVoucher';
 $routes['cap-nhat-voucher-(.+).html'] = 'admin/voucher/updateVoucher/$1';
+$routes['quan-ly-qua-tang.html'] = 'admin/voucher/listGift';
+$routes['them-qua-tang.html'] = 'admin/voucher/addNewGift';
+$routes['xoa-qua-tang.html'] = 'admin/voucher/deleteGift';
 
 //đặt vé
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';

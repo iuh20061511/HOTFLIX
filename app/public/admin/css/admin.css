@@ -4398,3 +4398,22 @@ body::-webkit-scrollbar-thumb {
   resize: none;
   /* Ngăn người dùng thay đổi kích thước */
 }
+
+.catalog__img {
+  width: 60px;
+  /* Điều chỉnh kích thước hình ảnh nhỏ */
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.catalog__img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  /* Giữ tỷ lệ hình ảnh và hiển thị phần chính giữa */
+  border-radius: 4px;
+  /* Bo góc ảnh nếu cần */
+}

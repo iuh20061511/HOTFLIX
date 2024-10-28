@@ -170,7 +170,7 @@
                                     <p><?php echo $_SESSION['is_login']['fullname'] ?></p>
                                 </div>
                                 <ul class="dropdown-user">
-                                    <li><a href="#">Tài khoản</a></li>
+                                    <li><a href="<?php echo _LINK ?>/thong-tin-tai-khoan.html">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
                                     <?php } ?>
