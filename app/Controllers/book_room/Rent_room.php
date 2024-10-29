@@ -110,6 +110,7 @@ class Rent_room extends Controller
                         'end_time' => $timeParts[1],
                         'id_room' => $_POST['idRoom'],
                     ];
+
                     $result = $this->model->InsertData('show_time', $data);
                     if ($result) {
                         echo "<script>alert('Thuê phòng chiếu thành công')</script>";

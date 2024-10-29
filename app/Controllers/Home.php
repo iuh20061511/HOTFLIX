@@ -16,7 +16,7 @@ class Home extends Controller
     {
         // $this->data['sub']['con'] = $this->model->getList();
         $this->data['sub']['listComingSoon'] = $this->model->getListTable('movie', "where status=0");
-        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
+        $this->data['sub']['listShowing'] = $this->model->getListFromTwoTables('show_time', 'movie',  'id_movie', "where movie.status=1 ");
         $this->data['sub']['text'] = "Danh sách text";
 
         $this->data['content'] = 'home/homePage';
@@ -52,8 +52,8 @@ class Home extends Controller
         $this->data['sub']['text'] = "Chi tiết rạp";
         $this->data['sub']['cinema'] = $this->model->getListTable('cinemas', "where id_cinema=$id_cinema");
         $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie' , "order by id_movie desc");
-        $folder = 'app/public/assets/img/cinema/'.$id_cinema; // Thư mục cần lấy danh sách file
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "order by id_movie desc");
+        $folder = 'app/public/assets/img/cinema/' . $id_cinema; // Thư mục cần lấy danh sách file
         $this->data['sub']['listCinemaImage'] = array_map('basename', glob($folder . '/*'));
         // Kiểm tra id_rạp là chẵn hay lẻ
         // $is_even = ($id_cinema % 2 === 0);
@@ -70,7 +70,7 @@ class Home extends Controller
     public function promotion()
     {
         $this->data['sub']['text'] = "Chương trình khuyến mãi";
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie' , "order by id_movie desc");
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "order by id_movie desc");
         $this->data['sub']['listPromotion'] = $this->model->getListTable('promotion');
 
 

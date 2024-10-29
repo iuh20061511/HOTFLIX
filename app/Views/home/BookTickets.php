@@ -180,8 +180,7 @@
                 <?php
                 }
 
-                echo "<pre>";
-                print_r($show_time);
+
                 ?>
             </div>
 

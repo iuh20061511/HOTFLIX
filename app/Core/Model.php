@@ -56,11 +56,11 @@ class Model extends Database
         return $data;
     }
 
-    public function getListFromTwoTables($tableName1, $tableName2, $columnIdFK, $condition = '')
+    public function getListFromTwoTables($tableName1, $tableName2, $columnIdFK, $condition = '', $select = ' ')
     {
         $this->connectIfNeeded();
 
-        $query = "SELECT * FROM $tableName1 INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
+        $query = "SELECT * $select FROM $tableName1 INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
 
         $result = mysqli_query($this->connection, $query);
 

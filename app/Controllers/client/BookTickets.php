@@ -313,6 +313,7 @@ class BookTickets extends Controller
     public function QR($id_seat, $id_showTime)
     {
         $ticket = $this->model->getListFromThreeTables("seats", "tickets", "show_time", "id_seat", "id_showTime", "WHERE tickets.id_seat = $id_seat AND tickets.id_showTime = $id_showTime");
+
         $id_movie = $ticket[0]['id_movie'];
         $moives = $this->model->getListTable('movie', "where id_movie = $id_movie");
         $movie_name = $moives[0]['movie_name'];
@@ -335,11 +336,11 @@ class BookTickets extends Controller
         $seat = $ticket[0]['location'];
         $time = $ticket[0]['show_date'];
         $start_time = $ticket[0]['start_time'];
-
-
-
+        $end_time = $ticket[0]['start_time'];
+        $duration =  $moives[0]['duration'];
 
         $this->data = [
+            'id_ticket' => $ticket[0]['id_ticket'],
             'file' => $file,
             'seat' =>  $seat,
             'time' => $time,
@@ -347,10 +348,21 @@ class BookTickets extends Controller
             'room' => $room,
             'cinema_name' => $cinema_name,
             'movie_name' => $movie_name,
-            'movie_image' => $movie_image
-
+            'movie_image' => $movie_image,
+            'end_time' => $end_time,
+            'duration' => $duration,
+            'checkIn' =>  $ticket[0]['check_in']
 
         ];
+
+        if (isset($_POST['checkIn'])) {
+
+            $id_ticket = $_POST['id_ticket'];
+            $data = [
+                'check_in' => 1
+            ];
+            $this->model->updateData('tickets', $data, "where id_ticket  = $id_ticket");
+        }
         $library = "PHPQR/render/qr.php";
         $this->library($library, $this->data);
     }
