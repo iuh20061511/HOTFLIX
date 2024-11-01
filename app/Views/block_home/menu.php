@@ -174,7 +174,7 @@
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
                                     <?php } ?>
-                                    <li><a href="#">Lịch sử</a></li>
+                                    <li><a href="lich-su-giao-dich.html">Lịch sử</a></li>
                                     <li><a href="<?php echo _LINK ?>/account/logout">Đăng xuất</a></li>
                                 </ul>
                             </div>

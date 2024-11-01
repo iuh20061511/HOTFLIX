@@ -128,4 +128,20 @@ class Rent_room extends Controller
         $this->data['content'] = 'client/rent_room/chooseTime';
         $this->view("layout/client", $this->data);
     }
+
+    public function PDF($id_invoiceRoom){
+        $this->data['sub']['title'] = "In hóa đơn thuê phòng";
+        $this->data['invoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType',"WHERE id_invoiceRoom = '$id_invoiceRoom'");
+        $id_cinema = $this->data['invoiceRoom'][0]['id_cinema'];
+        $cinema = $this->model->getListTable('cinemas', "WHERE id_cinema = '$id_cinema'");
+        $this->data['invoiceRoom'] = array_merge($this->data['invoiceRoom'], $cinema);
+        $id_customer = $this->data['invoiceRoom'][0]['id_customer'];
+        $customer = $this->model->getListTable('customer', "WHERE id_customer = '$id_customer'");
+        $this->data['invoiceRoom'] = array_merge($this->data['invoiceRoom'], $customer);
+
+
+        $this->library("PDF/vendor/autoload.php");
+
+        $this->library("PDF/file/invoice_room.php", $this->data);
+    }
 }

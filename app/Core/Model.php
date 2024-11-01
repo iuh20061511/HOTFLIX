@@ -33,6 +33,25 @@ class Model extends Database
         return $data;
     }
 
+    public function getMultiTables($input)
+    {
+        $this->connectIfNeeded();
+
+        $query = $input;
+        $result = mysqli_query($this->connection, $query);
+
+        if (!$result) {
+            die('Query failed: ' . mysqli_error($this->connection));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+        mysqli_free_result($result);
+        return $data;
+    }
+
     public function getListFromThreeTables($tableName1, $tableName2, $tableName3, $columnIdFK1, $columnIdFK2, $condition = '')
     {
         $this->connectIfNeeded();

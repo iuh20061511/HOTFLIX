@@ -106,4 +106,18 @@ class AccountModel extends Model
     {
         return $this->model->deleteData("customer", "where status = 0  and  token_expiration < NOW()");
     }
+
+    public function convertDayToVietnamese($date) {
+        $englishDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $vietnameseDays = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
+        
+        // Lấy ngày của tuần từ $date
+        $dayOfWeek = date('l', strtotime($date));
+
+        // Chuyển đổi sang tiếng Việt
+        $vietnameseDay = str_replace($englishDays, $vietnameseDays, $dayOfWeek);
+
+        // Trả về ngày tiếng Việt
+        return $vietnameseDay . ', ' . date('d/m/Y', strtotime($date));
+    }
 }
