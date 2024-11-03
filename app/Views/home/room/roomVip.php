@@ -1,6 +1,20 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/rooms/css/roomAgv.css">
 
-
+<?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
+    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:40%; z-index: 800;">
+        <div class="card p-4" style="width: 400px;  <?php echo $check ? 'display: none;' : ''; ?>">
+            <i class="bi bi-x-circle" style="position: absolute; right: 10px; top: 2px; font-size: 20px; cursor: pointer;" onclick="closeCard()"></i>
+            <form action="" method="post">
+                <h5 class="card-title text-center mb-4">Thông tin khách hàng</h5>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="SĐT hoặc email khách hàng thành viên..." name="info">
+                    <span class="text-danger"><?php if (isset($error))  echo $error ?></span>
+                </div>
+                <input type="submit" class="btn btn-success w-100 mt-3" value="Xác nhận" name="btn_inforCus">
+            </form>
+        </div>
+    </div>
+<?php } ?>
 <form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();">
     <input type="hidden" name="movie_name" value="<?php echo $movie[0]['movie_name'] ?>">
     <input type="hidden" name="image" value="<?php echo $movie[0]['poster'] ?>">
@@ -11,6 +25,9 @@
     <input type="hidden" name="id_showtime" value="<?php echo $_GET['id_showTime'] ?>">
     <input type="hidden" name="id_movie" value="<?php echo $_GET['id_movie'] ?>">
     <input type="hidden" name="id_room" value="<?php echo $_GET['id_room'] ?>">
+
+
+
 
     <section class="content">
         <div class="content__head">
@@ -274,4 +291,10 @@
             }
         });
     });
+</script>
+<script>
+    function closeCard() {
+        const card = document.querySelector('.card');
+        card.style.display = 'none';
+    }
 </script>

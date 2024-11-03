@@ -117,7 +117,7 @@
                     <!-- item -->
                     <?php
                     $shownMovies = [];
-
+                    $check = false;
                     foreach ($listShowing as $index => $movieShowing) {
 
                         if (!in_array($movieShowing['id_movie'], $shownMovies)) {
@@ -125,9 +125,20 @@
                     ?>
                             <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3" style="position: relative; ">
                                 <?php if (isset($_SESSION['is_login']['id_account'])) { ?>
-                                    <a data-bs-toggle="modal" data-bs-target="#care<?php echo  $movieShowing['id_movie']; ?>" href="" style="position: absolute; top:25px; z-index: 10; right: 12px; border-top-right-radius: 10px; width: 60%; border-bottom: 1px solid #fff; border-left: 1px solid #fff; background-color: #dc3545; color: #fff; animation: colorChange 5s infinite;">
-                                        <p class="m-1 text-light text-center" style="transition: color 0.3s;">Quan tâm</p>
-                                    </a>
+                                    <?php
+                                    if (isset($showtime_notifications)) {
+                                        foreach ($showtime_notifications as $show) {
+                                            if ($show['id_movie'] ==  $movieShowing['id_movie']) {
+                                                $check = true;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                    <?php if (!$check && $_SESSION['is_login']['id_role'] == 1) { ?>
+                                        <a data-bs-toggle="modal" data-bs-target="#care<?php echo  $movieShowing['id_movie']; ?>" href="" style="position: absolute; top:25px; z-index: 10; right: 12px; border-top-right-radius: 10px; width: 60%; border-bottom: 1px solid #fff; border-left: 1px solid #fff; background-color: #dc3545; color: #fff; animation: colorChange 5s infinite;">
+                                            <p class="m-1 text-light text-center" style="transition: color 0.3s;">Quan tâm</p>
+                                        </a>
+                                    <?php } ?>
                                     <style>
                                         @keyframes colorChange {
                                             0% {
@@ -203,17 +214,30 @@
                     <?php
 
                     $stt = 0;
+                    $check = false;
                     $shownMovies = [];
+
                     foreach ($listComingSoon as $index => $movieComing) {
                         if (!in_array($movieComing['id_movie'], $shownMovies)) {
                             $shownMovies[] =  $movieComing['id_movie'];
                     ?>
                             <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3" style="position: relative; ">
-                                <?php if (isset($_SESSION['is_login']['id_account'])) { ?>
-                                    <a data-bs-toggle="modal" data-bs-target="#cares<?php echo $movieComing['id_movie'] ?>" href="" style="position: absolute; top:0px; z-index: 10; right: 12px; border-top-right-radius: 10px; width: 60%; border-bottom: 1px solid #fff; border-left: 1px solid #fff; background-color: #dc3545; color: #fff; animation: colorChange 5s infinite;">
-                                        <p class="m-1 text-light text-center" style="transition: color 0.3s;">Quan tâm</p>
-                                    </a>
+                                <?php if (isset($_SESSION['is_login']['id_account'])) {
+                                    if (isset($showtime_notifications)) {
 
+                                ?>
+                                    <?php foreach ($showtime_notifications as $show) {
+                                            if ($show['id_movie'] == $movieComing['id_movie']) {
+                                                $check = true;
+                                            }
+                                        }
+                                    }
+                                    ?>
+                                    <?php if (!$check && $_SESSION['is_login']['id_role'] == 1) { ?>
+                                        <a data-bs-toggle="modal" data-bs-target="#cares<?php echo $movieComing['id_movie'] ?>" href="" style="position: absolute; top:0px; z-index: 10; right: 12px; border-top-right-radius: 10px; width: 60%; border-bottom: 1px solid #fff; border-left: 1px solid #fff; background-color: #dc3545; color: #fff; animation: colorChange 5s infinite;">
+                                            <p class="m-1 text-light text-center" style="transition: color 0.3s;">Quan tâm</p>
+                                        </a>
+                                    <?php } ?>
                                     <style>
                                         @keyframes colorChange {
                                             0% {
