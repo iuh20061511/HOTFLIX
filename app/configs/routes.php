@@ -70,11 +70,13 @@ $routes['xoa-qua-tang.html'] = 'admin/voucher/deleteGift';
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
 $routes['chon-ghe.html'] = 'client/BookTickets/selectSeat';
 $routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
-$routes['thanh-toan.html'] = 'client/BookTickets/momoPay';
+$routes['thanh-toan.html'] = 'client/BookTickets/proceedPay';
 $routes['thanh-toan-thanh-cong.html'] = 'client/BookTickets/success';
 $routes['pay.html'] = 'client/BookTickets/pay';
 $routes['kiem-tra-ve-(.+)-(.+).html'] = 'client/BookTickets/QR/$1/$2';
-$routes['ve-cua-da-dat-(.+).html'] = 'client/BookTickets/PDF/$1/';
+$routes['ve-da-dat-(.+).html'] = 'client/BookTickets/PDF/$1/';
+$routes['dat-ve.html']  = 'client/BookTickets/book_ticket';
+$routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 
 
 

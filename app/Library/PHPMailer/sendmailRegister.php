@@ -11,23 +11,23 @@ require __DIR__ . "/src/SMTP.php";
 
 $mail = new PHPMailer(true);
 try {
-    // Cấu hình server email
-    $mail->SMTPDebug = 0;
-    $mail->isSMTP();
-    $mail->CharSet = "utf-8";
-    $mail->SMTPAuth = true;
-    $mail->SMTPSecure = 'tls';
-    $mail->Host = 'smtp.gmail.com';
-    $mail->Port = 587;
-    $mail->Username = 'minhhuan190102@gmail.com';                     //SMTP username
-    $mail->Password = 'vcho tlpc agae yome';
+  // Cấu hình server email
+  $mail->SMTPDebug = 0;
+  $mail->isSMTP();
+  $mail->CharSet = "utf-8";
+  $mail->SMTPAuth = true;
+  $mail->SMTPSecure = 'tls';
+  $mail->Host = 'smtp.gmail.com';
+  $mail->Port = 587;
+  $mail->Username = 'minhhuan190102@gmail.com';                     //SMTP username
+  $mail->Password = 'vcho tlpc agae yome';
 
-    // Thiết lập thông tin người gửi và người nhận
-    $mail->setFrom('minhhuan190102@gmail.com', 'HOTFLIX');
-    $mail->addAddress($email);
-    $link = _LINK;
-    // Nội dung email
-    $html = "
+  // Thiết lập thông tin người gửi và người nhận
+  $mail->setFrom('minhhuan190102@gmail.com', 'HOTFLIX');
+  $mail->addAddress($email);
+  $link = _LINK;
+  // Nội dung email
+  $html = "
  <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -175,15 +175,11 @@ try {
 
     ";
 
-    $mail->isHTML(true);
-    $mail->Subject = "Khôi phục mật khẩu";
-    $mail->Body = $html;
+  $mail->isHTML(true);
+  $mail->Subject = "Đăng ký tài khoản";
+  $mail->Body = $html;
 
-    $mail->send();
-
+  $mail->send();
 } catch (Exception $e) {
-    echo "<script>alert('Lỗi ! Email không được gửi');</script>";
+  echo "<script>alert('Lỗi ! Email không được gửi');</script>";
 }
-
-
-?>

@@ -73,6 +73,17 @@ class BookTickets extends Controller
             }
         }
 
+        if (isset($_POST['btn_inforCus'])) {
+            $info = $_POST['info'];
+            $customer = $this->model->getListTable("customer", "WHERE phone= '$info' OR email = '$info'");
+            if ($customer) {
+                $this->data['sub']['check'] = true;
+                $_SESSION['infor_id_customer'] =  $customer[0]['id_customer'];
+            } else {
+                $this->data['sub']['error'] = "Thông tin sai hoặc khách hàng chưa đăng ký tài khoản";
+            }
+        }
+
         $this->data['sub']['text'] = "Danh sách text";
         $this->view("layout/client", $this->data);
     }
@@ -97,23 +108,31 @@ class BookTickets extends Controller
 
             $total =  $this->data['sub']['total'];
             $this->data['sub']['items']  = $this->model->getListTable('menu_items');
-
-            foreach ($_POST['seat'] as $seat) {
+            $filteredData = [];
+            foreach ($_POST['seat'] as $key => $value) {
+                if (is_string($key)) {
+                    $filteredData[$key] = $value;
+                }
+            }
+            foreach ($filteredData as $seat => $value) {
                 $data = [
                     'location' => $seat,
                     'id_room' => $_POST['id_room'],
                     'hold_expiry' => date("Y-m-d H:i:s", strtotime("+6 minutes")),
                     'id_showTime' => $_POST['id_showtime'],
+                    'price' => $value['price'],
                     'status' => 0
 
                 ];
+
                 $this->model->InsertData('seats', $data);
             }
 
             $seats = '';
-            foreach ($_POST['seat'] as $seat) {
+            foreach ($filteredData as $seat => $value) {
                 $seats .= $seat . ', ';
             }
+
             $this->data['sub']['seats']  = $seats;
 
             $this->view("layout/client", $this->data);
@@ -156,7 +175,7 @@ class BookTickets extends Controller
         $this->view("layout/client", $this->data);
     }
 
-    public function momoPay()
+    public function proceedPay()
     {
 
         $check = false;
@@ -197,19 +216,36 @@ class BookTickets extends Controller
                 'id_tickets' => $id_tickets,
                 'date' => $date,
                 'moneyNumber' => $moneyNumber,
-                'invoice_data' => [
-                    'id_customer' => $_SESSION['is_login']['id_account'],
-                    'create_date' => date('Y-m-d H:i:s'),
-                    'total_amount' => $moneyNumber,
-                    'discount_total' => 1,
-                    'final_total' => $moneyNumber * 1,
-                    'payment_method' => 'Online',
-                ],
+                'invoice_data' => array_merge(
+                    [
+                        'create_date' => date('Y-m-d H:i:s'),
+                        'total_amount' => $moneyNumber,
+                        'discount_total' => 1,
+                        'final_total' => $moneyNumber * 1,
+                        'payment_method' => ($_SESSION['is_login']['id_role'] == 1) ? 'Online' : 'Tại quầy',
+                    ],
+                    isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1
+                        ? ['id_customer' => $_SESSION['is_login']['id_account']]
+                        : (isset($_SESSION['infor_id_customer'])
+                            ? ['id_customer' => $_SESSION['infor_id_customer']]
+                            : [])
+                ),
                 'id_items' => $_POST['id_item']
             ];
 
+
+
             $this->data['moneyNumber'] =  $moneyNumber;
-            $this->library('PayOnline/Momo.php', $this->data);
+
+            if (isset($_POST['payment'])) {
+
+                if ($_POST['payment'] == 'momo') {
+                    $this->library('PayOnline/QRmomo.php', $this->data);
+                } elseif ($_POST['payment'] == 'ATM') {
+                    $this->library('PayOnline/Momo.php', $this->data);
+                }
+            }
+
             $redirectUrl = "thanh-toan-thanh-cong.html";
             header("refresh:0.5; url=$redirectUrl");
         }
@@ -225,7 +261,6 @@ class BookTickets extends Controller
             $id_showtime = $payment_data['id_showtime'];
             $id_tickets = $payment_data['id_tickets'];
             $date = $payment_data['date'];
-            $moneyNumber = $payment_data['moneyNumber'];
             $invoice_data = $payment_data['invoice_data'];
             $id_items = $payment_data['id_items'];
             foreach ($id_seat as $id) {
@@ -241,6 +276,7 @@ class BookTickets extends Controller
                 ];
 
                 $this->model->InsertData('tickets', $data);
+                unset($_SESSION['infor_id_customer']);
 
                 // -------------------------QR-----------------------
                 $this->library("PHPQR/qrlib.php");
@@ -252,10 +288,9 @@ class BookTickets extends Controller
                 // Tạo QR code
                 QRcode::png($text, $qr, 'H', 10, 2);
 
-                // Đường dẫn đích cho file được sao chép
-                $user_image_path = dirname(__DIR__, 2) . '/public/QR/image/' . $name; // Thêm '/' trước tên file
 
-                // Kiểm tra và tạo thư mục nếu không tồn tại
+                $user_image_path = dirname(__DIR__, 2) . '/public/QR/image/' . $name;
+
                 if (!file_exists(dirname($user_image_path))) {
                     mkdir(dirname($user_image_path), 0777, true);
                 }
@@ -274,6 +309,7 @@ class BookTickets extends Controller
 
             $this->model->InsertData('invoice', $invoice_data);
             $id_invoice = $this->model->getInsertId();
+            $this->ticket['invoice'] =  _LINK . "/hoa-don-$id_invoice.html";
 
 
             foreach ($id_tickets as $id) {
@@ -283,12 +319,16 @@ class BookTickets extends Controller
                     'quantity' => 1,
                 ];
 
-                $this->ticket['link_ticket'][$id] = _LINK . "/ve-cua-da-dat-$id.html";
+                $this->ticket['link_ticket'][$id] = _LINK . "/ve-da-dat-$id.html";
+
+
 
 
                 $this->model->InsertData('invoice_detail', $data);
             }
-            $this->library("PHPMailer/sendmailTicket.php", $this->ticket);
+            if ($_SESSION['is_login']['id_role'] == 1) {
+                $this->library("PHPMailer/sendmailTicket.php", $this->ticket);
+            }
 
             foreach ($id_items as $id => $quantity) {
                 $data = [
@@ -300,12 +340,20 @@ class BookTickets extends Controller
             }
 
             unset($_SESSION['payment_data']);
-
-            $this->data['content'] = 'home/paySuccess';
-            $this->data['sub']['infor']  = "Thông báo thành công";
-            $this->view("layout/client", $this->data);
+            if ($_SESSION['is_login']['id_role'] == 1) {
+                $this->data['content'] = 'home/paySuccess';
+                $this->data['sub']['infor']  = "Thông báo thành công";
+                $this->view("layout/client", $this->data);
+            } else {
+                echo "<script>alert('Đặt vé thành công')</script>";
+?>
+                <script>
+                    window.location.href = "dat-ve.html";
+                </script>
+<?php
+            }
         } else {
-            echo "Thất bại.";
+            echo "Thất bại";
         }
     }
 
@@ -383,5 +431,31 @@ class BookTickets extends Controller
         $this->library("PDF/vendor/autoload.php");
 
         $this->library("PDF/file/invoice.php", $this->data);
+    }
+
+    public function PDFTotalInvoice($id_invoice)
+    {
+        $this->data['invoice'][0] = $this->model->getListFromThreeTables("invoice", "invoice_detail", "menu_items", "id_invoice", "id_item", "WHERE invoice.id_invoice = $id_invoice");
+        $id_customer = $this->data['invoice'][0][0]['id_customer'];
+
+        $customer = $this->model->getListTable('customer', "where id_customer = $id_customer");
+        $this->data['invoice'] = array_merge($this->data['invoice'], $customer);
+
+
+
+
+
+
+        $this->library("PDF/vendor/autoload.php");
+
+        $this->library("PDF/file/total_invoice.php", $this->data);
+    }
+
+    public function book_ticket()
+    {
+        $this->data['sub']['show_time'] = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie');
+        $this->data['content'] = 'home/bookTicket';
+        $this->data['sub']['cinemas'] = $this->model->getListTable('cinemas');
+        $this->view("layout/client", $this->data);
     }
 }
