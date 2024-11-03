@@ -171,19 +171,20 @@
                     <div id="item_details">
                         <!-- JavaScript sẽ tự động thêm nội dung item vào đây -->
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row ml-auto">
-                        <h5 id="total_invoice"></h5>
+                    <div class="container-fluid mt-3">
+                        <div class="row me-5">
+                            <div class="col-12 ms-auto text-end me-5">
+                                <h5 id="total_invoice" class="text-danger"></h5>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="button" class="btn btn-primary w-50">In vé</button>
                 </div>
             </div>
         </div>
     </div>
-    <?php
-        echo '<pre>';
-        print_r($listInvoiceRoom);
-    ?>
 
 <script>
 document.querySelectorAll('.ticket-item').forEach(item => {

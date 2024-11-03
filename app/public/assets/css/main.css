@@ -644,7 +644,7 @@ body::-webkit-scrollbar-thumb {
   .header__search input {
     width: 180px;
     height: 46px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.05);
     position: relative;
     z-index: 1;
     background-color: #28282d;
@@ -657,7 +657,7 @@ body::-webkit-scrollbar-thumb {
   }
 
   .header__search input:focus {
-    border-color: rgba(255, 255, 255, 0.15);
+    border-color: #ff55a5;
   }
 
   .header__search button {
@@ -3241,7 +3241,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .plan__title {
-  font-size: 26px;
+  font-size: 25px;
   line-height: 100%;
   color: #fff;
   font-weight: 400;
@@ -6100,7 +6100,6 @@ body::-webkit-scrollbar-thumb {
   overflow-x: hidden;
 }
 
-
 .ticket-item {
   text-decoration: none;
   color: inherit;
@@ -6124,6 +6123,15 @@ body::-webkit-scrollbar-thumb {
   font-size: 16px;
   font-weight: bold;
   margin: 0;
+}
+
+/* Khi màn hình nhỏ hơn 768px */
+@media (max-width: 1384px) {
+
+  .ticket-item__title,
+  .ticket-item__showtime {
+    font-size: 12px;
+  }
 }
 
 .ticket-item__format {
@@ -6150,4 +6158,65 @@ body::-webkit-scrollbar-thumb {
 
 .line_br {
   border-bottom: 2px solid #ff55a5;
+}
+
+.action__search {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 30px;
+  position: relative;
+  width: 60%;
+}
+
+/* Khi màn hình nhỏ hơn 768px */
+@media (max-width: 768px) {
+  .action__search {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+.action__search input {
+  height: 55px;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 0 60px 0 20px;
+  font-size: 14px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 400;
+  width: 100%;
+  background-color: #fff;
+  color: #28282d;
+}
+
+.action__search input:focus {
+  border-color: #ff55a5;
+}
+
+.action__search button {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  right: 20px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.5;
+  transition: opacity 0.5s ease;
+}
+
+.action__search button svg {
+  width: 18px;
+  height: auto;
+  fill: #28282d;
+}
+
+.action__search button:hover {
+  opacity: 1;
 }
