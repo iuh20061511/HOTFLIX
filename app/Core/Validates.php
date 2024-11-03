@@ -59,20 +59,22 @@ class Validate extends ValidateCheck
         }
     }
 
-    public function checkReleaseDate($date)
+    public function checkReleaseDate($date, $edit = false)
     {
         if (empty($date)) {
             return "Vui lòng chọn ngày phát hành!";
-        } else {
+        }
+        // Chỉ kiểm tra ngày phát hành phải lớn hơn ngày hiện tại khi thêm mới ($edit = false)
+        if (!$edit) {
             $release_date = new DateTime($date);
             $current_date = new DateTime();
             if ($release_date < $current_date) {
-                return "Ngày phát hành phải lớn hơn ngày hiện tại !";
-            } else {
-                return '';
+                return "Ngày phát hành phải lớn hơn ngày hiện tại!";
             }
         }
+        return '';
     }
+
 
     public function checkEndDate($end_date, $start_date)
     {

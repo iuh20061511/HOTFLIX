@@ -11,7 +11,6 @@ class Account extends Controller
 
     private $data = [];
 
-
     public function __construct()
     {
         $this->model = $this->model('AccountModel');
@@ -241,6 +240,80 @@ class Account extends Controller
             exit();
         }
         $this->data['content'] = 'client/profile';
+        $this->view("layout/client", $this->data);
+    }
+
+    public function transaction(){
+        $this->data['sub']['title'] = "Lịch sử giao dịch";
+        if (isset($_SESSION['is_login']['id_account'])) {
+            $id_account = $_SESSION['is_login']['id_account'];
+            $table = ($_SESSION['is_login']['id_role'] == 1) ? 'customer' : 'staff';
+            // Lấy thông tin người dùng
+            $this->data['sub']['user'] = $this->model->getListTable($table, "where id_{$table} = $id_account");
+
+            $listTicketAndItem = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
+
+            $newArray = [];
+            foreach ($listTicketAndItem as $item) {
+                $id_invoice = $item['id_invoice'];
+
+                // Kiểm tra nếu chưa tồn tại id_invoice trong mảng mới
+                if (!isset($newArray[$id_invoice])) {
+                    $newArray[$id_invoice] = [
+                        'id_customer' => $item['id_customer'],
+                        'create_date' => $item['create_date'],
+                        'total_amount' => $item['total_amount'],
+                        'discount_total' => $item['discount_total'],
+                        'final_total' => $item['final_total'],
+                        'payment_method' => $item['payment_method'],
+                        'tickets' => [],
+                        'items' => []
+                    ];
+                }
+
+                // Kiểm tra id_ticket và id_item để phân loại thông tin
+                if (!empty($item['id_ticket'])) {
+                    // Lấy thông tin chi tiết ticket
+                    $infoTicket = $this->model->getMultiTables(" SELECT t.id_ticket, t.qrcode, t.check_in, s.show_date, s.projection_format, s.start_time, 
+                            m.movie_name, m.poster ,r.room_name, c.cinema_name, se.location 
+                        FROM tickets t 
+                        JOIN seats se ON t.id_seat = se.id_seat 
+                        JOIN show_time s ON t.id_showTime = s.id_showTime 
+                        JOIN movie m ON s.id_movie = m.id_movie 
+                        JOIN room r ON s.id_room = r.id_room 
+                        JOIN cinemas c ON r.id_cinema = c.id_cinema 
+                        WHERE t.id_ticket = {$item['id_ticket']}
+                    ");
+                    $infoTicket[0]['show_date'] = $this->accountmodel->convertDayToVietnamese($infoTicket[0]['show_date']);
+                    $newArray[$id_invoice]['tickets'][] = $infoTicket;
+                }
+
+                if (!empty($item['id_item'])) {
+                    // Lấy thông tin chi tiết item
+                    $infoItem = $this->model->getMultiTables(" SELECT i.id_invoice, i.id_item, i.quantity, m.price, m.image , m.item_name ,i.quantity * m.price AS total 
+                        FROM invoice_detail i 
+                        JOIN menu_items m ON i.id_item = m.id_item 
+                        WHERE i.id_item = {$item['id_item']} AND i.id_invoice = $id_invoice
+                    ");
+                    $newArray[$id_invoice]['items'][] = $infoItem;
+                }
+            }
+            $this->data['sub']['invoices'] = $newArray;
+            //danh sách thuê phòng
+            $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC" );
+            foreach ($this->data['sub']['listInvoiceRoom'] as &$invoice) {
+                $id_cinema = $invoice['id_cinema'];
+                $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
+                $invoice['cinema_name'] = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
+                $invoice['date_rent'] = $this->accountmodel->convertDayToVietnamese( $invoice['date_rent']);
+            }
+        }
+        else {
+            header("refresh:0.5; url=" . _LINK . "/dang-nhap.html");
+            exit();
+        }
+
+        $this->data['content'] = 'client/transaction';
         $this->view("layout/client", $this->data);
     }
 }

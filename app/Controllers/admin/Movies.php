@@ -155,7 +155,7 @@ class Movies extends Controller
             $this->data['sub']['error']['director'] = $this->validate->checkStringEmpty($_POST['director']);
             $this->data['sub']['error']['trailer'] = $this->validate->checkStringEmpty($_POST['trailer']);
             $this->data['sub']['error']['duration'] = $this->validate->checkEmptyNumber($_POST['duration'], 70);
-            $this->data['sub']['error']['release_date'] = $this->validate->checkReleaseDate($_POST['release_date']);
+            $this->data['sub']['error']['release_date'] = $this->validate->checkReleaseDate($_POST['release_date'], true);
             $this->data['sub']['error']['nation'] = $this->validate->checkSelect($_POST['nation']);
 
             if (array_filter($this->data['sub']['error']) == []) {

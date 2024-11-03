@@ -45,11 +45,11 @@
 								</li>
 
 								<li class="nav-item" role="presentation">
-									<button id="2-tab" data-bs-toggle="tab" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Lịch sử giao dịch</button>
+									<a href="lich-su-giao-dich.html"><button id="2-tab" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Lịch sử giao dịch</button></a>
 								</li>
 
 								<li class="nav-item" role="presentation">
-									<button id="3-tab" data-bs-toggle="tab" data-bs-target="#tab-3" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Settings</button>
+									<button id="3-tab" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Settings</button>
 								</li>
 							</ul>
 							<!-- end content tabs nav -->
@@ -66,7 +66,7 @@
 				<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab" tabindex="0">
 					<div class="row">
 						<!-- details form -->
-						<div class="col-12 col-lg-6">
+						<div class="col-12 col-lg-6 d-flex align-items-center justify-content-center">
 							<form action="#" class="sign__form sign__form--profile" method="post">
 								<div class="row">
 									<div class="col-12">
@@ -163,7 +163,7 @@
 						<!-- end details form -->
 
 						<!-- password form -->
-						<div class="col-12 col-lg-6">
+						<div class="col-12 col-lg-6 d-flex align-items-center justify-content-center">
 							<form action="#" class="sign__form sign__form--profile" method="POST">
 								<div class="row">
 									<div class="col-12">
@@ -207,61 +207,6 @@
 							</form>
 						</div>
 						<!-- end password form -->
-					</div>
-				</div>
-
-				<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
-					<div class="row">
-						<!-- active price plan -->
-						<div class="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
-							<div class="plan plan--active">
-								<h3 class="plan__title">Starter</h3>
-								<span class="plan__price">Free</span>
-								<ul class="plan__list">
-									<li>7 days</li>
-									<li>720p Resolution</li>
-									<li>Limited Availability</li>
-									<li>Desktop Only</li>
-									<li>Limited Support</li>
-								</ul>
-								<button type="button" class="plan__btn"><span>Current plan</span></button>
-							</div>
-						</div>
-						<!-- end active price plan -->
-
-						<!-- price -->
-						<div class="col-12 col-lg-4 order-md-1 order-lg-2">
-							<div class="plan plan--premium">
-								<h3 class="plan__title">Premium</h3>
-								<span class="plan__price">$19.99</span>
-								<ul class="plan__list">
-									<li>1 Month</li>
-									<li>Full HD</li>
-									<li>Lifetime Availability</li>
-									<li>TV & Desktop</li>
-									<li>24/7 Support</li>
-								</ul>
-								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
-							</div>
-						</div>
-						<!-- end price -->
-
-						<!-- price -->
-						<div class="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
-							<div class="plan">
-								<h3 class="plan__title">Cinematic</h3>
-								<span class="plan__price">$39.99</span>
-								<ul class="plan__list">
-									<li>2 Months</li>
-									<li>Ultra HD</li>
-									<li>Lifetime Availability</li>
-									<li>Any Device</li>
-									<li>24/7 Support</li>
-								</ul>
-								<button type="button" data-bs-toggle="modal" class="plan__btn" data-bs-target="#plan-modal"><span>Choose plan</span></button>
-							</div>
-						</div>
-						<!-- end price -->
 					</div>
 				</div>
 

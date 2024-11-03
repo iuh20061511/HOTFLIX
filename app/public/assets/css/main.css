@@ -5122,23 +5122,41 @@ body::-webkit-scrollbar-thumb {
 /*==============================
 	Modal
 ==============================*/
+
 .modal .modal-content {
   margin: 0 auto;
-  max-width: 440px;
-  background-color: transparent;
+  max-width: 1000px;
+  background-color: #fff;
+  /* Đổi sang nền trắng thay vì transparent */
   border: none;
   border-radius: 8px;
 }
+
+
+/* .modal__content {
+  position: relative;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1000px;
+  padding: 30px 20px;
+  border-radius: 8px;
+  background: #28282d;
+  box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+} */
 
 .modal__content {
   position: relative;
   display: block;
   margin: 0 auto;
   width: 100%;
-  max-width: 440px;
+  max-width: 1000px;
+  /* vẫn giữ max-width như bạn đã đặt */
   padding: 30px 20px;
   border-radius: 8px;
-  background: #28282d;
+  background: #fff;
+  /* Thay đổi màu nền thành trắng */
   box-shadow: 0 5px 25px 0 rgba(0, 0, 0, 0.2);
   overflow: hidden;
 }
@@ -6071,4 +6089,65 @@ body::-webkit-scrollbar-thumb {
 
 .text-pink {
   color: #ff55a5;
+}
+
+/*History tickets */
+.transaction-list {
+  max-height: 400px;
+  /* Đặt chiều cao cố định cho danh sách */
+  overflow-y: auto;
+  /* Bật cuộn dọc */
+  overflow-x: hidden;
+}
+
+
+.ticket-item {
+  text-decoration: none;
+  color: inherit;
+  padding: 10px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+}
+
+.ticket-item:hover {
+  background-color: #b6b6b6;
+}
+
+.ticket-item__poster {
+  width: 60px;
+  /* Điều chỉnh kích thước poster theo nhu cầu */
+  height: auto;
+}
+
+.ticket-item__title {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.ticket-item__format {
+  font-size: 14px;
+  color: #666;
+}
+
+.ticket-item__extra {
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.ticket-item__details-link {
+  color: #ff6600;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.ticket-item__posterModal {
+  width: 45%;
+  /* Điều chỉnh kích thước poster theo nhu cầu */
+  height: auto;
+}
+
+.line_br {
+  border-bottom: 2px solid #ff55a5;
 }

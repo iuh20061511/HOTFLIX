@@ -21,6 +21,7 @@ $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
 $routes['thong-tin-tai-khoan.html'] = "account/profileInfo";
+$routes['lich-su-giao-dich.html'] = "account/transaction";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
@@ -84,3 +85,4 @@ $routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 //Rent_Room
 $routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
 $routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';
+$routes['hoa-don-dat-phong-(.+).html'] = 'book_room/rent_room/PDF/$1/';
