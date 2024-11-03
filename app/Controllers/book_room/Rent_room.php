@@ -109,6 +109,7 @@ class Rent_room extends Controller
                         'start_time' => $timeParts[0],
                         'end_time' => $timeParts[1],
                         'id_room' => $_POST['idRoom'],
+                        'id_movie' => 0
                     ];
 
                     $result = $this->model->InsertData('show_time', $data);

@@ -18,8 +18,61 @@ class Showtime extends Controller
         $this->data['sub']['listMovie'] = $this->model->getListTable('movie');
         $this->data['sub']['listMovie'] = $this->model->getListTable('movie');
         $id_cinema = $_SESSION['is_login']['id_cinema'];
-        $this->data['sub']['listRoom'] = $this->model->getListTable('room', " where id_cinema =  $id_cinema ");
+        $this->data['sub']['listRoom'] = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " where room.id_cinema =  $id_cinema ");
 
+        $infoCustomer = $this->model->getListFromThreeTables('customer', 'showtime_notifications', 'movie', 'id_customer', 'id_movie');
+        $arrayInfor = [];
+
+        foreach ($infoCustomer as $entry) {
+            foreach (
+                $this->model->getListFromThreeTables(
+                    'show_time',
+                    'room',
+                    'cinemas',
+                    'id_room',
+                    'id_cinema',
+                    "WHERE show_time.id_movie={$entry['id_movie']} AND show_time.show_date >= NOW() + INTERVAL 6 DAY ORDER BY show_time.show_date , show_time.start_time"
+                ) as $showTime
+            ) {
+                if ($movie = $this->model->getListTable('movie', "WHERE id_movie = {$showTime['id_movie']}")) {
+                    $arrayInfor[$entry['email']]['cinema_name'][$showTime['cinema_name']]['movie'][$movie[0]['movie_name']][] = [$showTime['show_date'], $showTime['start_time']];
+                }
+            }
+        }
+
+        $newArray = [];
+        $arrayDays = [
+            'Monday'    => 'Thứ Hai',
+            'Tuesday'   => 'Thứ Ba',
+            'Wednesday' => 'Thứ Tư',
+            'Thursday'  => 'Thứ Năm',
+            'Friday'    => 'Thứ Sáu',
+            'Saturday'  => 'Thứ Bảy',
+            'Sunday'    => 'Chủ Nhật'
+        ];
+
+        foreach ($arrayInfor as $email => $data) {
+            foreach ($data['cinema_name'] as $cinema => $cinemaData) {
+                foreach ($cinemaData['movie'] as $movieName => $showtimes) {
+                    foreach ($showtimes as [$date, $time]) {
+                        $dayInEnglish = date('l', strtotime($date));
+                        $dayInVietnamese = $arrayDays[$dayInEnglish];
+
+                        $newArray[$email]["movie"][$movieName][$cinema][$dayInVietnamese][$date][] = $time;
+                    }
+                }
+            }
+        }
+
+        $this->data['infoShow'] = $newArray;
+
+        if (isset($_POST['send_show_time'])) {
+            $this->library("PHPMailer/sendmailInfoMovie.php", $this->data);
+            echo "<script>alert('Gửi thành công!');</script>";
+
+            // echo "<pre>";
+            // print_r($newArray);
+        }
 
 
 
@@ -126,6 +179,21 @@ class Showtime extends Controller
                     $show_date = $formatted_date;
                 }
             }
+
+
+            if (!empty($_POST['single_seat_price'])) {
+                $single_seat_price = $_POST['single_seat_price'];
+            } else {
+                $single_seat_price = 0;
+            }
+
+            if (!empty($_POST['double_seat_price'])) {
+                $double_seat_price = $_POST['double_seat_price'];
+            } else {
+                $double_seat_price = 0;
+            }
+
+
             foreach ($time['start_end'] as $time_slot) {
                 $data = [
                     'show_date' => $show_date,
@@ -133,7 +201,10 @@ class Showtime extends Controller
                     'id_room' => $id_room,
                     'projection_format' => $_POST['projection_format'],
                     'start_time' => $time_slot[0],
-                    'end_time' => $time_slot[1]
+                    'end_time' => $time_slot[1],
+                    'single_seat_price' =>  $single_seat_price,
+                    'double_seat_price' =>  $double_seat_price,
+                    'vip_seat_price' => $_POST['vip_seat_price']
                 ];
 
 
@@ -144,14 +215,15 @@ class Showtime extends Controller
             }
 
             if ($insert_successful) {
-                echo "<script>alert('Lên lịch bộ phim thành công!');</script>";
-                $redirectUrl = "quan-ly-suat-chieu.html";
-                header("refresh:0.5; url=$redirectUrl");
-            };
+                header("Location: quan-ly-suat-chieu.html");
+                exit();
+            } else {
+                echo "<script>alert('Lên lịch bộ phim thất bại!');</script>";
+            }
         }
 
 
-        $this->data['content'] = 'admin/showtime/add2';
+        $this->data['content'] = 'admin/showtime/add';
 
 
         $this->view("layout/admin", $this->data);
@@ -162,9 +234,7 @@ class Showtime extends Controller
     {
         $result = $this->model->deleteData('show_time', "where id_showTime = $id_showTime");
         if ($result) {
-            echo "<script>alert('Xóa thành công')</script>";
-            $redirectUrl = "quan-ly-suat-chieu.html";
-            header("refresh:0.5; url=$redirectUrl");
+            header("Location: quan-ly-suat-chieu.html");
         }
     }
 }

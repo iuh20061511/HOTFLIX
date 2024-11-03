@@ -25,6 +25,7 @@ $imageData = base64_encode(file_get_contents($imagePath));
 $imageSrc = 'data:image/jpeg;base64,' . $imageData;
 
 $seat = $ticket[0]['location'];
+$price = number_format($ticket[0]['price'], 0, ',', '.') . ' VNĐ';
 $date = $ticket[1]['show_date'];
 $timestamp = strtotime($date);
 $date = date('d-m-Y', $timestamp);
@@ -108,6 +109,7 @@ $html = "<html>
             <div><strong>Suất chiếu: </strong>$start_time  - $end_time </div>
             <div><strong>Thời lượng phim: </strong> $duration phút</div>
             <div><strong>Số ghế: </strong>$seat</div>
+            <div><strong>giá vé: </strong>$price</div>
 
         </div>
         <p style='text-align:center'>--------------------------------------------------------------------------------------------</p>

@@ -89,6 +89,11 @@
                                                             <?php } else { ?>
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
                                                                 <span><?php echo $seat; ?></span>
+                                                                <?php if ($isGreenSeat) { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                                <?php } else { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['single_seat_price'] ?>">
+                                                                <?php } ?>
                                                             <?php } ?>
                                                         </label>
                                                     <?php } ?>
@@ -109,6 +114,7 @@
                                                         <label class="seat seat_double">
                                                             <input type="checkbox" name="seat[]" value="<?php echo "DB" . $i; ?>">
                                                             <span><b><?php echo "DB" . $i; ?></b></span>
+                                                            <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                         </label>
                                                 <?php  }
                                                 } ?>
@@ -136,6 +142,11 @@
                                                             <?php } else { ?>
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
                                                                 <span><?php echo $seat; ?></span>
+                                                                <?php if ($isGreenSeat) { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                                <?php } else { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['single_seat_price'] ?>">
+                                                                <?php } ?>
                                                             <?php } ?>
                                                         </label>
                                                     <?php } ?>
@@ -155,6 +166,7 @@
                                                     <label class="seat seat_double">
                                                         <input type="checkbox" name="seat[]" value="<?php echo "DB" . $i; ?>">
                                                         <span><b><?php echo "DB" . $i; ?></b></span>
+                                                        <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                     </label>
                                             <?php  }
                                             } ?>
@@ -224,9 +236,9 @@
     </section>
 </form>
 <script>
-    var a = 50000;
-    var b = 70000;
-    var c = 130000;
+    var a = <?php echo $movie[0]['single_seat_price'] ?>;
+    var b = <?php echo $movie[0]['vip_seat_price'] ?>;
+    var c = <?php echo $movie[0]['double_seat_price'] ?>;
 </script>
 
 <script src="<?php echo _WEB_ROOT ?>/public/client/rooms/js/roomBig.js"></script>
@@ -245,4 +257,17 @@
 <script>
     localStorage.removeItem('endTime');
     localStorage.removeItem('remainingTime');
+</script>
+<script>
+    document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
+        seatCheckbox.addEventListener('change', function() {
+            const seatValue = this.value;
+            const priceCheckbox = document.querySelector(`input[type="checkbox"][name="seat[${seatValue}][price]"]`);
+
+            if (priceCheckbox) {
+
+                priceCheckbox.checked = this.checked;
+            }
+        });
+    });
 </script>

@@ -72,15 +72,20 @@
                                         <div class="cinema-seats1 cinema-seats">
                                             <?php
                                             $rows = range('A', 'L');
+                                            $excludedSeats = ['A1', 'A2', 'A14', 'A13', 'B1', 'B14', 'C1', 'C14'];
+
                                             for ($j = 0; $j < 12; $j++) {
                                             ?>
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>" style="margin-left: 15%;">
                                                     <?php
                                                     for ($i = 0; $i < 14; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
+                                                        if (in_array($seat, $excludedSeats)) {
+                                                            echo '<span class="empty-seat" style="display:inline-block; width:30px;"></span>';
+                                                            continue;
+                                                        }
 
                                                         $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 11;
-
                                                         $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
                                                     ?>
                                                         <label class="seat <?php echo $isGreenSeat ? 'seat-vip text-white' : ''; ?>">
@@ -91,11 +96,17 @@
                                                             <?php } else { ?>
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
                                                                 <span><?php echo $seat; ?></span>
+                                                                <?php if ($isGreenSeat) { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                                <?php } else { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['single_seat_price'] ?>">
+                                                                <?php } ?>
                                                             <?php } ?>
                                                         </label>
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
+
                                             <div style="margin-left: 15%;">
                                                 <?php for ($i = 1; $i < 8; $i++) {
                                                     $seat = "DB" . $i;
@@ -111,6 +122,7 @@
                                                         <label class="seat seat_double">
                                                             <input type="checkbox" name="seat[]" value="<?php echo "DB" . $i; ?>">
                                                             <span><b><?php echo "DB" . $i; ?></b></span>
+                                                            <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                         </label>
                                                 <?php  }
                                                 } ?>
@@ -183,9 +195,9 @@
     </section>
 </form>
 <script>
-    var a = 50000;
-    var b = 70000;
-    var c = 130000;
+    var a = <?php echo $movie[0]['single_seat_price'] ?>;
+    var b = <?php echo $movie[0]['vip_seat_price'] ?>;
+    var c = <?php echo $movie[0]['double_seat_price'] ?>;
 </script>
 
 <script src="<?php echo _WEB_ROOT ?>/public/client/rooms/js/roomBig.js"></script>
@@ -204,4 +216,17 @@
 <script>
     localStorage.removeItem('endTime');
     localStorage.removeItem('remainingTime');
+</script>
+<script>
+    document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
+        seatCheckbox.addEventListener('change', function() {
+            const seatValue = this.value;
+            const priceCheckbox = document.querySelector(`input[type="checkbox"][name="seat[${seatValue}][price]"]`);
+
+            if (priceCheckbox) {
+
+                priceCheckbox.checked = this.checked;
+            }
+        });
+    });
 </script>

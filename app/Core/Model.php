@@ -84,7 +84,6 @@ class Model extends Database
         $columns = implode(", ", array_keys($data));
         $values = implode("', '", array_values($data));
         $insert = "INSERT INTO `$tableName` ($columns) VALUES('$values')";
-
         return mysqli_query($this->connection, $insert);
     }
 

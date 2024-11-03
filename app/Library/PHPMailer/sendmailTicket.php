@@ -93,7 +93,16 @@ try {
                 font-size: 12px;
                 color: #666;
             }
-          
+            .download-invoice{
+                 display: inline-block;
+                background-color: #a87f32;
+                color: #fff !important;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                margin-botom: 10px;
+                margin-left: 40%;
+            }
         </style>
     </head>
     <body>
@@ -101,7 +110,14 @@ try {
             <div class='header'>
                 <h1>Vé của bạn</h1>
                 <p>Cảm ơn bạn đã lựa chọn dịch vụ của chúng tôi</p>
-            </div>";
+            </div>
+            <div>
+             <a href='" . htmlspecialchars($invoice) . "' class='download-invoice'>
+                    Tải hóa đơn
+                </a>
+            </div>
+            ";
+
 
     // Loop through tickets
     foreach ($link_ticket as $index => $ticket) {

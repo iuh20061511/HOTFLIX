@@ -58,19 +58,25 @@
                     </li>
 
                     <ul class="header__nav">
+                        <style>
+                            .text-change {
+                                animation: color-change-animation 0.5s infinite alternate;
+                                color: white;
+                            }
 
-                        <li class="header__nav-item">
-                            <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Trang chủ<svg xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
-                                </svg></a>
+                            @keyframes color-change-animation {
+                                0% {
+                                    color: white;
+                                }
 
-                            <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="index.html">Home style 1</a></li>
-                                <li><a href="index2.html">Home style 2</a></li>
-                            </ul>
+                                100% {
+                                    color: red;
+                                }
+                            }
+                        </style>
+                        <li class="header__nav-item ">
+                            <a class="header__nav-link rounded-3 p-3 text-change" href="dat-ve.html" role="button"><b>Đặt vé</b></a>
+
                         </li>
                         <!-- end dropdown -->
 
@@ -88,6 +94,9 @@
                                 <li><a href="<?php echo _LINK ?>/thong-tin-rap-10.html">HotFlix Quận 7</a></li>
                                 <li><a href="catalog1.html">HotFlix Gò Vấp</a></li>
                                 <li><a href="catalog2.html">HotFlix Thủ Đức</a></li>
+                                <li><a href="catalog2.html"><?php echo $_SESSION['is_login']['id_account'] ?></a></li>
+
+
                             </ul>
                         </li>
                         <!-- end dropdown -->

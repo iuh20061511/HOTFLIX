@@ -25,15 +25,23 @@
                             <div class="form-check m-3">
                                 <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/momo.png" alt=""
                                     style="width: 40px;">
-                                <input class="form-check-input" type="radio" name="payment" id="momo">
+                                <input class="form-check-input" type="radio" name="payment" id="momo" value="momo">
                                 <label class="form-check-label" for="momo">
                                     Ví Điện Tử MoMo
                                 </label>
                             </div>
                             <div class="form-check m-3">
+                                <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/ATM_momo.jpg" alt=""
+                                    style="width: 40px;">
+                                <input class="form-check-input" type="radio" name="payment" id="ATM" value="ATM">
+                                <label class="form-check-label" for="momo">
+                                    ATM MoMo
+                                </label>
+                            </div>
+                            <div class="form-check m-3">
                                 <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/zalopay.webp" alt=""
                                     style="width: 40px;">
-                                <input class="form-check-input" type="radio" name="payment" id="zalopay">
+                                <input class="form-check-input" type="radio" name="payment" id="zalopay" value="zalopay">
                                 <label class="form-check-label" for="zalopay">
                                     ZaloPay - Bạn mới ZaloPay nhập mã GLX50 - Giảm 50k cho đơn từ 200k
                                 </label>
@@ -41,7 +49,7 @@
                             <div class="form-check m-3">
                                 <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/vnpay.png" alt=""
                                     style="width: 40px;">
-                                <input class="form-check-input" type="radio" name="payment" id="vnpay">
+                                <input class="form-check-input" type="radio" name="payment" id="vnpay" value="vnpay">
                                 <label class="form-check-label" for="vnpay">
                                     VNPAY
                                 </label>
@@ -118,10 +126,12 @@
 
         paymentButton.addEventListener("click", function(event) {
             const momoOption = document.getElementById("momo");
+            const ATM = document.getElementById("ATM");
+
             const zalopayOption = document.getElementById("zalopay");
             const vnpayOption = document.getElementById("vnpay");
 
-            if (!momoOption.checked && !zalopayOption.checked && !vnpayOption.checked) {
+            if (!momoOption.checked && !zalopayOption.checked && !vnpayOption.checked && !ATM.checked) {
                 event.preventDefault();
                 alert("Vui lòng chọn một phương thức thanh toán.");
                 return;
