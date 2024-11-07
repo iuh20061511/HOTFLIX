@@ -49,7 +49,7 @@ class Rent_room extends Controller
         if (isset($_SESSION['cinemaRent'], $_SESSION['dateRent'], $_SESSION['roomRent'])) {
             $this->data['sub']['cinemaName'] = $this->model->getListTable('cinemas', " WHERE id_cinema = '" . $_SESSION['cinemaRent'] . "'");
             $this->data['sub']['dateRent'] = $_SESSION['dateRent'];
-            $roomRent = $this->model->getListTable('room', " WHERE id_room = '" . $_SESSION['roomRent'] . "'");
+            $roomRent = $this->model->getListFromTwoTables('room','room_type','id_roomType'," WHERE id_room = '" . $_SESSION['roomRent'] . "'");
             $this->data['sub']['roomRent'] = $roomRent;
 
             $listShow = $this->model->getListTable('show_time', " WHERE id_room = '" . $_SESSION['roomRent'] . "' AND show_date = '" . $_SESSION['dateRent'] . "'");

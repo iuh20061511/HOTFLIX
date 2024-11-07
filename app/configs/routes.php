@@ -83,11 +83,11 @@ $routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 
 
 //Rent_Room
-$routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
-$routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';
-$routes['hoa-don-dat-phong-(.+).html'] = 'book_room/rent_room/PDF/$1/';
+$routes['thue-phong/chon-rap-phong-chieu.html'] = 'client/rent_room';
+$routes['thue-phong/chon-khung-gio-thue.html'] = 'client/rent_room/chooseTime_room';
+$routes['hoa-don-dat-phong-(.+).html'] = 'client/rent_room/PDF/$1/';
 
 //Tra cứu thông tin
 $routes['tra-cuu-ve.html'] = 'admin/search';
+$routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 // $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
-

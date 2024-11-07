@@ -1,31 +1,18 @@
 	<!-- page title -->
-	<section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
-	    <div class="container">
+	<section class="section section--first" style="padding: 10px 0">
+		<div class="container">
 	        <div class="row">
 	            <div class="col-12">
 	                <div class="section__wrap">
-	                    <!-- section title -->
-	                    <h1 class="section__title section__title--head"><?php echo $cinema[0]['cinema_name'] ?></h1>
-	                    <!-- end section title -->
-
-	                    <!-- breadcrumbs -->
 	                    <ul class="breadcrumbs">
-	                        <li class="breadcrumbs__item"><a href="trang-chu.html">Home</a></li>
-	                        <li class="breadcrumbs__item breadcrumbs__item--active"><?php echo $cinema[0]['cinema_name'] ?></li>
+	                        <li class="breadcrumbs__item"><a class="text-white" href="trang-chu.html"><i class="ti ti-home me-1"></i><span>Home</span></a></li>
+	                        <li class="breadcrumbs__item breadcrumbs__item--active text-pink"><?php echo $cinema[0]['cinema_name'] ?></li>
 	                    </ul>
-	                    <!-- end breadcrumbs -->
-	                </div>
-	                <div class="row">
-	                    <!-- section title -->
-	                    <h6 class="section__title" style="font-size:15px">Hotline: <?php echo $cinema[0]['contact'] ?></h6>
-	                    <h6 class="section__title" style="font-size:15px">Địa chỉ: <?php echo $cinema[0]['address'] ?></h6>
-	                    <!-- end section title -->
 	                </div>
 	            </div>
 	        </div>
 	    </div>
 	</section>
-	<!-- end page title -->
 
 	<!-- about -->
 	<section class="section">
@@ -34,6 +21,8 @@
 	            <!-- section title -->
 	            <div class="col-12">
 	                <h2 class="section__title text-pink"><?php echo $cinema[0]['cinema_name'] ?></h2>
+					<p class="text-white" style="font-size:15px">Hotline: <?php echo $cinema[0]['contact'] ?></p>
+					<p class="text-white" style="font-size:15px">Địa chỉ: <?php echo $cinema[0]['address'] ?></p>
 
 	                <p class="section__text" style="text-align: justify;">Chào mừng bạn đến với <b><?php echo $cinema[0]['cinema_name'] ?></b>. <?php echo $cinema[0]['description'] ?></p>
 	            </div>
@@ -147,8 +136,9 @@
 	                            <div class="col-12">
 	                                <div class="row">
 	                                    <!-- section title -->
-	                                    <h6 class="section__title mb-0" style="font-size:15px">Hotline: <?php echo $cinema[0]['contact'] ?></h6>
-	                                    <h6 class="section__title mb-0" style="font-size:15px">Địa chỉ: <?php echo $cinema[0]['address'] ?></h6>
+										<h4 class="section__title text-pink"><?php echo $cinema[0]['cinema_name'] ?></h4>
+										<p class="text-white" style="font-size:15px">Hotline: <?php echo $cinema[0]['contact'] ?></p>
+										<p class="text-white" style="font-size:15px">Địa chỉ: <?php echo $cinema[0]['address'] ?></p>
 	                                    <!-- end section title -->
 	                                </div>
 	                                <div class="row" style="width: 90%">

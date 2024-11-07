@@ -16,15 +16,25 @@ class Search extends Controller
     public function index()
     {
         $this->data['sub']['title'] = "Trang tra cứu thông tin vé";
+        $this->data['sub']['error']=[];
+        $search_ticket = htmlspecialchars($_GET['search_ticket'], ENT_QUOTES, 'UTF-8');
+        if(isset($_GET['search_ticket']) && empty($search_ticket)){
+            $this->data['sub']['error']['search_ticket'] = 'Vui lòng nhập thông tin cần thiết để tra cứu!';
+        }
         if(isset($_GET['search_ticket']) && !empty($_GET['search_ticket'])){
-            $search_ticket = htmlspecialchars($_GET['search_ticket'], ENT_QUOTES, 'UTF-8');
+            $member = $this->model->getListTable('customer', "where phone = '$search_ticket' or email = '$search_ticket'");
+            if(!$member){
+                $this->data['sub']['error']['search_ticket'] = 'Không tìm thấy thành viên hợp lệ!';
+            }
+        }
+        if(isset($_GET['search_ticket']) && array_filter($this->data['sub']['error']) == []){
             $member = $this->model->getListTable('customer', "where phone = '$search_ticket' or email = '$search_ticket'");
             $id_account = $member[0]['id_customer'];
             $this->data['sub']['infoMember']= $this->model->getListTable('customer', "where id_customer = '$id_account'");
             $name_customer = $this->data['sub']['infoMember'][0]['full_name'];
             //Danh sách vé
             $listTicket = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
-
+            $this->data['sub']['listTicket']=[];
             foreach ($listTicket as $item) {
                 $id_invoice = $item['id_invoice'];
                 // Nếu chưa tồn tại id_invoice trong mảng kết quả thì khởi tạo
@@ -43,43 +53,32 @@ class Search extends Controller
                         'items' => [],
                     ];
                 }
-                // Phân loại vào mảng tickets hoặc items dựa trên giá trị id_ticket và id_item
+                // Nạp dữ liệu cho vé hoặc item ngay trong vòng lặp này
                 if (!empty($item['id_ticket'])) {
+                    $id_ticket = $item['id_ticket'];
+                    $ticketDetails = $this->model->getListFromTwoTables('tickets', 'seats', 'id_seat', "where id_ticket='$id_ticket'");
                     $this->data['sub']['listTicket'][$id_invoice]['tickets'][] = [
                         'id_ticket' => $item['id_ticket'],
                         'quantity' => $item['quantity'],
+                        'location' => $ticketDetails[0]['location'],
+                        'check_in' => $ticketDetails[0]['check_in'],
+                        'qrcode' => $ticketDetails[0]['qrcode'],
+                        'id_showTime' => $ticketDetails[0]['id_showTime'],
+                        'id_room' => $ticketDetails[0]['id_room'],
+                        'price' => $ticketDetails[0]['price'],
                     ];
                 }
-
                 if (!empty($item['id_item'])) {
+                    $id_item = $item['id_item'];
+                    $itemDetails = $this->model->getListTable('menu_items', "where id_item='$id_item'");
                     $this->data['sub']['listTicket'][$id_invoice]['items'][] = [
                         'id_item' => $item['id_item'],
                         'quantity' => $item['quantity'],
+                        'item_name' => $itemDetails[0]['item_name'],
+                        'price' => $itemDetails[0]['price'],
+                        'description' => trim($itemDetails[0]['description']),
+                        'image' => $itemDetails[0]['image'],
                     ];
-                }
-            }
-            //Nạp thông tin cho từng item chọn
-            foreach ($this->data['sub']['listTicket'] as &$invoice) {
-                foreach ($invoice['items'] as &$item) {
-                    // Lấy id_item để truy vấn thông tin chi tiết
-                    $id_item = $item['id_item'];
-                    $itemDetails = $this->model->getListTable('menu_items', "where id_item='$id_item'");
-                    $item['item_name'] = $itemDetails[0]['item_name'];
-                    $item['price'] = $itemDetails[0]['price'];
-                    $item['description'] = trim($itemDetails[0]['description']);
-                    $item['image'] = $itemDetails[0]['image'];
-                }
-            }
-            //Nạp thông tin cho từng vé
-            foreach ($this->data['sub']['listTicket'] as &$invoice) {
-                foreach ($invoice['tickets'] as &$ticket) {
-                    $id_ticket = $ticket['id_ticket'];
-                    $ticketDetails = $this->model->getListFromTwoTables('tickets','seats', 'id_seat', "where id_ticket='$id_ticket'");
-                    $ticket['location'] = $ticketDetails[0]['location'];
-                    $ticket['status'] = $ticketDetails[0]['status'];
-                    $ticket['qrcode'] = $ticketDetails[0]['qrcode'];
-                    $ticket['id_showTime'] = $ticketDetails[0]['id_showTime'];
-                    $ticket['id_room'] = $ticketDetails[0]['id_room'];
                 }
             }
             //Nạp thông tin chung

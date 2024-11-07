@@ -1,27 +1,18 @@
-	<!-- page title -->
-	<section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="section__wrap">
-						<!-- section title -->
-						<h1 class="section__title section__title--head">HOTFLIX</h1>
-						<!-- end section title -->
-
-						<!-- breadcrumbs -->
-						<ul class="breadcrumbs">
-							<li class="breadcrumbs__item"><a href="<?php echo _LINK ?>">Home</a></li>
-							<li class="breadcrumbs__item breadcrumbs__item--active">Tra cứu vé</li>
-						</ul>
-						<!-- end breadcrumbs -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- end page title -->
-
-	<!-- content -->
+    <!-- page title -->
+    <section class="section section--first" style="padding: 10px 0; <?php echo !isset($_GET['search_ticket']) ? 'margin-top: 22px;' : ''; ?>">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section__wrap">
+                        <ul class="breadcrumbs">
+                            <li class="breadcrumbs__item"><a class="text-white" href="trang-chu.html"><i class="ti ti-home me-1"></i><span>Home</span></a></li>
+                            <li class="breadcrumbs__item breadcrumbs__item--active text-pink">Tra cứu lịch sử giao dịch</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 	<div class="content">
 		<!-- profile -->
 		<div class="profile">
@@ -63,8 +54,15 @@
                             </form>
                         </div>
                     </div>
+                    <?php if (isset($error['search_ticket'])): ?>
+                    <div class="row mt-4">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <p class="error text-danger"><?php echo $error['search_ticket']; ?></p>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <?php
-                        if(isset($_GET['search_ticket']) && !empty($_GET['search_ticket'])){ ?>
+                        if(isset($_GET['search_ticket']) && empty($error['search_ticket'])){ ?>
                         <div class="row">
                             <div class="col-12 col-lg-3 order-md-1 order-lg-1">
                                 <div class="plan plan--active">
@@ -80,12 +78,12 @@
                             <!-- active price plan -->
                             <div class="col-12 col-lg-5 order-md-2 order-lg-2">
                                 <div class="transaction-list mt-4">
-                                        <h3 class="text-white">Danh sách đặt vé xem phim</h3>
+                                        <h3 class="text-white">Lịch sử đặt vé</h3>
                                         <?php 
                                             if(empty($listTicket)){?>
                                             <div class="ticket-item mb-1 d-flex align-items-center">
                                                 <div class="row w-100">
-                                                    <h5>Danh sách đặt vé của bạn trống</h5>
+                                                    <h5>Lịch sử đặt vé trống</h5>
                                                 </div>
                                             </div>
                                         <?php }
@@ -103,7 +101,7 @@
                                                         </p>
                                                     </div>
                                                     <div class="col-md-4 ticket-item__extra">
-                                                        <p class="ticket-item__title"><?php echo mb_strtoupper($invoice['cinema_name'], 'UTF-8')?></ơ>
+                                                        <p class="ticket-item__title"><?php echo mb_strtoupper($invoice['cinema_name'], 'UTF-8')?></p>
                                                         <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
                                                         <span class="ticket-item__details-link">Chi tiết</span>
                                                     </div>
@@ -115,12 +113,12 @@
                             <!-- end active price plan -->
                             <div class="col-12 col-lg-4 order-md-3 order-lg-3">
                                 <div class="transaction-list mt-4">
-                                    <h3 class="text-white">Danh sách đặt vé thuê phòng</h3>
+                                    <h3 class="text-white">Lịch sử thuê phòng</h3>
                                     <?php
                                         if(empty($listInvoiceRoom)){?>
                                         <div class="ticket-item mb-1 d-flex align-items-center">
                                             <div class="row w-100">
-                                                <h5>Danh sách thuê phòng của bạn trống</h5>
+                                                <h5>Lịch sử thuê phòng trống</h5>
                                             </div>
                                         </div>
                                     <?php }
@@ -150,6 +148,20 @@
                     <?php }
                     ?>
 				</div>
+                <div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
+                    <div class="row mt-4">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <form action="#" class="action__search">
+                                <input type="text" placeholder="Email hoặc số điện thoại thành viên" name="search_ticket" value="<?php echo !empty($_GET['search_ticket']) ? htmlspecialchars($_GET['search_ticket'], ENT_QUOTES, 'UTF-8') : ''; ?>">
+                                <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">
+                                        </path>
+                                    </svg></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
 		</div>
 	</div>
@@ -159,7 +171,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ticketDetailModalLabel">Chi tiết hóa đơn</h5>
+                    <a href="" id="printInvoiceLink" target="_blank"><button type="button" class="btn btn-primary w-200">In vé</button></a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column justify-content-center align-items-center" id="ticketDetailContent" >
@@ -170,7 +182,7 @@
                         </div>
                         <div class="col-8 d-flex flex-column justify-content-center align-items-start">
                             <h5 id="movie_name" class="fw-bold"></h5> <!-- Tên phim sẽ được thêm vào đây -->
-                            <h5 id="name_customer">Khách hàng: Nguyễn Huân</h5> <!-- Tên phim sẽ được thêm vào đây -->
+                            <h5 id="name_customer"></h5> <!-- Tên phim sẽ được thêm vào đây -->
                             <h5 id="create_date"></h5> <!-- Thời gian đặt vé sẽ được thêm vào đây -->
                             <h5 id="pay_method"></h5> <!-- Phương thức mua sẽ được thêm vào đây -->
                         </div>
@@ -195,84 +207,81 @@
                     </div>
                 </div>
                 <div class="modal-footer d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary w-50">In vé</button>
+                    <h5 class="modal-title" id="ticketDetailModalLabel">Chi tiết hóa đơn</h5>
                 </div>
             </div>
         </div>
     </div>
-    <?php 
-        echo '<pre>';
-        print_r($listTicket);
-    ?>
 
-<script>
-document.querySelectorAll('.ticket-item').forEach(item => {
-    item.addEventListener('click', function() {
-        const invoiceData = JSON.parse(this.getAttribute('data-invoice'));
-        //Các đường dẫn ảnh:
-        const movieImageUrl = `<?php echo _WEB_ROOT; ?>/public/admin/img/movies/`;
-        const qrImageUrl = `<?php echo _WEB_ROOT; ?>/public/QR/image/`;
-        const itemImageUrl=`<?php echo _WEB_ROOT; ?>/public/admin/img/menu_items/`;
+    <script>
+    document.querySelectorAll('.ticket-item').forEach(item => {
+        item.addEventListener('click', function() {
+            const invoiceData = JSON.parse(this.getAttribute('data-invoice'));
+            //Các đường dẫn ảnh:
+            const movieImageUrl = `<?php echo _WEB_ROOT; ?>/public/admin/img/movies/`;
+            const qrImageUrl = `<?php echo _WEB_ROOT; ?>/public/QR/image/`;
+            const itemImageUrl=`<?php echo _WEB_ROOT; ?>/public/admin/img/menu_items/`;
 
-        document.getElementById('movie_name').textContent = `Phim: ${invoiceData.movie_name.toUpperCase()}`;
-        document.getElementById('name_customer').textContent = `Khách hàng: ${invoiceData.name_customer}`;
-        document.getElementById('movie_img').innerHTML = `<img src="${movieImageUrl}${invoiceData.poster}" alt="Movie Poster" class="ticket-item__posterModal me-3">`;
+            document.getElementById('movie_name').textContent = `Phim: ${invoiceData.movie_name.toUpperCase()}`;
+            document.getElementById('name_customer').textContent = `Khách hàng: ${invoiceData.name_customer}`;
+            document.getElementById('movie_img').innerHTML = `<img src="${movieImageUrl}${invoiceData.poster}" alt="Movie Poster" class="ticket-item__posterModal me-3">`;
+            document.getElementById('printInvoiceLink').href = `<?php echo _LINK; ?>/in-ve-${invoiceData.id_invoice}.html`;
 
-        // Cập nhật thông tin hóa đơn chính
-        // document.getElementById('create_date').textContent = `Thời gian đặt vé: ${invoiceData.create_date}`;
-        let date = new Date(invoiceData.create_date);
+            // Cập nhật thông tin hóa đơn chính
+            let date = new Date(invoiceData.create_date);
 
-        let formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}h:${date.getMinutes().toString().padStart(2, '0')}p`;
-        document.getElementById('create_date').textContent = `Thời gian: ${formattedDate}`;
-        document.getElementById('pay_method').textContent = `Phương thức mua: ${invoiceData.payment_method}`;
-        document.getElementById('total_invoice').textContent = `Tổng giá trị hoá đơn: ${formatCurrency(invoiceData.final_total)}`;
+            let formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}h:${date.getMinutes().toString().padStart(2, '0')}p`;
+            document.getElementById('create_date').textContent = `Thời gian: ${formattedDate}`;
+            document.getElementById('pay_method').textContent = `Phương thức mua: ${invoiceData.payment_method}`;
+            document.getElementById('total_invoice').textContent = `Tổng giá trị hoá đơn: ${formatCurrency(invoiceData.final_total)}`;
 
-        // Cập nhật chi tiết vé
-        const ticketDetails = document.getElementById('ticket_details');
-        ticketDetails.innerHTML = '';
-        invoiceData.tickets.forEach(ticket => {
-                ticketDetails.innerHTML += `
-                    <div class="row mb-3 text-center">
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-start">
-                            <h6><b>${invoiceData.cinema_name}</b></h6>
-                            <h6>Suất chiếu: ${invoiceData.start_time}</h6>
-                            <h6>${invoiceData.show_date}</h6>
+            // Cập nhật chi tiết vé
+            const ticketDetails = document.getElementById('ticket_details');
+            ticketDetails.innerHTML = '';
+            invoiceData.tickets.forEach(ticket => {
+                    ticketDetails.innerHTML += `
+                        <div class="row mb-3 text-center">
+                            <div class="col-4 d-flex flex-column justify-content-center align-items-start ps-5">
+                                <h6><b>${invoiceData.cinema_name}</b></h6>
+                                <h6>Suất chiếu: ${invoiceData.start_time.slice(0, 5)}</h6>
+                                <h6>${invoiceData.show_date}</h6>
+                            </div>
+                            <div class="col-4 d-flex flex-column justify-content-center align-items-start ps-5">
+                                <h6>${invoiceData.room_name.toUpperCase()}</h6>
+                                <h6>Ghế: <b>${ticket.location}</b></h6>
+                                <h6>${invoiceData.format}</h6>
+                            </div>
+                            <div class="col-4 d-flex flex-column justify-content-center align-items-center ps-4">
+                                <h6>Mã vé: ${ticket.id_ticket}</h6>
+                                <img src="${qrImageUrl}${ticket.qrcode}" alt="QR" class="ticket-item__posterModal me-3">
+                                <h6 class="mt-1">${formatCurrency(ticket.price)}</h6>
+                            </div>
                         </div>
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-start">
-                            <h6>${invoiceData.room_name}</h6>
-                            <h6>Ghế: <b>${ticket.location}</b></h6>
-                            <h6>${invoiceData.format}</h6>
-                        </div>
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-center">
-                            <h6>Mã vé: ${ticket.id_ticket}</h6>
-                            <img src="${qrImageUrl}${ticket.qrcode}" alt="QR" class="ticket-item__posterModal me-3">
-                        </div>
-                    </div>
-                    <hr class="line_br">`;
-        });
+                        <hr class="line_br">`;
+            });
 
-        // Cập nhật chi tiết item
-        const itemDetails = document.getElementById('item_details');
-        itemDetails.innerHTML = '';
-        invoiceData.items.forEach(item => {
-                itemDetails.innerHTML += `
-                    <div class="row mb-3">
-                        <div class="col-4 text-center">
-                            <img src="${itemImageUrl}${item.image}" alt="Image item" class="ticket-item__posterModal me-3">
-                        </div>
-                        <div class="col-4 ps-5">
-                            <h6>${item.item_name}</h6> x${item.quantity}
-                        </div>
-                        <div class="col-4 text-center">
-                            <h6>${formatCurrency(item.price)}</h6>
-                        </div>
-                    </div>`;
+            // Cập nhật chi tiết item
+            const itemDetails = document.getElementById('item_details');
+            itemDetails.innerHTML = '';
+            invoiceData.items.forEach(item => {
+                    itemDetails.innerHTML += `
+                        <div class="row mb-3">
+                            <div class="col-4 text-center">
+                                <img src="${itemImageUrl}${item.image}" alt="Image item" class="ticket-item__posterModal me-3">
+                            </div>
+                            <div class="col-4 ps-5">
+                                <h6>${item.item_name}</h6> x${item.quantity}
+                            </div>
+                            <div class="col-4 text-center">
+                                <h6>${formatCurrency(item.price)}</h6>
+                            </div>
+                        </div>`;
+            });
         });
     });
-});
 
-function formatCurrency(amount) {
-    // Chuyển đổi số thành chuỗi và thêm dấu phân cách hàng nghìn
-    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
-}
-</script>
+    function formatCurrency(amount) {
+        // Chuyển đổi số thành chuỗi và thêm dấu phân cách hàng nghìn
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
+    }
+    </script>

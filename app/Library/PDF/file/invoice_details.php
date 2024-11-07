@@ -3,7 +3,6 @@
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// Thiết lập tùy chọn cho Dompdf
 $options = new Options();
 $options->set('defaultFont', 'DejaVu Sans');
 $options->set('isHtml5ParserEnabled', true);
@@ -12,74 +11,57 @@ $options->set('isRemoteEnabled', true);
 // Khởi tạo Dompdf
 $dompdf = new Dompdf($options);
 
-$qrcode = $ticket[0]['qrcode'];
-$imagePath = _WEB_ROOT . "/public/QR/image/$qrcode";
-if (file_exists($imagePath)) {
-    $imageData = base64_encode(file_get_contents($imagePath));
-    $imageSrc = 'data:image/jpeg;base64,' . $imageData;
-} else {
-    $imageSrc = '';
-}
+$name_customer = $invoice['full_name'];
+$email = $invoice['email'];
+$phone = $invoice['phone'];
+$cinema = strtoupper($invoice['cinema_name']);
+$address = $invoice['address'];
+$show_date = $invoice['show_date'];
+$movie = $invoice['movie_name'];
 
-$imageData = base64_encode(file_get_contents($imagePath));
-$imageSrc = 'data:image/jpeg;base64,' . $imageData;
-
-$seat = $ticket[0]['location'];
-$id_ticket = $ticket[0]['id_ticket'];
-$price = number_format($ticket[0]['price'], 0, ',', '.') . ' VNĐ';
-$date = $ticket[1]['show_date'];
-$timestamp = strtotime($date);
-$date = date('d-m-Y', $timestamp);
-
-$movie_name  = $ticket[1]['movie_name'];
-$room_name  = strtoupper($ticket[1]['room_name']);
-$start_time  = $ticket[1]['start_time'];
-$end_time  = $ticket[1]['end_time'];
-$duration  = $ticket[1]['duration'];
-
+$start_time  = date('H:i', strtotime($invoice['start_time']));
+$end_time  = date('H:i', strtotime($invoice['end_time']));
+$duration  = $invoice['duration'];
 $start_seconds = strtotime($start_time);
 $end_seconds = strtotime($end_time);
 $total_duration = $end_seconds - $start_seconds;
 $average_start = $start_seconds + ($total_duration / 2);
 $half_duration = ($duration * 60) / 2;
-
 $average_start_time = date("H:i:s", $average_start - $half_duration);
 $average_end_time = date("H:i:s", $average_start + $half_duration);
-
 $start_time = substr($average_start_time, 0, 5);
 $end_time = substr($average_end_time, 0, 5);
-$format = $ticket[1]['projection_format'];
 
-
-
-$cinema_name = strtoupper($ticket[2]['cinema_name']);
-$cinema_address = $ticket[2]['address'];
-
-
+$room_name  = strtoupper($invoice['room_name']);
+$format = $invoice['format'];
+$create_date = date('H:i:s d/m/Y', strtotime($invoice['create_date']));
+$total_amount = number_format($invoice['total_amount'], 0, ',', '.') . ' VNĐ';
+$discount = number_format($invoice['discount_total'], 0, ',', '.') . ' VNĐ';
 
 $html = "<!DOCTYPE html>
-<html lang='en'>
-
+<html lang='vi'>
 <head>
     <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Document</title>
-</head>
+    <title>Vé Xem Phim Điện Tử</title>
 <style>
-
     body {
         width: 100%;
         height: 100vh;
         margin: 0;
         padding: 0;
-        margin-left: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .center {
+        position: absolute;
         height: 100%;
         width: 100%;
         display: flex;
         align-items: center;
+        left: 100px;
+        top: 200px;
     }
 
     .ticket {
@@ -255,7 +237,64 @@ $html = "<!DOCTYPE html>
     }
 </style>
 
-<body>
+<style>
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 5px;
+        border: 1px solid #ff55a5;
+        background-color: rgb(241, 232, 207);
+    }
+    .invoice_cinema{
+        text-align: center;
+        margin-bottom:0px
+    }
+
+    hr {
+        margin: 20px 0;
+        border: 1px solid #1B11A1;
+    }
+
+    .info{
+        margin: 0px 0px 5px 55px;
+    }
+
+    table {
+        width: 90%;
+        border-collapse: collapse;
+        margin-bottom: 10px;
+        padding-left: 50px;
+    }
+    th, td {
+        border: 1px solid #1B11A1;
+        padding: 10px; /* Thêm khoảng cách bên trong ô */
+        text-align: center; /* Canh giữa nội dung ô */
+    }
+    th {
+        background-color: #e0e0e0; /* Màu nền cho hàng tiêu đề */
+    }
+</style>
+
+</head>
+<body>";
+
+// Phần thông tin vé
+foreach ($invoice['tickets'] as $ticket) {
+    $id_ticket = $ticket['id_ticket'];
+    $location = $ticket['location'];
+    $price_ticket = number_format($ticket['price'], 0, ',', '.') . ' VNĐ';
+    $imagePath = _WEB_ROOT . "/public/QR/image/".$ticket['qrcode'];
+    if (file_exists($imagePath)) {
+        $imageData = base64_encode(file_get_contents($imagePath));
+        $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+    } else {
+        $imageSrc = '';
+    }
+
+    $imageData = base64_encode(file_get_contents($imagePath));
+    $imageSrc = 'data:image/jpeg;base64,' . $imageData;
+    $html .="
     <div class='center'>
         <div class='ticket'>
             <div class='left'>
@@ -275,7 +314,7 @@ $html = "<!DOCTYPE html>
                 <div class='ticket_main'>
                     <p class='id_ticket' style='margin-bottom:8px; margin-top:0px; font-style: italic;'>NO ID: <span style='color:#ff55a5;font-weight: bold;font-size: 20px;'>$id_ticket</span></p>
                     <img src='$imageSrc' alt='qrcode'>
-                    <p class='seat' style='margin-top:8px; margin-bottom:0px;font-style: italic;'>Ghế/Seat: <span style='color:#ff55a5;font-weight: bold;font-size: 20px;'>$seat</span></p>
+                    <p class='seat' style='margin-top:8px; margin-bottom:0px;font-style: italic;'>Ghế/Seat: <span style='color:#ff55a5;font-weight: bold;font-size: 20px;'>$location</span></p>
                     <p class='seat' style='margin-top:0px; color:#ff55a5; font-weight: bold;font-size: 20px;'>$room_name</p>
                 </div>
             </div>
@@ -284,20 +323,20 @@ $html = "<!DOCTYPE html>
                 <div class='content'>
                     <div class='top'>
                         <h3 class='cinema'>HỆ THỐNG RẠP <span style='color:#ff55a5'>HOT</span><span style='color:rgb(120, 115, 115);'>FLIX</span></h3>
-                        <h4 class='cinema' style='color:#ff55a5'>$cinema_name</h4>
-                        <p style='text-align: center; font-size: 11px; padding-left: 40px; padding-right: 35px;'>$cinema_address</p>
-                        <p class='movie-title'>$movie_name</p>
+                        <h4 class='cinema' style='color:#ff55a5'>$cinema</h4>
+                        <p style='text-align: center; font-size: 11px; padding-left: 40px; padding-right: 35px;'>$address</p>
+                        <p class='movie-title'>$movie</p>
                     </div>
                     <div class='bottom'>
                             <div class='content-bt-left'>
-                                <p>Ngày/Date: <span style='color:#ff55a5;font-weight: bold;'>$date</span></p>
-                                <p>Thời lượng/Duration: <span style='color:#ff55a5;font-weight: bold;'>$duration phút</span></p>
+                                <p>Ngày/Date: <span style='color:#ff55a5;font-weight: bold;'>$show_date</span></p>
+                                <p>Thời lượng/Duration: <span style='color:#ff55a5;font-weight: bold;'> $duration phút</span></p>
                                 <p>Định dạng/Format: <span style='color:#ff55a5;font-weight: bold;'>$format</span></p>
                             </div>
                             <div class='content-bt-right'>
                                 <p>Suất/Show: <span style='color:#ff55a5;font-weight: bold;'>$start_time - $end_time</span></p>
-                                <p>Giờ đặt/TranTime: <span style='color:#ff55a5;font-weight: bold;'>28/10/2024, 09:27</span></p>
-                                <p>Giá/Price: <span style='color:#ff55a5;font-weight: bold;'>$price </span></p>
+                                <p>Giờ đặt/TranTime: <span style='color:#ff55a5;font-weight: bold;'>$create_date</span></p>
+                                <p>Giá/Price: <span style='color:#ff55a5;font-weight: bold;'>$price_ticket</span></p>
                             </div>
                     </div>
                 </div>
@@ -321,14 +360,77 @@ $html = "<!DOCTYPE html>
             </div>
         </div>
     </div>
-</body>
+    <div style='page-break-after: always;'></div>";
+}
 
-</html>";
+
+    $html .="
+    <div class='container'>
+        <h3 class='invoice_cinema'>HỆ THỐNG RẠP <span style='color:#ff55a5'>HOT</span><span style='color:rgb(120, 115, 115);'>FLIX</span></h3>
+        <h4 style='color:#ff55a5; text-align: center; margin-top:5px ; margin-bottom:5px'>$cinema</h4>
+        <hr>
+
+        <h2 style='color:red; text-align: center;' >HÓA ĐƠN </h2>
+        <div class='info'>
+            <div><strong>Khách hàng:</strong> $name_customer</div>
+            <div><strong>Email: </strong>$email</div>
+            <div><strong>Số điện thoại: </strong>$phone</div>
+            <div><strong>Thời gian đặt vé: </strong>$create_date</div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Tên Mặt Hàng</th>
+                    <th>Giá</th>
+                    <th>Số Lượng</th>
+                    <th>Tổng</th>
+                </tr>
+            </thead>
+            <tbody>";
+
+            foreach ($invoice['items'] as $item) {
+                $item_name =  $item['item_name'];
+                $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
+                $quantity = $item['quantity'];
+                $sum =   number_format($item['quantity'] * $item['price'], 0, ',', '.') . ' VNĐ';
+                $html .=
+                    "
+                            <tr>
+                                <td>$item_name</td>
+                                <td>$price</td>
+                                <td>$quantity</td>
+                                <td>$sum</td>
+                            </tr>
+                    ";
+            }
+
+            $quantity_ticket = 0;
+            $sum_totalPrice=0;
+            foreach ($invoice['tickets'] as $ticket) {
+                $quantity_ticket ++;
+                $sum_totalPrice += $ticket['price'];
+            }
+            $sum_ticket =  number_format($sum_totalPrice, 0, ',', '.') . ' VNĐ';
+            $html .="
+                    <tr>
+                        <td>Vé xem phim</td>
+                        <td></td>
+                        <td>$quantity_ticket</td>
+                        <td>$sum_ticket</td>
+                    </tr>
+            ";
+            $html .= "</tbody>
+            </table>
+            <p style='text-align: right; margin-right: 45px;'><strong>Giảm giá: </strong>$discount</p>
+            <p style='text-align: right; color:red; margin-right: 45px;'><strong>Tổng Tiền: </strong>$total_amount</p>
+            <p style='text-align: center; margin: 10px 5px 10px 5px; font-size:12px'>Kính gửi quý khách hàng, Xin trân trọng cảm ơn quý khách đã lựa chọn sử dụng dịch vụ của công ty HOTFLIX Việt Nam.</p>
+        </div>
+    </body>
+    </html>";
 
 
 $dompdf->loadHtml($html, 'UTF-8');
 $dompdf->setPaper('A4', 'landscape');
-
 $dompdf->render();
 
 $pdfContent = $dompdf->output();
@@ -354,7 +456,6 @@ $pdfContent = $dompdf->output();
             border: none;
             width: 100%;
             height: 100%;
-
         }
     </style>
 </head>
@@ -363,5 +464,4 @@ $pdfContent = $dompdf->output();
     <iframe src="data:application/pdf;base64,<?= base64_encode($pdfContent); ?>"></iframe>
 
 </body>
-
 </html>
