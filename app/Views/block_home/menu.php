@@ -156,19 +156,6 @@
                                 </svg></button>
                         </form>
 
-                        <!-- <div class="header__language">
-                            <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">EN <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
-                                </svg></a>
-
-                            <ul class="dropdown-menu header__dropdown-menu header__dropdown-menu--lang">
-                                <li><a href="#">English</a></li>
-                                <li><a href="#">Spanish</a></li>
-                                <li><a href="#">French</a></li>
-                            </ul>
-                        </div> -->
                         <?php if (isset($_SESSION['is_login'])) { ?>
                             <div class="header_user">
                                 <div class="header__user-avatar">
@@ -182,8 +169,9 @@
                                     <li><a href="<?php echo _LINK ?>/thong-tin-tai-khoan.html">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
+                                        <li><a href="<?php echo _LINK ?>/tra-cuu-ve.html">Tra cứu</a></li>
                                     <?php } ?>
-                                    <li><a href="lich-su-giao-dich.html">Lịch sử</a></li>
+                                    <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
                                     <li><a href="<?php echo _LINK ?>/account/logout">Đăng xuất</a></li>
                                 </ul>
                             </div>

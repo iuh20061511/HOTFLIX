@@ -1,25 +1,37 @@
 	<!-- page title -->
-	<section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
+	<!-- <section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
 		<div class="container">
 			<div class="row">
 				<div class="col-12">
 					<div class="section__wrap">
-						<!-- section title -->
 						<h1 class="section__title section__title--head">HOTFLIX</h1>
-						<!-- end section title -->
 
-						<!-- breadcrumbs -->
 						<ul class="breadcrumbs">
 							<li class="breadcrumbs__item"><a href="<?php echo _LINK ?>">Home</a></li>
 							<li class="breadcrumbs__item breadcrumbs__item--active">Hồ sơ cá nhân</li>
 						</ul>
-						<!-- end breadcrumbs -->
+
 					</div>
 				</div>
 			</div>
 		</div>
-	</section>
+	</section> -->
 	<!-- end page title -->
+
+	<section class="section section--first" style="padding: 10px 0">
+		<div class="container">
+	        <div class="row">
+	            <div class="col-12">
+	                <div class="section__wrap">
+	                    <ul class="breadcrumbs">
+	                        <li class="breadcrumbs__item"><a class="text-white" href="trang-chu.html"><i class="ti ti-home me-1"></i><span>Home</span></a></li>
+	                        <li class="breadcrumbs__item breadcrumbs__item--active text-pink">Tài khoản cá nhân</li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</section>
 
 	<!-- content -->
 	<div class="content">

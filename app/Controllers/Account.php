@@ -251,54 +251,76 @@ class Account extends Controller
             // Lấy thông tin người dùng
             $this->data['sub']['user'] = $this->model->getListTable($table, "where id_{$table} = $id_account");
 
-            $listTicketAndItem = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
-
-            $newArray = [];
-            foreach ($listTicketAndItem as $item) {
+            $invoices = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
+            $this->data['sub']['invoices']=[];
+            foreach ($invoices as $item) {
                 $id_invoice = $item['id_invoice'];
-
-                // Kiểm tra nếu chưa tồn tại id_invoice trong mảng mới
-                if (!isset($newArray[$id_invoice])) {
-                    $newArray[$id_invoice] = [
+                // Nếu chưa tồn tại id_invoice trong mảng kết quả thì khởi tạo
+                if (!isset($this->data['sub']['invoices'][$id_invoice])) {
+                    // Sao chép thông tin chung của hóa đơn vào phần tử mới
+                    $this->data['sub']['invoices'][$id_invoice] = [
+                        'id_invoice' => $item['id_invoice'],
                         'id_customer' => $item['id_customer'],
                         'create_date' => $item['create_date'],
                         'total_amount' => $item['total_amount'],
                         'discount_total' => $item['discount_total'],
                         'final_total' => $item['final_total'],
                         'payment_method' => $item['payment_method'],
+                        'name_customer' => $name_customer,
                         'tickets' => [],
-                        'items' => []
+                        'items' => [],
                     ];
                 }
-
-                // Kiểm tra id_ticket và id_item để phân loại thông tin
+                // Nạp dữ liệu cho vé hoặc item ngay trong vòng lặp này
                 if (!empty($item['id_ticket'])) {
-                    // Lấy thông tin chi tiết ticket
-                    $infoTicket = $this->model->getMultiTables(" SELECT t.id_ticket, t.qrcode, t.check_in, s.show_date, s.projection_format, s.start_time, 
-                            m.movie_name, m.poster ,r.room_name, c.cinema_name, se.location 
-                        FROM tickets t 
-                        JOIN seats se ON t.id_seat = se.id_seat 
-                        JOIN show_time s ON t.id_showTime = s.id_showTime 
-                        JOIN movie m ON s.id_movie = m.id_movie 
-                        JOIN room r ON s.id_room = r.id_room 
-                        JOIN cinemas c ON r.id_cinema = c.id_cinema 
-                        WHERE t.id_ticket = {$item['id_ticket']}
-                    ");
-                    $infoTicket[0]['show_date'] = $this->accountmodel->convertDayToVietnamese($infoTicket[0]['show_date']);
-                    $newArray[$id_invoice]['tickets'][] = $infoTicket;
+                    $id_ticket = $item['id_ticket'];
+                    $ticketDetails = $this->model->getListFromTwoTables('tickets', 'seats', 'id_seat', "where id_ticket='$id_ticket'");
+                    $this->data['sub']['invoices'][$id_invoice]['tickets'][] = [
+                        'id_ticket' => $item['id_ticket'],
+                        'quantity' => $item['quantity'],
+                        'location' => $ticketDetails[0]['location'],
+                        'check_in' => $ticketDetails[0]['check_in'],
+                        'qrcode' => $ticketDetails[0]['qrcode'],
+                        'id_showTime' => $ticketDetails[0]['id_showTime'],
+                        'id_room' => $ticketDetails[0]['id_room'],
+                        'price' => $ticketDetails[0]['price'],
+                    ];
                 }
-
                 if (!empty($item['id_item'])) {
-                    // Lấy thông tin chi tiết item
-                    $infoItem = $this->model->getMultiTables(" SELECT i.id_invoice, i.id_item, i.quantity, m.price, m.image , m.item_name ,i.quantity * m.price AS total 
-                        FROM invoice_detail i 
-                        JOIN menu_items m ON i.id_item = m.id_item 
-                        WHERE i.id_item = {$item['id_item']} AND i.id_invoice = $id_invoice
-                    ");
-                    $newArray[$id_invoice]['items'][] = $infoItem;
+                    $id_item = $item['id_item'];
+                    $itemDetails = $this->model->getListTable('menu_items', "where id_item='$id_item'");
+                    $this->data['sub']['invoices'][$id_invoice]['items'][] = [
+                        'id_item' => $item['id_item'],
+                        'quantity' => $item['quantity'],
+                        'item_name' => $itemDetails[0]['item_name'],
+                        'price' => $itemDetails[0]['price'],
+                        'description' => trim($itemDetails[0]['description']),
+                        'image' => $itemDetails[0]['image'],
+                    ];
                 }
             }
-            $this->data['sub']['invoices'] = $newArray;
+            //Nạp thông tin chung
+            foreach ($this->data['sub']['invoices'] as &$invoice) {
+                // Kiểm tra nếu tồn tại vé trong hóa đơn
+                if (!empty($invoice['tickets'])) {
+                    // Lấy vé đầu tiên
+                    $firstTicket = $invoice['tickets'][0];
+                    $id_room = $firstTicket['id_room'];
+                    $id_showTime = $firstTicket['id_showTime'];
+                    $infoCinema = $this->model->getListFromTwoTables('room','cinemas','id_cinema', "where id_room = $id_room" );
+                    $infoShowtime = $this->model->getListFromTwoTables('show_time','movie','id_movie', "where id_showTime = $id_showTime" );
+                    $invoice['show_date']= $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
+                    $invoice['movie_name']=$infoShowtime[0]['movie_name'];
+                    $invoice['poster']=$infoShowtime[0]['poster'];
+                    $invoice['start_time']=$infoShowtime[0]['start_time'];
+                    $invoice['end_time']=$infoShowtime[0]['end_time'];
+                    $invoice['format']=$infoShowtime[0]['projection_format'];
+                    $invoice['room_name']=$infoCinema[0]['room_name'];
+                    $invoice['cinema_name']=$infoCinema[0]['cinema_name'];
+                    $invoice['address']=$infoCinema[0]['address'];
+                }
+            }
+
             //danh sách thuê phòng
             $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC" );
             foreach ($this->data['sub']['listInvoiceRoom'] as &$invoice) {

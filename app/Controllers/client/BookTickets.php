@@ -7,6 +7,7 @@ class BookTickets extends Controller
 
 
     private $model;
+    private $accountmodel;
     private $data = [];
     private $ticket = [];
 
@@ -14,6 +15,7 @@ class BookTickets extends Controller
     public function __construct()
     {
         $this->model = $this->model('HomeModel');
+        $this->accountmodel = $this->model('AccountModel');
         $currentTime = date('Y-m-d H:i:s');
         $this->model->deleteData('seats', "where hold_expiry <= '$currentTime' AND status = 0 ");
     }
@@ -507,6 +509,85 @@ class BookTickets extends Controller
         $this->library("PDF/vendor/autoload.php");
 
         $this->library("PDF/file/total_invoice.php", $this->data);
+    }
+
+    public function PDFInvoiceDetails($id_invoice)
+    {
+            $invoice = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where invoice.id_invoice = $id_invoice ORDER BY invoice_detail.id_invoice DESC" );
+            $id_customer=$invoice[0]['id_customer'];
+            $customer = $this->model->getListTable('customer',"where id_customer = $id_customer" );
+
+            // Khởi tạo mảng lưu trữ hóa đơn
+            $this->data['invoice'] = [
+                'id_invoice' => $invoice[0]['id_invoice'],
+                'create_date' => $invoice[0]['create_date'],
+                'total_amount' => $invoice[0]['total_amount'],
+                'discount_total' => $invoice[0]['discount_total'],
+                'final_total' => $invoice[0]['final_total'],
+                'payment_method' => $invoice[0]['payment_method'],
+                'full_name' => $customer[0]['full_name'],
+                'email' => $customer[0]['email'],
+                'phone' => $customer[0]['phone'],
+                'tickets' => [],
+                'items' => []
+            ];
+
+            // Phân loại vào 'tickets' hoặc 'items' và nạp thông tin trực tiếp
+            foreach ($invoice as $item) {
+                if (!empty($item['id_ticket'])) {
+                    // Lấy chi tiết của vé
+                    $id_ticket = $item['id_ticket'];
+                    $ticketDetails = $this->model->getListFromTwoTables('tickets', 'seats', 'id_seat', "where id_ticket='$id_ticket'");
+
+                    // Thêm vào danh sách vé và nạp chi tiết
+                    $this->data['invoice']['tickets'][] = [
+                        'id_ticket' => $item['id_ticket'],
+                        'quantity' => $item['quantity'],
+                        'location' => $ticketDetails[0]['location'] ?? null,
+                        'check_in' => $ticketDetails[0]['check_in'] ?? null,
+                        'qrcode' => $ticketDetails[0]['qrcode'] ?? null,
+                        'id_showTime' => $ticketDetails[0]['id_showTime'] ?? null,
+                        'id_room' => $ticketDetails[0]['id_room'] ?? null,
+                        'price' => $ticketDetails[0]['price'] ?? null,
+                    ];
+                }
+
+                if (!empty($item['id_item'])) {
+                    // Lấy chi tiết của item
+                    $id_item = $item['id_item'];
+                    $itemDetails = $this->model->getListTable('menu_items', "where id_item='$id_item'");
+
+                    // Thêm vào danh sách items và nạp chi tiết
+                    $this->data['invoice']['items'][] = [
+                        'id_item' => $item['id_item'],
+                        'quantity' => $item['quantity'],
+                        'item_name' => $itemDetails[0]['item_name'] ?? null,
+                        'price' => $itemDetails[0]['price'] ?? null,
+                    ];
+                }
+            }
+
+            // Nạp thông tin chung cho hóa đơn từ vé đầu tiên
+            if (!empty($this->data['invoice']['tickets'])) {
+                $firstTicket = $this->data['invoice']['tickets'][0];
+                $id_room = $firstTicket['id_room'];
+                $id_showTime = $firstTicket['id_showTime'];
+                $infoCinema = $this->model->getListFromTwoTables('room', 'cinemas', 'id_cinema', "where id_room = $id_room");
+                $infoShowtime = $this->model->getListFromTwoTables('show_time', 'movie', 'id_movie', "where id_showTime = $id_showTime");
+                $this->data['invoice']['show_date'] = $this->accountmodel->convertDayToVietnamese($infoShowtime[0]['show_date']);
+                $this->data['invoice']['movie_name'] = $infoShowtime[0]['movie_name'];
+                $this->data['invoice']['start_time'] = $infoShowtime[0]['start_time'];
+                $this->data['invoice']['end_time'] = $infoShowtime[0]['end_time'];
+                $this->data['invoice']['format'] = $infoShowtime[0]['projection_format'];
+                $this->data['invoice']['duration'] = $infoShowtime[0]['duration'];
+                $this->data['invoice']['room_name'] = $infoCinema[0]['room_name'];
+                $this->data['invoice']['cinema_name'] = $infoCinema[0]['cinema_name'];
+                $this->data['invoice']['address'] = $infoCinema[0]['address'];
+            }
+
+        $this->library("PDF/vendor/autoload.php");
+
+        $this->library("PDF/file/invoice_details.php", $this->data);
     }
 
     public function book_ticket()

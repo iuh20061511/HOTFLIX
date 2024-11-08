@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/photoswipe.css">
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/default-skin.css">
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/css/main.css">
+<link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/assets/webfont/tabler-icons.min.css">
 
 <!-- Favicons -->
 <link rel="icon" type="image/png" href="<?php echo _WEB_ROOT ?>/public/assets/icon/logo_edited_v2.svg" sizes="32x32">

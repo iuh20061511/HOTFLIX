@@ -1,28 +1,20 @@
-	<!-- page title -->
-	<section class="section section--first section--bg" data-bg="<?php echo _WEB_ROOT ?>/public/assets/img/bg/section_bg.jpg">
-		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<div class="section__wrap">
-						<!-- section title -->
-						<h1 class="section__title section__title--head">HOTFLIX</h1>
-						<!-- end section title -->
-
-						<!-- breadcrumbs -->
-						<ul class="breadcrumbs">
-							<li class="breadcrumbs__item"><a href="<?php echo _LINK ?>">Home</a></li>
-							<li class="breadcrumbs__item breadcrumbs__item--active">Hồ sơ cá nhân</li>
-						</ul>
-						<!-- end breadcrumbs -->
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- end page title -->
-
+    <!-- page title -->
+    <section class="section section--first" style="padding: 10px 0; <?php echo !empty($invoices) ? 'margin-top: 22px;' : ''; ?>">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section__wrap">
+                        <ul class="breadcrumbs">
+                            <li class="breadcrumbs__item"><a class="text-white" href="trang-chu.html"><i class="ti ti-home me-1"></i><span>Home</span></a></li>
+                            <li class="breadcrumbs__item breadcrumbs__item--active text-pink">Lịch sử giao dịch</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 	<!-- content -->
-	<div class="content">
+	<section class="content" style="top: 0;">
 		<!-- profile -->
 		<div class="profile">
 			<div class="container">
@@ -66,14 +58,14 @@
 				<div class="tab-pane fade show active" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
 					<div class="row">
 						<!-- active price plan -->
-						<div class="col-12 col-md-6 col-lg-6 order-md-2 order-lg-1">
+						<div class="col-12 col-lg-6 order-md-1 order-lg-1">
                             <div class="transaction-list mt-4">
-                                    <h3 class="text-white">Danh sách đặt vé xem phim</h3>
+                                    <h3 class="text-white">Lịch sử đặt vé</h3>
                                     <?php 
                                         if(empty($invoices)){?>
                                         <div class="ticket-item mb-1 d-flex align-items-center">
                                             <div class="row w-100">
-                                                <h5>Danh sách đặt vé của bạn trống</h5>
+                                                <h5>Lịch sử đặt vé trống</h5>
                                             </div>
                                         </div>
                                     <?php }
@@ -81,18 +73,18 @@
                                     <!-- Các mục giao dịch -->
                                     <?php foreach ($invoices as $invoiceId => $invoice): ?>
                                         <div type="button" data-bs-toggle="modal" data-bs-target="#plan-modal" class="ticket-item mb-1 d-flex align-items-center" data-invoice='<?php echo json_encode($invoice, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE); ?>' >
-                                            <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $invoice['tickets'][0][0]['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
+                                            <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $invoice['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
                                             <div class="row w-100">
                                                 <div class="col-md-8 ticket-item__details">
-                                                    <h5 class="ticket-item__title"><?php echo $invoice['tickets'][0][0]['movie_name']; ?></h5>
+                                                    <h5 class="ticket-item__title"><?php echo $invoice['movie_name']; ?></h5>
                                                     <p class="ticket-item__showtime">
-                                                        <span class="time"><?php echo date('H:i', strtotime($invoice['tickets'][0][0]['start_time'])); ?></span>
-                                                        - <?php echo $invoice['tickets'][0][0]['show_date']; ?>
+                                                        <span class="time"><?php echo date('H:i', strtotime($invoice['start_time'])); ?></span>
+                                                        - <?php echo $invoice['show_date']; ?>
                                                     </p>
                                                 </div>
                                                 <div class="col-md-4 ticket-item__extra">
-                                                    <p class="ticket-item__cinema"><?php echo $invoice['tickets'][0][0]['cinema_name']; ?></p>
-                                                    <p class="ticket-item__format"><?php echo $invoice['tickets'][0][0]['projection_format']; ?></p>
+                                                    <p class="ticket-item__cinema"><?php echo $invoice['cinema_name']; ?></p>
+                                                    <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
                                                     <span class="ticket-item__details-link">Chi tiết</span>
                                                 </div>
                                             </div>
@@ -101,14 +93,14 @@
                             </div>
                         </div>
 						<!-- end active price plan -->
-                        <div class="col-12 col-lg-6 order-md-1 order-lg-2">
+                        <div class="col-12 col-lg-6 order-md-2 order-lg-2">
                             <div class="transaction-list mt-4">
-                                <h3 class="text-white">Danh sách đặt vé thuê phòng</h3>
+                                <h3 class="text-white">Lịch sử thuê phòng</h3>
                                 <?php
                                     if(empty($listInvoiceRoom)){?>
                                     <div class="ticket-item mb-1 d-flex align-items-center">
                                         <div class="row w-100">
-                                            <h5>Danh sách thuê phòng của bạn trống</h5>
+                                            <h5>Lịch sử thuê phòng trống</h5>
                                         </div>
                                     </div>
                                 <?php }
@@ -138,14 +130,14 @@
 				</div>
             </div>
 		</div>
-	</div>
+	</section>
 	<!-- end content -->
     <!-- Modal -->
     <div class="modal fade" id="plan-modal" tabindex="-1" aria-labelledby="plan-modal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ticketDetailModalLabel">Chi tiết hóa đơn</h5>
+                    <a href="" id="printInvoiceLink" target="_blank"><button type="button" class="btn btn-primary w-200">In vé</button></a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column justify-content-center align-items-center" id="ticketDetailContent" >
@@ -171,19 +163,28 @@
                     <div id="item_details">
                         <!-- JavaScript sẽ tự động thêm nội dung item vào đây -->
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="row ml-auto">
-                        <h5 id="total_invoice"></h5>
+                    <div class="container-fluid mt-3">
+                        <div class="row me-5">
+                            <div class="col-12 ms-auto text-end me-5">
+                                <h5 id="total_invoice" class="text-danger"></h5>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <h5 class="modal-title" id="ticketDetailModalLabel">Chi tiết hóa đơn</h5>
                 </div>
             </div>
         </div>
     </div>
-    <?php
-        echo '<pre>';
-        print_r($listInvoiceRoom);
-    ?>
+    <!-- Modal -->
+
+    <!-- Popup hiện poster -->
+	<div class="popup-qrcode" id="popupQrcode">
+		<span class="close-popup">&times;</span>
+		<img src="" alt="Movie Poster" class="popup-qrcode-image" id="popupQrcodeImage">
+	</div>
+	<!-- Popup hiện poster -->
 
 <script>
 document.querySelectorAll('.ticket-item').forEach(item => {
@@ -193,13 +194,12 @@ document.querySelectorAll('.ticket-item').forEach(item => {
         const movieImageUrl = `<?php echo _WEB_ROOT; ?>/public/admin/img/movies/`;
         const qrImageUrl = `<?php echo _WEB_ROOT; ?>/public/QR/image/`;
         const itemImageUrl=`<?php echo _WEB_ROOT; ?>/public/admin/img/menu_items/`;
-        // Lấy tên phim và poster từ phần tử đầu tiên trong mảng tickets
-        const firstTicket = invoiceData.tickets[0][0]; // Lấy ticket đầu tiên trong mảng
-        document.getElementById('movie_name').textContent = firstTicket.movie_name.toUpperCase();
-        document.getElementById('movie_img').innerHTML = `<img src="${movieImageUrl}${firstTicket.poster}" alt="Movie Poster" class="ticket-item__posterModal me-3">`;
 
+        document.getElementById('movie_name').textContent = `Phim: ${invoiceData.movie_name.toUpperCase()}`;
+        // document.getElementById('name_customer').textContent = `Khách hàng: ${invoiceData.name_customer}`;
+        document.getElementById('movie_img').innerHTML = `<img src="${movieImageUrl}${invoiceData.poster}" alt="Movie Poster" class="ticket-item__posterModal me-3">`;
+        document.getElementById('printInvoiceLink').href = `<?php echo _LINK; ?>/in-ve-${invoiceData.id_invoice}.html`;
         // Cập nhật thông tin hóa đơn chính
-        // document.getElementById('create_date').textContent = `Thời gian đặt vé: ${invoiceData.create_date}`;
         let date = new Date(invoiceData.create_date);
 
         let formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
@@ -210,34 +210,32 @@ document.querySelectorAll('.ticket-item').forEach(item => {
         // Cập nhật chi tiết vé
         const ticketDetails = document.getElementById('ticket_details');
         ticketDetails.innerHTML = '';
-        invoiceData.tickets.forEach(ticketArray => {
-            ticketArray.forEach(ticket => {
+        invoiceData.tickets.forEach(ticket => {
                 ticketDetails.innerHTML += `
                     <div class="row mb-3 text-center">
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-start">
-                            <h6><b>${ticket.cinema_name}</b></h6>
-                            <h6>Suất chiếu: ${ticket.start_time}</h6>
-                            <h6>${ticket.show_date}</h6>
+                        <div class="col-4 d-flex flex-column justify-content-center align-items-start ps-5">
+                            <h6><b>${invoiceData.cinema_name}</b></h6>
+                            <h6>Suất chiếu: ${invoiceData.start_time.slice(0, 5)}</h6>
+                            <h6>${invoiceData.show_date}</h6>
                         </div>
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-start">
-                            <h6>${ticket.room_name}</h6>
+                        <div class="col-4 d-flex flex-column justify-content-center align-items-start ps-5">
+                            <h6>${invoiceData.room_name.toUpperCase()}</h6>
                             <h6>Ghế: <b>${ticket.location}</b></h6>
-                            <h6>${ticket.projection_format}</h6>
+                            <h6>${invoiceData.format}</h6>
                         </div>
-                        <div class="col-4 d-flex flex-column justify-content-center align-items-center">
+                        <div class="col-4 d-flex flex-column justify-content-center align-items-center ps-4">
                             <h6>Mã vé: ${ticket.id_ticket}</h6>
-                            <img src="${qrImageUrl}${ticket.qrcode}" alt="QR" class="ticket-item__posterModal me-3">
+                            <img src="${qrImageUrl}${ticket.qrcode}" alt="QR" class="ticket-item__posterModal view-qrcode me-3" data-qrcode="${qrImageUrl}${ticket.qrcode}">
+                            <h6>${formatCurrency(ticket.price)}</h6>
                         </div>
                     </div>
                     <hr class="line_br">`;
-            });
         });
 
         // Cập nhật chi tiết item
         const itemDetails = document.getElementById('item_details');
         itemDetails.innerHTML = '';
-        invoiceData.items.forEach(itemArray => {
-            itemArray.forEach(item => {
+        invoiceData.items.forEach(item => {
                 itemDetails.innerHTML += `
                     <div class="row mb-3">
                         <div class="col-4 text-center">
@@ -250,8 +248,33 @@ document.querySelectorAll('.ticket-item').forEach(item => {
                             <h6>${formatCurrency(item.price)}</h6>
                         </div>
                     </div>`;
+        });
+
+        // <-------------Poster Event Binding Inside Ticket Click -------------->
+        const popupQrcode = document.getElementById('popupQrcode');
+        const popupQrcodeImage = document.getElementById('popupQrcodeImage');
+        const closePosterPopupBtn = document.querySelector('.close-popup');
+
+        document.querySelectorAll('.view-qrcode').forEach(link => {
+            link.addEventListener('click', function(event) {
+                const posterUrl = link.getAttribute('data-qrcode');
+                popupQrcodeImage.src = posterUrl;
+                popupQrcode.style.display = 'flex';
             });
         });
+
+        closePosterPopupBtn.addEventListener('click', function() {
+            popupQrcode.style.display = 'none';
+            popupQrcodeImage.src = '';
+        });
+
+        popupQrcode.addEventListener('click', function(e) {
+            if (e.target === popupQrcode) {
+                popupQrcode.style.display = 'none';
+                popupQrcodeImage.src = '';
+            }
+        });
+        // <-------------Poster Event Binding End -------------->
     });
 });
 
