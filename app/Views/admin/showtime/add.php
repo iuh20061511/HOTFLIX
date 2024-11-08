@@ -433,7 +433,9 @@
                                                     $_SESSION['roomType'] =  $_POST['roomType'];
                                                 }
 
-                                                if ($_SESSION['roomType'] == 2 || $_SESSION['roomType'] == 3 || $_SESSION['roomType'] == 4) { ?>
+                                                if ($_SESSION['roomType'] == 2 || $_SESSION['roomType'] == 3 || $_SESSION['roomType'] == 4) {
+                                                    echo $_SESSION['roomType'];
+                                                ?>
                                                     <input type="number" name="single_seat_price" id="single_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đơn..." min="10000" required>
                                                     <input type="number" name="double_seat_price" id="double_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đôi..." min="10000" required>
                                                 <?php } ?>

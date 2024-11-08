@@ -153,4 +153,9 @@ class Home extends Controller
 
         $this->view("layout/client", $this->data);
     }
+
+    public function error_404()
+    {
+        $this->view("errors/404");
+    }
 }

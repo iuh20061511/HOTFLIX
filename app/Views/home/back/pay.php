@@ -74,16 +74,12 @@
                         <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ ghế:<span id="countdown"></span></div>
 
                         <table>
-                            <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $image ?>"
+                            <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $_SESSION['back']['image'] ?>"
                                     class="card-img-top movie-poster"></th>
-                            <?php $_SESSION['back']['image']  = $image ?>
                             <th>
                                 <div class="m-3">
-                                    <h5 class="card-title"><?php echo $movie_name ?></h5>
-                                    <?php $_SESSION['back']['movie_name']  = $movie_name ?>
-                                    <p class="card-text"><?php echo $projection_format ?></p>
-                                    <?php $_SESSION['back']['projection_format']  = $projection_format ?>
-
+                                    <h5 class="card-title"><?php echo $_SESSION['back']['movie_name']  ?></h5>
+                                    <p class="card-text"><?php echo $_SESSION['back']['projection_format'] ?></p>
                                 </div>
 
                         </table>
@@ -92,21 +88,17 @@
 
                         <div class="card-body">
 
-                            <p><?php echo $cinema ?></p>
-                            <?php $_SESSION['back']['cinema']  = $cinema ?>
+                            <p><?php echo $_SESSION['back']['cinema'] ?></p>
 
-                            <p>Suất: <?php echo $time ?></p>
-                            <?php $_SESSION['back']['time']  = $time ?>
+                            <p>Suất: <?php echo  $_SESSION['back']['time'] ?></p>
 
                             <hr>
-                            <p>Ghế: <?php echo $seats ?></p>
-                            <?php $_SESSION['back']['seats']  = $seats ?>
+                            <p>Ghế: <?php echo $_SESSION['back']['seats'] ?></p>
 
                             <hr>
                             <div id="selected-combos">
                                 <?php
-                                $_SESSION['back']['item']  = $_POST['item'];
-                                foreach ($_POST['item'] as $item) {
+                                foreach ($_SESSION['back']['item'] as $item) {
                                     if ($item['quantity'] > 0) {
                                 ?>
                                         <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
@@ -118,23 +110,18 @@
                             </div>
                             <hr>
                             <p class="d-flex justify-content-between"><strong>Tổng cộng</strong> <span
-                                    class="text-danger" id="total-price"><?php echo $total ?></span></p>
-                            <?php $_SESSION['back']['total']  = $total ?>
+                                    class="text-danger" id="total-price"><?php echo $_SESSION['back']['total']  ?></span></p>
 
                             <div class="d-flex justify-content-between">
-                                <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
-                                <?php $_SESSION['back']['id_showtime']  = $id_showtime ?>
+                                <input type="hidden" name="id_showtime" value="<?php echo $_SESSION['back']['id_showtime'] ?>">
 
-                                <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
-                                <?php $_SESSION['back']['id_movie']  = $id_movie ?>
+                                <input type="hidden" name="id_movie" value="<?php echo $_SESSION['back']['id_movie'] ?>">
 
-                                <input type="hidden" name="id_room" value="<?php echo  $id_room ?>">
-                                <?php $_SESSION['back']['id_room']  = $id_room  ?>
+                                <input type="hidden" name="id_room" value="<?php echo $_SESSION['back']['id_room'] ?>">
 
-                                <input type="hidden" name="seats" value="<?php echo  $seats ?>">
-                                <?php $_SESSION['back']['seats']  = $seats ?>
+                                <input type="hidden" name="seats" value="<?php echo $_SESSION['back']['seats']  ?>">
 
-                                <input type="hidden" name="total" value="<?php echo  $total ?>">
+                                <input type="hidden" name="total" value="<?php echo  $_SESSION['back']['total']  ?>">
 
 
 

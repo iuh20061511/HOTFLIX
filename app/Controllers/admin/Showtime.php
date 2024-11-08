@@ -15,8 +15,7 @@ class Showtime extends Controller
     public function addShowTime()
     {
         $this->data['sub']['title'] = "Trang Admin";
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie');
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie');
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "WHERE id_movie != 0");
         $id_cinema = $_SESSION['is_login']['id_cinema'];
         $this->data['sub']['listRoom'] = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " where room.id_cinema =  $id_cinema ");
 

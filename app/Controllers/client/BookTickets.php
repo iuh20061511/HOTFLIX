@@ -91,10 +91,11 @@ class BookTickets extends Controller
 
     public function chooseFood()
     {
+        $_SESSION['currentURL'] =  _URL_;
+
 
         if (isset($_POST['seat'])) {
 
-            $this->data['content'] = 'home/book';
             $this->data['sub']['text'] = "Danh sách text";
             $this->data['sub']['movie_name']  = $_POST['movie_name'];
             $this->data['sub']['image']  = $_POST['image'];
@@ -114,6 +115,7 @@ class BookTickets extends Controller
                     $filteredData[$key] = $value;
                 }
             }
+            $id_showTime =  $_POST['id_showtime'];
             foreach ($filteredData as $seat => $value) {
                 $data = [
                     'location' => $seat,
@@ -124,6 +126,9 @@ class BookTickets extends Controller
                     'status' => 0
 
                 ];
+                $_SESSION['cancel']['seat'][] = $seat;
+                $_SESSION['back']['seat'] = $seat;
+                $this->data['sub']['hold_chairs']  = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
 
                 $this->model->InsertData('seats', $data);
             }
@@ -135,44 +140,88 @@ class BookTickets extends Controller
 
             $this->data['sub']['seats']  = $seats;
 
+
+            $this->data['content'] = 'home/chooseFood';
+
             $this->view("layout/client", $this->data);
         } else {
-            $redirectUrl = "chon-ghe.html";
-            header("refresh:0.5; url=$redirectUrl");
+            $redirectUrl = "404.html";
+            header("refresh:0.1; url=$redirectUrl");
         }
     }
 
+    public function backChooseFood()
+    {
+        $this->data['sub']['text'] = "Chọn món ăn";
+        $this->data['sub']['items']  = $this->model->getListTable('menu_items');
+        $id_showTime = $_SESSION['back']['id_showtime'];
+        $seat = $_SESSION['back']['seat'];
+        $this->data['sub']['hold_chairs']  = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
+
+        $this->data['content'] = 'home/back/chooseFood';
+
+
+        $this->view("layout/client", $this->data);
+    }
 
     public function pay()
     {
+        $_SESSION['currentURL'] =  _URL_;
 
-        $this->data['sub']['id_showtime']  = $_POST['id_showtime'];
-        $this->data['sub']['id_movie']  = $_POST['id_movie'];
-        $this->data['sub']['id_room']  = $_POST['id_room'];
-        $this->data['sub']['movie_name']  = $_POST['movie_name'];
-        $this->data['sub']['image']  = $_POST['image'];
-        $this->data['sub']['cinema']  = $_POST['cinema'];
-        $this->data['sub']['projection_format']  = $_POST['projection_format'];
-        $this->data['sub']['time']  = $_POST['time'];
-        $this->data['sub']['seats']  = $_POST['seats'];
-        $this->data['sub']['total']  = $_POST['total'];
-        $this->data['sub']['item']  = $_POST['item'];
 
-        $seats = explode(', ', rtrim($_POST['seats'], ', '));
 
-        $id_showTime = $_POST['id_showtime'];
+        if (isset($_POST['id_showtime'])) {
 
-        foreach ($seats as $seat) {
-            $res = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
-            if (!$res) {
-                $redirectUrl = _LINK;
-                header("refresh:0; url=$redirectUrl");
+            $this->data['sub']['id_showtime']  = $_POST['id_showtime'];
+            $this->data['sub']['id_movie']  = $_POST['id_movie'];
+            $this->data['sub']['id_room']  = $_POST['id_room'];
+            $this->data['sub']['movie_name']  = $_POST['movie_name'];
+            $this->data['sub']['image']  = $_POST['image'];
+            $this->data['sub']['cinema']  = $_POST['cinema'];
+            $this->data['sub']['projection_format']  = $_POST['projection_format'];
+            $this->data['sub']['time']  = $_POST['time'];
+            $this->data['sub']['seats']  = $_POST['seats'];
+            $this->data['sub']['total']  = $_POST['total'];
+            $this->data['sub']['item']  = $_POST['item'];
+
+            $seats = explode(', ', rtrim($_POST['seats'], ', '));
+
+            $id_showTime = $_POST['id_showtime'];
+
+            foreach ($seats as $seat) {
+                $_SESSION['back']['seat'] = $seat;
+                $this->data['sub']['hold_chairs']  = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
+                if (!$this->data['sub']['hold_chairs']) {
+                    $redirectUrl = _LINK;
+                    header("refresh:0; url=$redirectUrl");
+                }
             }
+
+            $this->data['content'] = 'home/pay';
+            $this->view("layout/client", $this->data);
+        } else {
+            $redirectUrl = "404.html";
+            header("refresh:0.1; url=$redirectUrl");
+        }
+    }
+
+    public function backPay()
+    {
+        $seat =  $_SESSION['back']['seat'];
+        $id_showTime = $_SESSION['back']['id_showtime'];
+        $this->data['sub']['hold_chairs']  = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
+        $this->data['content'] = 'home/back/pay';
+        $this->view("layout/client", $this->data);
+    }
+
+    public function cancelSeat()
+    {
+        $id_showTime = $_SESSION['back']['id_showtime'];
+        foreach ($_SESSION['cancel']['seat'] as $location) {
+            $this->model->deleteData('seats', "WHERE location = '$location' AND id_showTime = $id_showTime");
         }
 
-
-        $this->data['content'] = 'home/pay';
-        $this->view("layout/client", $this->data);
+        header("refresh:0.1; url='/'");
     }
 
     public function proceedPay()
@@ -209,7 +258,6 @@ class BookTickets extends Controller
             $showtime = $this->model->getListTable('show_time', "where id_showtime = $id_showtime ");
             $date = $showtime[0]['show_date'] . ' ' . $showtime[0]['end_time'];
 
-
             $_SESSION['payment_data'] = [
                 'id_seat' => $id_seat,
                 'id_showtime' => $id_showtime,
@@ -229,10 +277,12 @@ class BookTickets extends Controller
                         : (isset($_SESSION['infor_id_customer'])
                             ? ['id_customer' => $_SESSION['infor_id_customer']]
                             : [])
-                ),
-                'id_items' => $_POST['id_item']
+                )
             ];
 
+            if (isset($_POST['id_item'])) {
+                $_SESSION['payment_data']['id_items'] = $_POST['id_item'];
+            }
 
 
             $this->data['moneyNumber'] =  $moneyNumber;
@@ -262,7 +312,9 @@ class BookTickets extends Controller
             $id_tickets = $payment_data['id_tickets'];
             $date = $payment_data['date'];
             $invoice_data = $payment_data['invoice_data'];
-            $id_items = $payment_data['id_items'];
+            if (isset($payment_data['id_items'])) {
+                $id_items = $payment_data['id_items'];
+            }
             foreach ($id_seat as $id) {
                 $name = date("Y-m-d-h-i-s") . '_' . "$id_showtime" . "_$id" . '.png';
                 $data = [
@@ -330,13 +382,15 @@ class BookTickets extends Controller
                 $this->library("PHPMailer/sendmailTicket.php", $this->ticket);
             }
 
-            foreach ($id_items as $id => $quantity) {
-                $data = [
-                    'id_invoice' => $id_invoice,
-                    'id_item' => $id,
-                    'quantity' => $quantity,
-                ];
-                $this->model->InsertData('invoice_detail', $data);
+            if (isset($id_items)) {
+                foreach ($id_items as $id => $quantity) {
+                    $data = [
+                        'id_invoice' => $id_invoice,
+                        'id_item' => $id,
+                        'quantity' => $quantity,
+                    ];
+                    $this->model->InsertData('invoice_detail', $data);
+                }
             }
 
             unset($_SESSION['payment_data']);
@@ -435,7 +489,11 @@ class BookTickets extends Controller
 
     public function PDFTotalInvoice($id_invoice)
     {
+
         $this->data['invoice'][0] = $this->model->getListFromThreeTables("invoice", "invoice_detail", "menu_items", "id_invoice", "id_item", "WHERE invoice.id_invoice = $id_invoice");
+        if (isset($this->data['invoice'][0])) {
+            $this->data['invoice'][0] = $this->model->getListFromTwoTables("invoice", "invoice_detail", "id_invoice", "WHERE invoice.id_invoice = $id_invoice");
+        }
         $id_customer = $this->data['invoice'][0][0]['id_customer'];
 
         $customer = $this->model->getListTable('customer', "where id_customer = $id_customer");

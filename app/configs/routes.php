@@ -73,11 +73,16 @@ $routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
 $routes['thanh-toan.html'] = 'client/BookTickets/proceedPay';
 $routes['thanh-toan-thanh-cong.html'] = 'client/BookTickets/success';
 $routes['pay.html'] = 'client/BookTickets/pay';
+$routes['pay-.html'] = 'client/BookTickets/backPay';
+
 $routes['kiem-tra-ve-(.+)-(.+).html'] = 'client/BookTickets/QR/$1/$2';
 $routes['ve-da-dat-(.+).html'] = 'client/BookTickets/PDF/$1/';
 $routes['dat-ve.html']  = 'client/BookTickets/book_ticket';
 $routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 
+$routes['chon-thuc-an-.html'] = 'client/BookTickets/backChooseFood';
+
+$routes['huy-ghe.html'] = 'client/BookTickets/cancelSeat';
 
 
 
@@ -86,3 +91,7 @@ $routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 $routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
 $routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';
 $routes['hoa-don-dat-phong-(.+).html'] = 'book_room/rent_room/PDF/$1/';
+
+
+//errror
+$routes['404.html'] = 'home/error_404';

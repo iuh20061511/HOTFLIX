@@ -99,13 +99,15 @@ $html = "<!DOCTYPE html>
             </thead>
             <tbody>";
 
+
 foreach ($invoice[0] as $item) {
-    $item_name =  $item['item_name'];
-    $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
-    $quantity = $item['quantity'];
-    $sum =   number_format($item['quantity'] * $item['price'], 0, ',', '.') . ' VNĐ';
-    $html .=
-        "
+    if (!empty($item['item_name'])) {
+        $item_name =  $item['item_name'];
+        $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
+        $quantity = $item['quantity'];
+        $sum =   number_format($item['quantity'] * $item['price'], 0, ',', '.') . ' VNĐ';
+        $html .=
+            "
                 <tr>
                     <td>$item_name</td>
                     <td>$price</td>
@@ -113,12 +115,13 @@ foreach ($invoice[0] as $item) {
                     <td>$sum</td>
                 </tr>
            ";
+    }
 }
 $html .= "
             </tbody>
         </table>
 
-        <p style='text-align: right;'><strong>Tổng Tiền: </strong>$total_amount</p>
+        <p style='text-align: right;'><strong>Tổng Tiền vé và mặt hàng: </strong>$total_amount</p>
         <p style='text-align: center; margin-top: 20px;'>Kính gửi quý khách hàng, Xin trân trọng cảm ơn quý khách đã lựa chọn sử dụng dịch vụ của công ty HOTFLIX Việt Nam.</p>
     </div>
 </body>

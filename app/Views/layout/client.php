@@ -7,6 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <?php
     $this->view("block_home/header");
+
+    $validUrls = ['/chon-thuc-an.html', '/chon-thuc-an-.html', '/pay.html', '/pay-.html'];
+    if (!in_array(_URL_, $validUrls)) {
+        $this->view("home/holdTicket");
+    }
+
     ?>
 
 </head>
