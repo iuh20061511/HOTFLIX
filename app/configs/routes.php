@@ -16,12 +16,13 @@ $routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['thong-tin-rap-(.+).html'] = 'home/cinemaDetail/$1';
 $routes['khuyen-mai.html'] = 'home/promotion/';
 $routes['dang-nhap.html'] = 'account/login';
+$routes['dang-xuat.html'] = 'account/login';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
-$routes['thong-tin-tai-khoan.html'] = "account/profileInfo";
-$routes['lich-su-giao-dich.html'] = "account/transaction";
+$routes['thong-tin-tai-khoan.html'] = "client/inforuser/profileInfo";
+$routes['lich-su-giao-dich.html'] = "client/inforuser/transaction";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
