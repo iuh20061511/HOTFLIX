@@ -78,10 +78,14 @@
                             <a class="header__nav-link rounded-3 p-3 text-change" href="dat-ve.html" role="button"><b>Đặt vé</b></a>
 
                         </li>
-                        <!-- end dropdown -->
+                        <li class="header__nav-item ">
+                            <a class="header__nav-link" href="chon-thoi-gian-dat-phong.html?day=<?php echo date('Y-m-d') ?>" role="button"><b>Phòng chiếu của bạn</b></a>
+                        </li>
 
-                        <!-- dropdown -->
-                        <li class="header__nav-item">
+
+
+
+                        <!-- <li class="header__nav-item">
                             <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">Rạp <svg xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24">
@@ -94,15 +98,13 @@
                                 <li><a href="<?php echo _LINK ?>/thong-tin-rap-10.html">HotFlix Quận 7</a></li>
                                 <li><a href="catalog1.html">HotFlix Gò Vấp</a></li>
                                 <li><a href="catalog2.html">HotFlix Thủ Đức</a></li>
-                                <li><a href="catalog2.html"><?php echo $_SESSION['is_login']['id_account'] ?></a></li>
-
 
                             </ul>
-                        </li>
-                        <!-- end dropdown -->
+                        </li> -->
+
 
                         <li class="header__nav-item">
-                            <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê rạp</a>
+                            <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê phòng chiếu</a>
                         </li>
 
                         <!-- dropdown -->
@@ -124,24 +126,7 @@
                         </li>
                         <!-- end dropdown -->
 
-                        <!-- dropdown -->
-                        <li class="header__nav-item">
-                            <a class="header__nav-link header__nav-link--more" href="#" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12,10a2,2,0,1,0,2,2A2,2,0,0,0,12,10ZM5,10a2,2,0,1,0,2,2A2,2,0,0,0,5,10Zm14,0a2,2,0,1,0,2,2A2,2,0,0,0,19,10Z" />
-                                </svg>
-                            </a>
 
-                            <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="signin.html">Đăng nhập</a></li>
-                                <li><a href="signup.html">Đăng ký</a></li>
-                                <li><a href="forgot.html">Quên mật khẩu</a></li>
-                                <li><a href="404.html">404 Page</a></li>
-                            </ul>
-                        </li>
-                        <!-- end dropdown -->
                     </ul>
                     <!-- end header nav -->
 
@@ -172,7 +157,7 @@
                                         <li><a href="<?php echo _LINK ?>/tra-cuu-ve.html">Tra cứu</a></li>
                                     <?php } ?>
                                     <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
-                                    <li><a href="<?php echo _LINK ?>/account/logout">Đăng xuất</a></li>
+                                    <li><a href="<?php echo _LINK ?>/dang-xuat.html">Đăng xuất</a></li>
                                 </ul>
                             </div>
                         <?php } ?>
@@ -295,4 +280,3 @@
     </ul>
     <!-- end menu nav -->
 </div>
-<!-- end mobile menu -->

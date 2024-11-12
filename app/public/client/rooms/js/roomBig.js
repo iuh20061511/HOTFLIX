@@ -10,13 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // Hàm cập nhật thông tin ghế ngồi và tổng tiền
     function updateSeatInfo() {
         seatDisplay.innerText = `Ghế ngồi: ${selectedSeats.join(', ')}`;
-        totalDisplay.value = `${totalPrice.toLocaleString('vi-VN')}`; // Cập nhật giá trị vào input
+        totalDisplay.value = `${totalPrice.toLocaleString('vi-VN')}`;
     }
 
     // Hàm xử lý chọn ghế
     function handleSeatSelection(event) {
         const seatElement = event.target;
-        const seatLabel = seatElement.nextElementSibling.innerText; // Lấy giá trị của ghế
+        const seatLabel = seatElement.nextElementSibling.innerText;
         let seatPrice = a; // Giá ghế mặc định
 
         if (seatElement.closest("label").classList.contains("seat-vip")) {
@@ -26,17 +26,17 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (seatElement.checked) {
-            selectedSeats.push(seatLabel); // Thêm ghế vào danh sách ghế đã chọn
-            totalPrice += seatPrice; // Tăng tổng tiền
+            selectedSeats.push(seatLabel);
+            totalPrice += seatPrice;
         } else {
-            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel); // Xóa ghế khỏi danh sách ghế đã chọn
-            totalPrice -= seatPrice; // Giảm tổng tiền
+            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel);
+            totalPrice -= seatPrice;
         }
 
-        updateSeatInfo(); // Cập nhật lại thông tin ghế ngồi và tổng tiền
+        updateSeatInfo();
     }
 
-    // Gán sự kiện thay đổi cho các ghế
+
     seatInputs.forEach(seat => {
         seat.addEventListener("change", handleSeatSelection);
     });
@@ -44,4 +44,6 @@ document.addEventListener("DOMContentLoaded", function () {
     doubleSeatInputs.forEach(seat => {
         seat.addEventListener("change", handleSeatSelection);
     });
+
+
 });

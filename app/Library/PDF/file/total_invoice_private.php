@@ -11,12 +11,15 @@ $options->set('isRemoteEnabled', true);
 // Khởi tạo Dompdf
 $dompdf = new Dompdf($options);
 
-$name_customer = $invoice[1]['full_name'];
-$email = $invoice[1]['email'];
-$phone = $invoice[1]['phone'];
+$name_customer = $info_invoice[0]['full_name'];
+$email = $info_invoice[0]['email'];
+$phone = $info_invoice[0]['phone'];
+$date = $info_invoice[0]['hold_expiry'];
+$showtime = date("H:i d/m/Y", strtotime($date));
+$room_name = $info_invoice[0]['room_name'];
+$total = number_format($info_invoice[0]['price'], 0, ',', '.') . ' VNĐ';
+$cinema = $cinema[0]['cinema_name'];
 
-$create_date = date('H:i:s d/m/Y', strtotime($invoice[0][0]['create_date']));
-$total_amount = number_format($invoice[0][0]['total_amount'], 0, ',', '.') . ' VNĐ';
 
 $html = "<!DOCTYPE html>
 <html lang='vi'>
@@ -75,7 +78,7 @@ $html = "<!DOCTYPE html>
 <body>
     <div class='container'>
         <h1>HOTFLIX</h1>
-        <p style='text-align: center; margin-top:-30px'>Rạp chiếu phim HOTFLIX</p>
+        <p style='text-align: center; margin-top:-30px'>$cinema</p>
 
         <hr>
 
@@ -84,7 +87,10 @@ $html = "<!DOCTYPE html>
             <div><strong>Khách hàng:</strong> $name_customer</div>
             <div><strong>Email: </strong> $email</div>
             <div><strong>Số điện thoại: </strong> $phone</div>
-            <div><strong>Thời gian đặt vé: </strong>$create_date</div>
+            <div><strong>Số phòng: </strong>$room_name</div>
+            <div><strong>Ngày xem: </strong> $showtime</div>
+
+
         </div>
         
        
@@ -100,7 +106,7 @@ $html = "<!DOCTYPE html>
             <tbody>";
 
 
-foreach ($invoice[0] as $item) {
+foreach ($items as $item) {
     if (!empty($item['item_name'])) {
         $item_name =  $item['item_name'];
         $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
@@ -120,8 +126,8 @@ foreach ($invoice[0] as $item) {
 $html .= "
             </tbody>
         </table>
-
-        <p style='text-align: right;'><strong>Tổng Tiền vé và mặt hàng: </strong>$total_amount</p>
+        <p style='text-align: right;'><strong>Tiền phòng: </strong>2.000.000 VNĐ</p>
+        <p style='text-align: right;'><strong>Tổng Tiền phòng và mặt hàng: </strong>$total</p>
         <p style='text-align: center; margin-top: 20px;'>Kính gửi quý khách hàng, Xin trân trọng cảm ơn quý khách đã lựa chọn sử dụng dịch vụ của công ty HOTFLIX Việt Nam.</p>
     </div>
 </body>

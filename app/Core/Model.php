@@ -19,6 +19,8 @@ class Model extends Database
         $this->connectIfNeeded();
 
         $query = "SELECT * FROM `$tableName` $condition";
+
+
         $result = mysqli_query($this->connection, $query);
 
         if (!$result) {

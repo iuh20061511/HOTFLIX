@@ -16,6 +16,7 @@ $routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['thong-tin-rap-(.+).html'] = 'home/cinemaDetail/$1';
 $routes['khuyen-mai.html'] = 'home/promotion/';
 $routes['dang-nhap.html'] = 'account/login';
+$routes['dang-xuat.html'] = 'account/logout';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
@@ -84,6 +85,13 @@ $routes['chon-thuc-an-.html'] = 'client/BookTickets/backChooseFood';
 
 $routes['huy-ghe.html'] = 'client/BookTickets/cancelSeat';
 
+$routes['thue-phong-nhom-(.+).html'] = 'client/BookTickets/bookPrivateRoom/$1';
+$routes['chon-thuc-an-phong-nhom.html'] = 'client/BookTickets/chooseFoodForPrivate';
+$routes['chon-thoi-gian-dat-phong.html'] = 'client/BookTickets/chooseTimeRoomPrivate';
+$routes['thanh-toan-phong-nhom.html'] = 'client/BookTickets/payRoomPrivate';
+$routes['check-ttoan-pnhom.html'] = 'client/BookTickets/checkPayRoomPrivate';
+$routes['thanh-toan-phong-thanh-cong.html'] = 'client/BookTickets/PaySucessRoomPrivate';
+$routes['hoa-don-phong-rieng-(.+).html'] = 'client/BookTickets/PDFTotalInvoicePrivate/$1';
 
 
 

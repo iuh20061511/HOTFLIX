@@ -68,6 +68,15 @@ class Account extends Controller
     {
         unset($_SESSION['is_login']);
         session_destroy();
+        if (isset($_SESSION['cancel']['seat'])) {
+            $id_showTime = $_SESSION['back']['id_showtime'];
+            foreach ($_SESSION['cancel']['seat'] as $location) {
+                $this->model->deleteData('seats', "WHERE location = '$location' AND id_showTime = $id_showTime");
+            }
+            unset($_SESSION['hold_expiry_id_showTime']);
+            unset($_SESSION['hold_expiry_location']);
+            unset($_SESSION['cancel']['seat']);
+        }
         $redirectUrl = _LINK;
         header("refresh:0; url=$redirectUrl");
     }
@@ -190,7 +199,8 @@ class Account extends Controller
         }
     }
 
-    public function profileInfo() {
+    public function profileInfo()
+    {
         $this->data['sub']['title'] = "Trang thông tin người dùng";
 
         // Kiểm tra đăng nhập
@@ -243,7 +253,8 @@ class Account extends Controller
         $this->view("layout/client", $this->data);
     }
 
-    public function transaction(){
+    public function transaction()
+    {
         $this->data['sub']['title'] = "Lịch sử giao dịch";
         if (isset($_SESSION['is_login']['id_account'])) {
             $id_account = $_SESSION['is_login']['id_account'];
@@ -251,8 +262,8 @@ class Account extends Controller
             // Lấy thông tin người dùng
             $this->data['sub']['user'] = $this->model->getListTable($table, "where id_{$table} = $id_account");
 
-            $invoices = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
-            $this->data['sub']['invoices']=[];
+            $invoices = $this->model->getListFromTwoTables('invoice', 'invoice_detail', 'id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC");
+            $this->data['sub']['invoices'] = [];
             foreach ($invoices as $item) {
                 $id_invoice = $item['id_invoice'];
                 // Nếu chưa tồn tại id_invoice trong mảng kết quả thì khởi tạo
@@ -307,30 +318,29 @@ class Account extends Controller
                     $firstTicket = $invoice['tickets'][0];
                     $id_room = $firstTicket['id_room'];
                     $id_showTime = $firstTicket['id_showTime'];
-                    $infoCinema = $this->model->getListFromTwoTables('room','cinemas','id_cinema', "where id_room = $id_room" );
-                    $infoShowtime = $this->model->getListFromTwoTables('show_time','movie','id_movie', "where id_showTime = $id_showTime" );
-                    $invoice['show_date']= $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
-                    $invoice['movie_name']=$infoShowtime[0]['movie_name'];
-                    $invoice['poster']=$infoShowtime[0]['poster'];
-                    $invoice['start_time']=$infoShowtime[0]['start_time'];
-                    $invoice['end_time']=$infoShowtime[0]['end_time'];
-                    $invoice['format']=$infoShowtime[0]['projection_format'];
-                    $invoice['room_name']=$infoCinema[0]['room_name'];
-                    $invoice['cinema_name']=$infoCinema[0]['cinema_name'];
-                    $invoice['address']=$infoCinema[0]['address'];
+                    $infoCinema = $this->model->getListFromTwoTables('room', 'cinemas', 'id_cinema', "where id_room = $id_room");
+                    $infoShowtime = $this->model->getListFromTwoTables('show_time', 'movie', 'id_movie', "where id_showTime = $id_showTime");
+                    $invoice['show_date'] = $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
+                    $invoice['movie_name'] = $infoShowtime[0]['movie_name'];
+                    $invoice['poster'] = $infoShowtime[0]['poster'];
+                    $invoice['start_time'] = $infoShowtime[0]['start_time'];
+                    $invoice['end_time'] = $infoShowtime[0]['end_time'];
+                    $invoice['format'] = $infoShowtime[0]['projection_format'];
+                    $invoice['room_name'] = $infoCinema[0]['room_name'];
+                    $invoice['cinema_name'] = $infoCinema[0]['cinema_name'];
+                    $invoice['address'] = $infoCinema[0]['address'];
                 }
             }
 
             //danh sách thuê phòng
-            $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC" );
+            $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room', 'room', 'room_type', 'id_room', 'id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC");
             foreach ($this->data['sub']['listInvoiceRoom'] as &$invoice) {
                 $id_cinema = $invoice['id_cinema'];
                 $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
                 $invoice['cinema_name'] = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
-                $invoice['date_rent'] = $this->accountmodel->convertDayToVietnamese( $invoice['date_rent']);
+                $invoice['date_rent'] = $this->accountmodel->convertDayToVietnamese($invoice['date_rent']);
             }
-        }
-        else {
+        } else {
             header("refresh:0.5; url=" . _LINK . "/dang-nhap.html");
             exit();
         }

@@ -8,9 +8,14 @@
     <?php
     $this->view("block_home/header");
 
-    $validUrls = ['/chon-thuc-an.html', '/chon-thuc-an-.html', '/pay.html', '/pay-.html'];
-    if (!in_array(_URL_, $validUrls)) {
+    $validUrls = ['/chon-thuc-an.html', '/chon-thuc-an-.html', '/pay.html', '/pay-.html', '/chon-ghe.html'];
+    $warningUrl = ['/chon-ghe.html'];
+    if (!in_array(strtok(_URL_, '?'), $validUrls)) {
         $this->view("home/holdTicket");
+    }
+
+    if (in_array(strtok(_URL_, '?'), $warningUrl)) {
+        $this->view("home/warningTicket");
     }
 
     ?>

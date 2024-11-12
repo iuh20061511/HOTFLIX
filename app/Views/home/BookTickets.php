@@ -157,21 +157,13 @@
                         <?php
                         foreach ($times as $time) {
 
-                            $start_seconds = strtotime($time['start_time']);
-                            $end_seconds = strtotime($time['end_time']);
-                            $total_duration = $end_seconds - $start_seconds;
-                            $average_start = $start_seconds + ($total_duration / 2);
-                            $half_duration = ($time['duration'] * 60) / 2;
+                            $start_time  = date('H:i', strtotime($time['start_time'] . ' +30 minutes'));
 
-                            $average_start_time = date("H:i:s", $average_start - $half_duration);
-                            $average_end_time = date("H:i:s", $average_start + $half_duration);
 
-                            $start_time = substr($average_start_time, 0, 5);
-                            $end_time = substr($average_end_time, 0, 5);
 
                         ?>
                             <div class="border border-2 m-2 p-2 col-2 hover-effect text-center rounded-3">
-                                <a href="chon-ghe.html?id_showTime=<?php echo $time['id_showTime'] ?>&id_movie=<?php echo $time['id_movie'] ?>&id_room=<?php echo $time['id_room'] ?>" class="text-light"><?php echo $start_time . '-' .  $end_time ?></a>
+                                <a href="chon-ghe.html?id_showTime=<?php echo $time['id_showTime'] ?>&id_movie=<?php echo $time['id_movie'] ?>&id_room=<?php echo $time['id_room'] ?>" class="text-light"><?php echo $start_time  ?></a>
                             </div>
                         <?php
                         }

@@ -1,5 +1,4 @@
 <?php
-
 if (isset($_SESSION['hold_expiry_location'])) {
 
     $location = $_SESSION['hold_expiry_location'];
