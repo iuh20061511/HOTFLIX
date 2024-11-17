@@ -16,25 +16,25 @@ class Search extends Controller
     public function index()
     {
         $this->data['sub']['title'] = "Trang tra cứu thông tin vé";
-        $this->data['sub']['error']=[];
+        $this->data['sub']['error'] = [];
         $search_ticket = htmlspecialchars($_GET['search_ticket'], ENT_QUOTES, 'UTF-8');
-        if(isset($_GET['search_ticket']) && empty($search_ticket)){
+        if (isset($_GET['search_ticket']) && empty($search_ticket)) {
             $this->data['sub']['error']['search_ticket'] = 'Vui lòng nhập thông tin cần thiết để tra cứu!';
         }
-        if(isset($_GET['search_ticket']) && !empty($_GET['search_ticket'])){
+        if (isset($_GET['search_ticket']) && !empty($_GET['search_ticket'])) {
             $member = $this->model->getListTable('customer', "where phone = '$search_ticket' or email = '$search_ticket'");
-            if(!$member){
+            if (!$member) {
                 $this->data['sub']['error']['search_ticket'] = 'Không tìm thấy thành viên hợp lệ!';
             }
         }
-        if(isset($_GET['search_ticket']) && array_filter($this->data['sub']['error']) == []){
+        if (isset($_GET['search_ticket']) && array_filter($this->data['sub']['error']) == []) {
             $member = $this->model->getListTable('customer', "where phone = '$search_ticket' or email = '$search_ticket'");
             $id_account = $member[0]['id_customer'];
-            $this->data['sub']['infoMember']= $this->model->getListTable('customer', "where id_customer = '$id_account'");
+            $this->data['sub']['infoMember'] = $this->model->getListTable('customer', "where id_customer = '$id_account'");
             $name_customer = $this->data['sub']['infoMember'][0]['full_name'];
             //Danh sách vé
-            $listTicket = $this->model->getListFromTwoTables('invoice','invoice_detail','id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC" );
-            $this->data['sub']['listTicket']=[];
+            $listTicket = $this->model->getListFromTwoTables('invoice', 'invoice_detail', 'id_invoice', "where id_customer = $id_account ORDER BY invoice_detail.id_invoice DESC");
+            $this->data['sub']['listTicket'] = [];
             foreach ($listTicket as $item) {
                 $id_invoice = $item['id_invoice'];
                 // Nếu chưa tồn tại id_invoice trong mảng kết quả thì khởi tạo
@@ -89,22 +89,22 @@ class Search extends Controller
                     $firstTicket = $invoice['tickets'][0];
                     $id_room = $firstTicket['id_room'];
                     $id_showTime = $firstTicket['id_showTime'];
-                    $infoCinema = $this->model->getListFromTwoTables('room','cinemas','id_cinema', "where id_room = $id_room" );
-                    $infoShowtime = $this->model->getListFromTwoTables('show_time','movie','id_movie', "where id_showTime = $id_showTime" );
-                    $invoice['show_date']= $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
-                    $invoice['movie_name']=$infoShowtime[0]['movie_name'];
-                    $invoice['poster']=$infoShowtime[0]['poster'];
-                    $invoice['start_time']=$infoShowtime[0]['start_time'];
-                    $invoice['end_time']=$infoShowtime[0]['end_time'];
-                    $invoice['format']=$infoShowtime[0]['projection_format'];
-                    $invoice['room_name']=$infoCinema[0]['room_name'];
-                    $invoice['cinema_name']=$infoCinema[0]['cinema_name'];
-                    $invoice['address']=$infoCinema[0]['address'];
+                    $infoCinema = $this->model->getListFromTwoTables('room', 'cinemas', 'id_cinema', "where id_room = $id_room");
+                    $infoShowtime = $this->model->getListFromTwoTables('show_time', 'movie', 'id_movie', "where id_showTime = $id_showTime");
+                    $invoice['show_date'] = $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
+                    $invoice['movie_name'] = $infoShowtime[0]['movie_name'];
+                    $invoice['poster'] = $infoShowtime[0]['poster'];
+                    $invoice['start_time'] = $infoShowtime[0]['start_time'];
+                    $invoice['end_time'] = $infoShowtime[0]['end_time'];
+                    $invoice['format'] = $infoShowtime[0]['projection_format'];
+                    $invoice['room_name'] = $infoCinema[0]['room_name'];
+                    $invoice['cinema_name'] = $infoCinema[0]['cinema_name'];
+                    $invoice['address'] = $infoCinema[0]['address'];
                 }
             }
 
             //Danh sách thuê phòng
-            $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC" );
+            $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room', 'room', 'room_type', 'id_room', 'id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC");
             foreach ($this->data['sub']['listInvoiceRoom'] as &$invoice) {
                 $id_cinema = $invoice['id_cinema'];
                 $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
@@ -136,8 +136,5 @@ class Search extends Controller
         $this->data['content'] = 'admin/search/ticketSearch';
 
         $this->view("layout/client", $this->data);
-
     }
-
-
 }

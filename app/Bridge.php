@@ -8,6 +8,11 @@ $web_root = _WEB . $folder;
 
 define('_WEB_ROOT', $web_root);
 
+$currentURL = $_SERVER['REQUEST_URI'];
+
+define('_URL_', $currentURL);
+
+
 
 
 require_once "./app/configs/routes.php";
@@ -19,8 +24,6 @@ require_once "./app/Core/Route.php";
 require_once "./app/Core/App.php";
 
 
-
-require_once "./app/Core/Auth.php";
 
 require_once "./app/Core/Database.php";
 

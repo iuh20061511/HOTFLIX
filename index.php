@@ -32,6 +32,6 @@ require_once "./app/Bridge.php";
 $myApp = new App();
 
 
-//require_once "./app/Core/Auth.php";
+// require_once "./app/configs/configAuth.php";
 
 // authCheck($myApp);

@@ -69,29 +69,57 @@ $routes['xoa-qua-tang.html'] = 'admin/voucher/deleteGift';
 
 //đặt vé
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
-$routes['chon-ghe.html'] = 'client/BookTickets/selectSeat';
+$routes['chon-ghe-(.+).html'] = 'client/BookTickets/selectSeat/$1';
 $routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
 $routes['thanh-toan.html'] = 'client/BookTickets/proceedPay';
 $routes['thanh-toan-thanh-cong.html'] = 'client/BookTickets/success';
 $routes['pay.html'] = 'client/BookTickets/pay';
+$routes['pay-.html'] = 'client/BookTickets/backPay';
+
 $routes['kiem-tra-ve-(.+)-(.+).html'] = 'client/BookTickets/QR/$1/$2';
 $routes['ve-da-dat-(.+).html'] = 'client/BookTickets/PDF/$1/';
 $routes['dat-ve.html']  = 'client/BookTickets/book_ticket';
 $routes['hoa-don-(.+).html']  = 'client/BookTickets/PDFTotalInvoice/$1';
 
+$routes['chon-thuc-an-.html'] = 'client/BookTickets/backChooseFood';
 
+$routes['huy-ghe.html'] = 'client/BookTickets/cancelSeat';
+
+$routes['thue-phong-nhom-(.+).html'] = 'client/BookTickets/bookPrivateRoom/$1';
+$routes['chon-thuc-an-phong-nhom.html'] = 'client/BookTickets/chooseFoodForPrivate';
+$routes['chon-thoi-gian-dat-phong.html'] = 'client/BookTickets/chooseTimeRoomPrivate';
+$routes['thanh-toan-phong-nhom.html'] = 'client/BookTickets/payRoomPrivate';
+$routes['check-ttoan-pnhom.html'] = 'client/BookTickets/checkPayRoomPrivate';
+$routes['thanh-toan-phong-thanh-cong.html'] = 'client/BookTickets/PaySucessRoomPrivate';
+$routes['hoa-don-phong-rieng-(.+).html'] = 'client/BookTickets/PDFTotalInvoicePrivate/$1';
 
 
 
 //Rent_Room
+$routes['thue-phong/chon-rap-phong-chieu.html'] = 'book_room/rent_room';
+$routes['thue-phong/chon-khung-gio-thue.html'] = 'book_room/rent_room/chooseTime_room';
+$routes['hoa-don-dat-phong-(.+).html'] = 'book_room/rent_room/PDF/$1/';
+
+
+//errror
+$routes['404.html'] = 'home/error_404';
+///
 $routes['thue-phong/chon-rap-phong-chieu.html'] = 'client/rent_room';
 $routes['thue-phong/chon-khung-gio-thue.html'] = 'client/rent_room/chooseTime_room';
 $routes['hoa-don-dat-phong-(.+).html'] = 'client/rent_room/PDF/$1/';
+$routes['thanh-toan-hoa-don-thanh-cong.html'] = 'client/rent_room/paySuccessRoom';
 
 //Tra cứu thông tin
 $routes['tra-cuu-ve.html'] = 'admin/search';
 $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 // $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
 
+<<<<<<< HEAD
 //Vòng quay may mắn
 $routes['vong-quay-may-man.html'] = 'client/LuckyWheel';
+=======
+
+//Đổi suất chiếu
+$routes['doi-suat-chieu.html'] = 'client/ChangeTickets/selectSeat';
+$routes['xu-ly-doi-suat-chieu.html'] = 'client/ChangeTickets/handleShowTime';
+>>>>>>> c94a3f3649c9f3870dcfdb9fef3e20b4420db3f0

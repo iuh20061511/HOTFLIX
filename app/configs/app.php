@@ -62,4 +62,3 @@ $khoangThoiGian = timKhoangThoiGianKhaDung($lichPhim, $thoiLuongPhimMoi);
 foreach ($khoangThoiGian as $khoang) {
     echo "Khoảng thời gian khả dụng: {$khoang[0]}h - {$khoang[1]}h" . "<br>";
 }
-?>

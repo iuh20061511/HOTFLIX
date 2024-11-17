@@ -70,7 +70,7 @@ foreach ($show_time as $value) {
         if ($movie['title'] === $value['movie_name']) {
             $movie['times'][] = [
                 'time' => date('H:i', strtotime($value['start_time'] . ' +30 minutes')),
-                'data_time' => "id_showTime=" . $value['id_showTime'] . "&id_movie=" . $value['id_movie'] . "&id_room=" . $value['id_room']
+                'data_time' =>  $value['id_showTime']
             ];
             $movieExists = true;
             break;
@@ -82,7 +82,7 @@ foreach ($show_time as $value) {
             'title' => $value['movie_name'],
             'times' => [[
                 'time' => date('H:i', strtotime($value['start_time'] . ' +30 minutes')),
-                'data_time' => "id_showTime=" . $value['id_showTime'] . "&id_movie=" . $value['id_movie'] . "&id_room=" . $value['id_room']
+                'data_time' =>  $value['id_showTime']
             ]],
             'poster' => _WEB_ROOT . '/public/admin/img/movies/' . $value['poster'],
             'duration' => $value['duration'],
@@ -123,7 +123,7 @@ $jsonSchedules = json_encode($schedules);
                 movie.times.forEach(time => {
                     scheduleHTML += `
                         <a class="btn btn-outline-dark me-2 mb-2 time-btn" 
-                                href="chon-ghe.html?${time.data_time}">
+                                href="chon-ghe-${time.data_time}.html">
                             ${time.time}
                         </a> `;
                 });

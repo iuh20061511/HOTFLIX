@@ -1,5 +1,11 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/rooms/css/roomAgv.css">
+<style>
+    .maxSeat {
+        background-color: #000 !important;
+        cursor: not-allowed !important;
 
+    }
+</style>
 <?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
     <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:40%; z-index: 800;">
         <div class="card p-4" style="width: 400px;  <?php echo $check ? 'display: none;' : ''; ?>">
@@ -15,16 +21,16 @@
         </div>
     </div>
 <?php } ?>
-<form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();">
+<form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();" id="myForm">
     <input type="hidden" name="movie_name" value="<?php echo $movie[0]['movie_name'] ?>">
     <input type="hidden" name="image" value="<?php echo $movie[0]['poster'] ?>">
     <input type="hidden" name="cinema" value="<?php echo $cinema[0]['cinema_name'] ?>">
     <input type="hidden" name="projection_format" value="<?php echo $movie[0]['projection_format'] ?>">
     <input type="hidden" name="time" value="<?php echo substr($movie[0]['start_time'], 0, 5)  . ' - ' . substr($movie[0]['end_time'], 0, 5) . ', ' . date('d/m/Y', strtotime($movie[0]['show_date']));  ?>">
 
-    <input type="hidden" name="id_showtime" value="<?php echo $_GET['id_showTime'] ?>">
-    <input type="hidden" name="id_movie" value="<?php echo $_GET['id_movie'] ?>">
-    <input type="hidden" name="id_room" value="<?php echo $_GET['id_room'] ?>">
+    <input type="hidden" name="id_showtime" value="<?php echo $id_showTime ?>">
+    <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+    <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
 
 
 
@@ -96,8 +102,8 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                                <span><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
                                                             <?php } ?>
                                                         </label>
@@ -123,8 +129,8 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                                <span><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
                                                             <?php } ?>
                                                         </label>
@@ -152,8 +158,8 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                                <span><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
                                                             <?php } ?>
                                                         </label>
@@ -180,8 +186,8 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                                <span><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
                                                             <?php } ?>
                                                         </label>
@@ -282,6 +288,57 @@
 <script>
     document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
         seatCheckbox.addEventListener('change', function() {
+
+            let totalSelectedSeats = 0;
+            let selectedSeatValues = [];
+            var check = false;
+            const selectedSeats = document.querySelectorAll('input[type="checkbox"][name="seat[]"]:checked');
+            selectedSeats.forEach(function(seat) {
+                var seatVal = seat.value;
+                totalSelectedSeats++;
+                if (!selectedSeatValues.includes(seatVal)) {
+                    selectedSeatValues.push(seatVal);
+                }
+                for (let i = 65; i <= 90; i++) {
+                    let letter = String.fromCharCode(i);
+                    for (let j = 1; j <= 50; j++) {
+                        let maxseat = letter + j;
+                        let seatNA = document.querySelector(`.${maxseat}`);
+                        let checkbox = document.querySelector(`.checkbox${maxseat}`);
+                        if (!selectedSeatValues.includes(maxseat)) {
+                            if (totalSelectedSeats === 6) {
+                                if (seatNA) {
+                                    seatNA.classList.add('maxSeat');
+                                    check = true;
+                                    if (checkbox) {
+                                        checkbox.disabled = true;
+                                    }
+
+                                }
+                            } else {
+                                if (seatNA) {
+                                    seatNA.classList.remove('maxSeat');
+                                    check = false;
+                                    if (checkbox) {
+                                        checkbox.disabled = false;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            if (check == true) {
+                setTimeout(function() {
+                    alert('Bạn chỉ được phép chọn tối đa 6 ghế');
+                }, 200);
+            }
+
+
+
+
             const seatValue = this.value;
             const priceCheckbox = document.querySelector(`input[type="checkbox"][name="seat[${seatValue}][price]"]`);
 
@@ -296,5 +353,10 @@
     function closeCard() {
         const card = document.querySelector('.card');
         card.style.display = 'none';
+    }
+</script>
+<script>
+    window.onload = function() {
+        document.getElementById("myForm").reset();
     }
 </script>

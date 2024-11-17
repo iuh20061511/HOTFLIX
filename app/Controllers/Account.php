@@ -68,6 +68,15 @@ class Account extends Controller
     {
         unset($_SESSION['is_login']);
         session_destroy();
+        if (isset($_SESSION['cancel']['seat'])) {
+            $id_showTime = $_SESSION['back']['id_showtime'];
+            foreach ($_SESSION['cancel']['seat'] as $location) {
+                $this->model->deleteData('seats', "WHERE location = '$location' AND id_showTime = $id_showTime WHERE status = 0");
+            }
+            unset($_SESSION['hold_expiry_id_showTime']);
+            unset($_SESSION['hold_expiry_location']);
+            unset($_SESSION['cancel']['seat']);
+        }
         $redirectUrl = _LINK;
         header("refresh:0; url=$redirectUrl");
     }
@@ -189,5 +198,4 @@ class Account extends Controller
             return $this->view('errors/403', $this->data);
         }
     }
-
 }

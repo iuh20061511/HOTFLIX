@@ -284,7 +284,7 @@ foreach ($invoice['tickets'] as $ticket) {
     $id_ticket = $ticket['id_ticket'];
     $location = $ticket['location'];
     $price_ticket = number_format($ticket['price'], 0, ',', '.') . ' VNĐ';
-    $imagePath = _WEB_ROOT . "/public/QR/image/".$ticket['qrcode'];
+    $imagePath = _WEB_ROOT . "/public/QR/image/" . $ticket['qrcode'];
     if (file_exists($imagePath)) {
         $imageData = base64_encode(file_get_contents($imagePath));
         $imageSrc = 'data:image/jpeg;base64,' . $imageData;
@@ -294,7 +294,7 @@ foreach ($invoice['tickets'] as $ticket) {
 
     $imageData = base64_encode(file_get_contents($imagePath));
     $imageSrc = 'data:image/jpeg;base64,' . $imageData;
-    $html .="
+    $html .= "
     <div class='center'>
         <div class='ticket'>
             <div class='left'>
@@ -334,7 +334,7 @@ foreach ($invoice['tickets'] as $ticket) {
                                 <p>Định dạng/Format: <span style='color:#ff55a5;font-weight: bold;'>$format</span></p>
                             </div>
                             <div class='content-bt-right'>
-                                <p>Suất/Show: <span style='color:#ff55a5;font-weight: bold;'>$start_time - $end_time</span></p>
+                                <p>Suất/Show: <span style='color:#ff55a5;font-weight: bold;'>$start_time</span></p>
                                 <p>Giờ đặt/TranTime: <span style='color:#ff55a5;font-weight: bold;'>$create_date</span></p>
                                 <p>Giá/Price: <span style='color:#ff55a5;font-weight: bold;'>$price_ticket</span></p>
                             </div>
@@ -364,7 +364,7 @@ foreach ($invoice['tickets'] as $ticket) {
 }
 
 
-    $html .="
+$html .= "
     <div class='container'>
         <h3 class='invoice_cinema'>HỆ THỐNG RẠP <span style='color:#ff55a5'>HOT</span><span style='color:rgb(120, 115, 115);'>FLIX</span></h3>
         <h4 style='color:#ff55a5; text-align: center; margin-top:5px ; margin-bottom:5px'>$cinema</h4>
@@ -388,13 +388,13 @@ foreach ($invoice['tickets'] as $ticket) {
             </thead>
             <tbody>";
 
-            foreach ($invoice['items'] as $item) {
-                $item_name =  $item['item_name'];
-                $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
-                $quantity = $item['quantity'];
-                $sum =   number_format($item['quantity'] * $item['price'], 0, ',', '.') . ' VNĐ';
-                $html .=
-                    "
+foreach ($invoice['items'] as $item) {
+    $item_name =  $item['item_name'];
+    $price  =  number_format($item['price'], 0, ',', '.') . ' VNĐ';
+    $quantity = $item['quantity'];
+    $sum =   number_format($item['quantity'] * $item['price'], 0, ',', '.') . ' VNĐ';
+    $html .=
+        "
                             <tr>
                                 <td>$item_name</td>
                                 <td>$price</td>
@@ -402,16 +402,16 @@ foreach ($invoice['tickets'] as $ticket) {
                                 <td>$sum</td>
                             </tr>
                     ";
-            }
+}
 
-            $quantity_ticket = 0;
-            $sum_totalPrice=0;
-            foreach ($invoice['tickets'] as $ticket) {
-                $quantity_ticket ++;
-                $sum_totalPrice += $ticket['price'];
-            }
-            $sum_ticket =  number_format($sum_totalPrice, 0, ',', '.') . ' VNĐ';
-            $html .="
+$quantity_ticket = 0;
+$sum_totalPrice = 0;
+foreach ($invoice['tickets'] as $ticket) {
+    $quantity_ticket++;
+    $sum_totalPrice += $ticket['price'];
+}
+$sum_ticket =  number_format($sum_totalPrice, 0, ',', '.') . ' VNĐ';
+$html .= "
                     <tr>
                         <td>Vé xem phim</td>
                         <td></td>
@@ -419,7 +419,7 @@ foreach ($invoice['tickets'] as $ticket) {
                         <td>$sum_ticket</td>
                     </tr>
             ";
-            $html .= "</tbody>
+$html .= "</tbody>
             </table>
             <p style='text-align: right; margin-right: 45px;'><strong>Giảm giá: </strong>$discount</p>
             <p style='text-align: right; color:red; margin-right: 45px;'><strong>Tổng Tiền: </strong>$total_amount</p>
@@ -464,4 +464,5 @@ $pdfContent = $dompdf->output();
     <iframe src="data:application/pdf;base64,<?= base64_encode($pdfContent); ?>"></iframe>
 
 </body>
+
 </html>

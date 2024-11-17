@@ -1,17 +1,3 @@
-<?php
-$start_seconds = strtotime($start_time);
-$end_seconds = strtotime($end_time);
-$total_duration = $end_seconds - $start_seconds;
-$average_start = $start_seconds + ($total_duration / 2);
-$half_duration = ($duration * 60) / 2;
-
-$average_start_time = date("H:i:s", $average_start - $half_duration);
-$average_end_time = date("H:i:s", $average_start + $half_duration);
-
-$start_time = substr($average_start_time, 0, 5);
-$end_time = substr($average_end_time, 0, 5);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,24 +36,31 @@ $end_time = substr($average_end_time, 0, 5);
                 <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie_image; ?>" alt="QR Code" class="img-fluid" style="width: 100px;" alt="Movie Poster">
                 <h6 class="card-title mt-2"> <strong>Tên phim: </strong><?php echo $movie_name ?></h6>
                 <p class="card-text"><strong>Địa Điểm: </strong><?php echo $cinema_name ?></p>
-                <p class="card-text"><strong>Thời gian: </strong><?php echo $start_time . ' - ' . $end_time ?> <?php echo date("d/m/Y", strtotime($time));  ?> </p>
+                <p class="card-text"><strong>Thời gian: </strong><?php echo  rtrim((new DateTime("$start_time"))->modify('+30 minutes')->format('H:i')); ?> <?php echo date("d/m/Y", strtotime($time));  ?> </p>
                 <span class="card-text"><strong>Phòng: </strong> <?php echo $room ?></span>
                 <span class="card-text"> - Ghế: <?php echo $seat ?></span>
 
                 <div>
-                    <?php if ($checkIn == 1) { ?>
-                        <i class="bi bi-check-circle-fill" style="font-size: 3rem; color: #28a745;"></i>
-                    <?  } ?>
+                    <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 5) { ?>
+                        <?php if ($check == 2) { ?>
+                            <i class="bi bi-exclamation-triangle-fill" style="font-size: 3rem; color: #FFC107;"></i>
+                            <p class="text-warning"><b>Vé đã được Check-in</b></p>
+
+                        <?php  } elseif ($check == 1) { ?>
+                            <i class="bi bi-check-circle-fill" style="font-size: 3rem; color: #28a745;"></i>
+                            <p class="text-success"><b>Vé Check-in thành công</b></p>
+
+                        <?php  } else { ?>
+                            <i class="bi bi-x-circle-fill" style="font-size: 3rem; color: red;"></i>
+                            <p class="text-danger"><b>Chưa Check-in vé</b></p>
+
+                        <?php } ?>
                 </div>
-                <div class="my-3">
-                    <form action="" method="post">
-                        <input type="hidden" name="id_ticket" value="<?php echo $id_ticket ?>">
-                        <input type="submit" value="Xác nhận" name="checkIn">
-                    </form>
-                </div>
+            <?php } ?>
+
 
             </div>
-            <div class="card-footer text-muted">
+            <div class="card-footer text-muted mt-3">
                 <small>Chúc bạn có một buổi xem phim vui vẻ!</small>
             </div>
         </div>

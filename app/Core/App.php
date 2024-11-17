@@ -19,7 +19,6 @@ class App
         $this->action = 'index';
         $this->params = [];
         $this->handleUrl();
-
     }
 
 
@@ -42,7 +41,6 @@ class App
         if (empty($urlArray)) {
             $urlArray[0] = 'home';
             $urlArray[1] = 'index';
-
         }
 
         $this->urlCheck = '';
@@ -55,7 +53,6 @@ class App
                 $fileCheck = implode('/', $fileArr);
                 if (!empty($urlArray[$key - 1])) {
                     unset($urlArray[$key - 1]);
-
                 }
                 if (file_exists("app/Controllers/" . $fileCheck . ".php")) {
                     $this->urlCheck = $fileCheck;
@@ -63,7 +60,6 @@ class App
                 }
             }
             $urlArray = array_values($urlArray);
-
         }
 
 
@@ -72,10 +68,8 @@ class App
         // Controller    
         if (!empty($urlArray[0])) {
             $this->controller = ucfirst($urlArray[0]);
-
         } else {
             $this->controller = ucfirst($this->controller);
-
         }
 
         if (file_exists("app/Controllers/" . $this->urlCheck . ".php")) {
@@ -93,8 +87,6 @@ class App
                 unset($urlArray[0]);
             } else {
                 $this->loadError();
-
-
             }
         } else {
             $this->loadError();
@@ -108,13 +100,9 @@ class App
         if (!empty($urlArray[1])) {
             if (method_exists($this->controller, $urlArray[1])) {
                 $this->action = $urlArray[1];
-
-
             }
 
             unset($urlArray[1]);
-
-
         }
 
 
@@ -126,7 +114,6 @@ class App
             call_user_func_array([$this->controller, $this->action], $this->params);
         } else {
             $this->loadError();
-
         }
     }
 
@@ -144,7 +131,4 @@ class App
     {
         require './app/errors/' . $name . '.php';
     }
-
-
 }
-
