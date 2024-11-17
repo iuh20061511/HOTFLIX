@@ -12,6 +12,7 @@ if (isset($_SESSION['hold_expiry_location'])) {
                     Xin vui lòng kiểm tra kỹ trước khi xác nhận, để tránh bất kỳ sự bất tiện nào.</b>
             </span>
 
+
             <form action="" class="m-3" method="POST">
                 <a href="javascript:window.history.back();" class="text-danger">
                     <b><i class="bi bi-arrow-left"></i> Quay lại</b>

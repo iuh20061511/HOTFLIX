@@ -11,6 +11,9 @@ class Showtime extends Controller
     {
         $this->model = $this->model('AdminModel');
         $this->hander = new Handler();
+        if (!isset($_SESSION['is_login']['id_account'])) {
+            echo "<script>window.location.href = 'dang-nhap.html';</script>";
+        }
     }
     public function addShowTime()
     {
@@ -93,6 +96,9 @@ class Showtime extends Controller
             } else {
                 $id_room = 0;
             }
+
+            $this->data['sub']['id_roomType'] =  $this->model->getListTable("room", "where id_room = $id_room")[0]['id_roomType'];
+
             if (isset($_SESSION['movie'])) {
                 $movie = $_SESSION['movie'];
                 $values = explode(',', $movie);

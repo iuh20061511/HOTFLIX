@@ -19,7 +19,7 @@ class Rent_room extends Controller
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
         if (isset($_SESSION['is_login']['id_account'])) {
             if (isset($_POST['select_cinema']) && !empty($_POST['select_cinema'])) {
-                $this->data['sub']['listRoom'] = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " WHERE id_cinema = '" . $_POST['select_cinema'] . "'");
+                $this->data['sub']['listRoom'] = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " WHERE id_cinema = '" . $_POST['select_cinema'] . "' AND room.id_roomType != 5");
             }
             if (isset($_POST['continueChooseTime'])) {
                 $this->data['sub']['error']['dateRent'] = $this->validate->checkRoomRentDate($_POST['dateRent']);
@@ -49,7 +49,7 @@ class Rent_room extends Controller
         if (isset($_SESSION['cinemaRent'], $_SESSION['dateRent'], $_SESSION['roomRent'])) {
             $this->data['sub']['cinemaName'] = $this->model->getListTable('cinemas', " WHERE id_cinema = '" . $_SESSION['cinemaRent'] . "'");
             $this->data['sub']['dateRent'] = $_SESSION['dateRent'];
-            $roomRent = $this->model->getListFromTwoTables('room','room_type','id_roomType'," WHERE id_room = '" . $_SESSION['roomRent'] . "'");
+            $roomRent = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " WHERE id_room = '" . $_SESSION['roomRent'] . "'");
             $this->data['sub']['roomRent'] = $roomRent;
 
             $listShow = $this->model->getListTable('show_time', " WHERE id_room = '" . $_SESSION['roomRent'] . "' AND show_date = '" . $_SESSION['dateRent'] . "'");
@@ -97,26 +97,27 @@ class Rent_room extends Controller
             $this->data['sub']['pricePerHour'] = $pricePerHour;
 
             if (isset($_POST['continuePay'])) {
+                if (empty($_POST['payment'])) {
+                    $this->data['sub']['error']['check_pay'] = "Vui lòng chọn 1 hình thức thanh toán";
+                }
                 if (empty($_POST['timeRent']) || empty($_POST['selectedTime'])) {
                     $this->data['sub']['error']['timeRent'] = 'Vui lòng chọn thời gian thuê phòng!';
-                } else {
+                }
+
+                if (!empty($_POST['payment']) && (!empty($_POST['timeRent']) || !empty($_POST['selectedTime']))) {
                     $this->data['sub']['error'] = [];
                 }
-                if (array_filter($this->data['sub']['error']) == []) {
-                    $timeParts = explode('-', $_POST['selectedTime']);
-                    $data = [
-                        'show_date' => $_POST['dateTime'],
-                        'start_time' => $timeParts[0],
-                        'end_time' => $timeParts[1],
-                        'id_room' => $_POST['idRoom'],
-                        'id_movie' => 0
-                    ];
 
-                    $result = $this->model->InsertData('show_time', $data);
-                    if ($result) {
-                        echo "<script>alert('Thuê phòng chiếu thành công')</script>";
-                        $redirectUrl = "chon-rap-phong-chieu.html";
-                        header("refresh:0.5; url=$redirectUrl");
+
+                if (array_filter($this->data['sub']['error']) == []) {
+                    $_SESSION['info_room'] = $_POST;
+                    if (isset($_POST['payment'])) {
+                        $this->data['total'] = $_POST['totalPrice'];
+                        if ($_POST['payment'] == 'momo') {
+                            $this->library('PayOnline/QRMomoRoom.php', $this->data);
+                        } elseif ($_POST['payment'] == 'ATM') {
+                            $this->library('PayOnline/MomoRoom.php', $this->data);
+                        }
                     }
                 }
             }
@@ -125,14 +126,59 @@ class Rent_room extends Controller
             header("refresh:0.5; url= $redirectUrl");
         }
 
-        // Hiển thị view của trang chọn khung giờ
         $this->data['content'] = 'client/rent_room/chooseTime';
         $this->view("layout/client", $this->data);
     }
 
-    public function PDF($id_invoiceRoom){
+    public function paySuccessRoom()
+    {
+        $timeParts = explode('-', $_SESSION['info_room']['selectedTime']);
+        $data = [
+            'show_date' => $_SESSION['info_room']['dateTime'],
+            'start_time' => $timeParts[0],
+            'end_time' => $timeParts[1],
+            'id_room' => $_SESSION['info_room']['idRoom'],
+            'id_movie' => 0
+        ];
+
+        $result = $this->model->InsertData('show_time', $data);
+
+
+        $timeRange = $_SESSION['info_room']['selectedTime'];
+        $times = explode("-", $timeRange);
+
+        $startTime = $times[0];
+        $endTime = $times[1];
+        $data_invoice_room = [
+            'id_room' => $_SESSION['info_room']['idRoom'],
+            'id_customer' => $_SESSION['is_login']['id_account'],
+            'date_rent' => $_SESSION['info_room']['dateTime'],
+            'create_date' => date('Y-m-d H:i:s'),
+            'start_time' => $startTime,
+            'end_time' => $endTime,
+            'final_total' => $_SESSION['info_room']['totalPrice'],
+            'pay_method' => "Online",
+            'company' => $_SESSION['info_room']['company'] ?: null,
+            'service' => $_SESSION['info_room']['select_service'] ?: null,
+            'note' => $_SESSION['info_room']['note'] ?: null,
+        ];
+
+        $result = $this->model->InsertData('invoice_room', $data_invoice_room);
+        $id_invoice = $this->model->getInsertId();
+        if ($result) {
+            echo "<script>alert('Thuê phòng chiếu thành công')</script>";
+            $this->data['link_invoice'] = _LINK . "/hoa-don-dat-phong-$id_invoice.html";
+
+            $this->library("PHPMailer/sendmailRoom.php", $this->data);
+            $redirectUrl = "thue-phong/chon-rap-phong-chieu.html";
+            echo "<script>window.location.href = '$redirectUrl';</script>";
+        }
+    }
+
+    public function PDF($id_invoiceRoom)
+    {
         $this->data['sub']['title'] = "In hóa đơn thuê phòng";
-        $this->data['invoiceRoom'] = $this->model->getListFromThreeTables('invoice_room','room','room_type','id_room','id_roomType',"WHERE id_invoiceRoom = '$id_invoiceRoom'");
+        $this->data['invoiceRoom'] = $this->model->getListFromThreeTables('invoice_room', 'room', 'room_type', 'id_room', 'id_roomType', "WHERE id_invoiceRoom = '$id_invoiceRoom'");
         $id_cinema = $this->data['invoiceRoom'][0]['id_cinema'];
         $cinema = $this->model->getListTable('cinemas', "WHERE id_cinema = '$id_cinema'");
         $this->data['invoiceRoom'] = array_merge($this->data['invoiceRoom'], $cinema);

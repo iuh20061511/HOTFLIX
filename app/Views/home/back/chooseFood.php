@@ -105,7 +105,10 @@
     </section>
 </form>
 <?php
-
+$hod =  $hold_chairs[0]['hold_expiry'];
+$targetTime = strtotime($hod);
+$currentTime = time();
+$timeDifferenceInSeconds = $targetTime - $currentTime;
 ?>
 <script>
     var total = "<?php echo str_replace('.', '', $_SESSION['back']['total']); ?>";
@@ -143,6 +146,6 @@
     }
 </script>
 <script>
-    var time = 360
+    var time = <?php echo $timeDifferenceInSeconds ?>
 </script>
 <script src="<?php echo _WEB_ROOT ?>/public/client/book/js/time.js"></script>

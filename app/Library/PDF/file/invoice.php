@@ -295,8 +295,7 @@ $html = "<!DOCTYPE html>
                                 <p>Định dạng/Format: <span style='color:#ff55a5;font-weight: bold;'>$format</span></p>
                             </div>
                             <div class='content-bt-right'>
-                                <p>Suất/Show: <span style='color:#ff55a5;font-weight: bold;'>$start_time - $end_time</span></p>
-                                <p>Giờ đặt/TranTime: <span style='color:#ff55a5;font-weight: bold;'>28/10/2024, 09:27</span></p>
+                                <p>Suất/Show: <span style='color:#ff55a5;font-weight: bold;'>$start_time</span></p>
                                 <p>Giá/Price: <span style='color:#ff55a5;font-weight: bold;'>$price </span></p>
                             </div>
                     </div>

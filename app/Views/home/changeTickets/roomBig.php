@@ -3,25 +3,33 @@
     .maxSeat {
         background-color: #000 !important;
         cursor: not-allowed !important;
-
     }
 </style>
-<?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
-    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:40%; z-index: 800;">
-        <div class="card p-4" style="width: 400px;  <?php echo $check ? 'display: none;' : ''; ?>">
-            <i class="bi bi-x-circle" style="position: absolute; right: 10px; top: 2px; font-size: 20px; cursor: pointer;" onclick="closeCard()"></i>
-            <form action="" method="post">
-                <h5 class="card-title text-center mb-4">Thông tin khách hàng</h5>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="SĐT hoặc email khách hàng thành viên..." name="info">
-                    <span class="text-danger"><?php if (isset($error))  echo $error ?></span>
-                </div>
-                <input type="submit" class="btn btn-success w-100 mt-3" value="Xác nhận" name="btn_inforCus">
-            </form>
+<?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
+    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:30%; z-index: 800; right: 20%; ;">
+        <div class="card p-4" style="width: 800px;  height: 450px;   box-shadow: 5px 5px 8px 5px blue; <?php echo $check ? 'display: none;' : ''; ?>">
+            <h4 class="text-center text-primary"><b>Chính sách đổi suất chiếu</b></h4>
+            <p> Quý khách chỉ có thể thực hiện thay đổi số lượng ghế trong phạm vi các ghế mà quý khách đã đặt trước, bao gồm:<br>
+                <?php if ($_POST['tn'] > 0) { ?>
+                    <span class="text-danger"><b><?php echo $_POST['tn'] . " ghế thường" ?></b></span><br>
+                <?php } ?>
+                <?php if ($_POST['tv'] > 0) { ?>
+                    <span class="text-danger"><b><?php echo $_POST['tv'] . " ghế VIP" ?></b></span><br>
+                <?php } ?>
+                <?php if ($_POST['tdb'] > 0) { ?>
+                    <span class="text-danger"><b><?php echo $_POST['tdb'] . " ghế đôi" ?></b></span><br>
+                <?php } ?>
+            </p>
+            <p> Việc thay đổi số lượng ghế không được phép giảm bớt so với số ghế ban đầu mà quý khách đã chọn.
+                Trong trường hợp quý khách có nhu cầu đặt thêm ghế, vui lòng thực hiện quy trình mua vé mới, giống như khi quý khách đặt vé lần đầu tiên.</p>
+            <p>Chúng tôi khuyến nghị quý khách kiểm tra kỹ lưỡng số lượng và loại ghế trước khi thực hiện đặt vé để đảm bảo sự hài lòng và tiện lợi trong suốt quá trình sử dụng dịch vụ.</p>
+            <p class="text-center text-danger"><b>Cảm ơn quý khách đã lựa chọn dịch vụ của chúng tôi!</b></p>
+            <button onclick="closeCard()" class="btn btn-success">Xác nhận</button>
+
         </div>
     </div>
 <?php } ?>
-<form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();" id="myForm">
+<form action="xu-ly-doi-suat-chieu.html" method="POST" onsubmit="return checkSeats();" id="myForm">
     <input type="hidden" name="movie_name" value="<?php echo $movie[0]['movie_name'] ?>">
     <input type="hidden" name="image" value="<?php echo $movie[0]['poster'] ?>">
     <input type="hidden" name="cinema" value="<?php echo $cinema[0]['cinema_name'] ?>">
@@ -31,6 +39,9 @@
     <input type="hidden" name="id_showtime" value="<?php echo $id_showTime ?>">
     <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
     <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
+    <input type="hidden" name="id_invoice" value="<?php echo $id_invoice ?>">
+    <input type="hidden" name="id_showTime_old" value="<?php echo $id_showTime_old ?>">
+
     <section class="content">
         <div class="content__head">
             <div class="container">
@@ -88,16 +99,15 @@
                                     </div>
 
 
-                                    <div class="col-6">
+                                    <div class="col-3">
                                         <div class="cinema-seats1 cinema-seats">
                                             <?php
-                                            $rows = range('A', 'L');
-                                            for ($j = 0; $j < 12; $j++) { ?>
-                                                <div class="cinema-row row-<?php echo $j + 1; ?>" style="margin-left: 15%;">
-                                                    <?php for ($i = 0; $i < 10; $i++) {
+                                            $rows = range('A', 'N');
+                                            for ($j = 0; $j < 14; $j++) { ?>
+                                                <div class="cinema-row row-<?php echo $j + 1; ?>">
+                                                    <?php for ($i = 0; $i < 6; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
-                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 9;
-
+                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K', 'L']) && $i >= 2 && $i <= 8;
                                                         $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
                                                     ?>
                                                         <label class="seat <?php echo $isGreenSeat ? 'seat-vip text-white' : ''; ?>">
@@ -118,8 +128,8 @@
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-                                            <div style="margin-left: 15%;">
-                                                <?php for ($i = 1; $i < 6; $i++) {
+                                            <div>
+                                                <?php for ($i = 1; $i < 4; $i++) {
                                                     $seat = "Z" . $i;
                                                     $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
 
@@ -131,7 +141,7 @@
                                                         </label>
                                                     <?php } else { ?>
                                                         <label class="seat seat_double">
-                                                            <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkbox<?php echo $seat; ?>">
+                                                            <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkboxDB<?php echo $i; ?>">
                                                             <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
                                                             <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                         </label>
@@ -144,12 +154,12 @@
                                     <div class="col-6">
                                         <div class="cinema-seats1 cinema-seats">
                                             <?php
-                                            $rows = range('A', 'L');
-                                            for ($j = 0; $j < 12; $j++) { ?>
+                                            $rows = range('A', 'N');
+                                            for ($j = 0; $j < 14; $j++) { ?>
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>">
-                                                    <?php for ($i = 10; $i < 20; $i++) {
+                                                    <?php for ($i = 6; $i < 18; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
-                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 10 && $i <= 17;
+                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K', 'L']) && $i >= 6 && $i <= 17;
                                                         $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
 
                                                     ?>
@@ -171,7 +181,7 @@
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-                                            <?php for ($i = 6; $i < 11; $i++) {
+                                            <?php for ($i = 4; $i < 10; $i++) {
                                                 $seat = "Z" . $i;
                                                 $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
 
@@ -183,7 +193,7 @@
                                                     </label>
                                                 <?php } else { ?>
                                                     <label class="seat seat_double">
-                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkbox<?php echo $seat; ?>">
+                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkboxDB<?php echo $i; ?>">
                                                         <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
                                                         <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                     </label>
@@ -192,13 +202,64 @@
                                         </div>
                                     </div>
 
+                                    <div class="col-3">
+                                        <div class="cinema-seats1 cinema-seats">
+                                            <?php
+                                            $rows = range('A', 'N');
+                                            for ($j = 0; $j < 14; $j++) { ?>
+                                                <div class="cinema-row row-<?php echo $j + 1; ?>">
+                                                    <?php for ($i = 18; $i < 24; $i++) {
+                                                        $seat = $rows[$j] . ($i + 1);
+                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K', 'L']) && $i >= 18 && $i <= 21;
+                                                        $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
 
+                                                    ?>
+                                                        <label class="seat <?php echo $isGreenSeat ? 'seat-vip text-white' : ''; ?>">
+                                                            <div class="seat-sub1"></div>
+                                                            <?php if ($isDisabled) { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
+                                                                <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
+                                                                <?php if ($isGreenSeat) { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                                <?php } else { ?>
+                                                                    <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['single_seat_price'] ?>">
+                                                                <?php } ?>
+                                                            <?php } ?>
+                                                        </label>
+                                                    <?php } ?>
+                                                </div>
+                                            <?php } ?>
+                                            <?php for ($i = 10; $i < 13; $i++) {
+                                                $seat = "Z" . $i;
+                                                $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
+
+                                                if ($isDisabled) {
+                                            ?>
+                                                    <label class="seat seat_double">
+                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" disabled>
+                                                        <span style="background-color: #000; cursor: not-allowed"><b><?php echo "Z" . $i; ?></b></span>
+                                                    </label>
+                                                <?php } else { ?>
+                                                    <label class="seat seat_double">
+                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkboxDB<?php echo $i; ?>">
+                                                        <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
+                                                        <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
+                                                    </label>
+                                            <?php  }
+                                            } ?>
+                                        </div>
+                                    </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
 
                 <div class="col-12 col-lg-3">
                     <div class="row">
@@ -250,7 +311,6 @@
                 </div>
 
             </div>
-
         </div>
     </section>
 </form>
@@ -260,27 +320,55 @@
     var c = <?php echo $movie[0]['double_seat_price'] ?>;
 </script>
 
+
 <script src="<?php echo _WEB_ROOT ?>/public/client/rooms/js/roomBig.js"></script>
 <script>
     function checkSeats() {
 
         const seats = document.querySelectorAll('input[name="seat[]"]:checked');
 
+        var countSeatTM = <?php echo json_encode($_POST['tn']); ?>;
+        var countSeatTDB = <?php echo json_encode($_POST['tdb']); ?>;
+        var countSeatTVIP = <?php echo json_encode($_POST['tv']); ?>;
+        var sum = parseInt(countSeatTM) + parseInt(countSeatTDB) + parseInt(countSeatTVIP);
         if (seats.length === 0) {
             alert("Vui lòng chọn ghế!");
+            return false;
+        } else if (sum > seats.length) {
+            alert("Vui lòng chọn đủ số lượng ghế!");
             return false;
         }
         return true;
     }
 </script>
+
 <script>
-    localStorage.removeItem('endTime');
-    localStorage.removeItem('remainingTime');
-</script>
-<script>
+    function applySeatConfig(start, end, limit, count, regex, include, isDB = false) {
+        for (let i = start; i <= end; i++) {
+            let letter = String.fromCharCode(i);
+            for (let j = 1; j <= limit; j++) {
+                let maxseat = `${letter}${j}`;
+                let seatElement = document.querySelector(`.${maxseat}`);
+                let checkbox = isDB ? document.querySelector(`.checkboxDB${j}`) : document.querySelector(`.checkbox${maxseat}`);
+                if (count == 0 && seatElement && regex.test(maxseat) === include) {
+                    seatElement.classList.add('maxSeat');
+                    checkbox.disabled = true;
+                }
+            }
+        }
+    }
+
+    // thường
+    applySeatConfig(65, 78, 24, <?php echo json_encode($_POST['tn']); ?>, /^[F-L](?:[3-9]|1[0-9]|2[0-2])$/, false);
+
+    // vip
+    applySeatConfig(65, 78, 24, <?php echo json_encode($_POST['tv']); ?>, /^[F-L](?:[3-9]|1[0-9]|2[0-2])$/, true);
+
+    // db
+    applySeatConfig(90, 90, 12, <?php echo json_encode($_POST['tdb']); ?>, /^Z/, true, true);
+
     document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
         seatCheckbox.addEventListener('change', function() {
-
 
             let totalSelectedSeats = 0;
             let selectedSeatValues = [];
@@ -295,40 +383,111 @@
                 for (let i = 65; i <= 90; i++) {
                     let letter = String.fromCharCode(i);
                     for (let j = 1; j <= 50; j++) {
-                        let maxseat = letter + j;
-                        let seatNA = document.querySelector(`.${maxseat}`);
-                        let checkbox = document.querySelector(`.checkbox${maxseat}`);
+                        var maxseat = letter + j;
+
                         if (!selectedSeatValues.includes(maxseat)) {
-                            if (totalSelectedSeats === 6) {
+                            if (totalSelectedSeats == 6) {
+                                var seatNA = document.querySelector(`.${maxseat}`);
                                 if (seatNA) {
                                     seatNA.classList.add('maxSeat');
                                     check = true;
-                                    if (checkbox) {
-                                        checkbox.disabled = true;
-                                    }
-
                                 }
                             } else {
+                                var seatNA = document.querySelector(`.${maxseat}`);
                                 if (seatNA) {
                                     seatNA.classList.remove('maxSeat');
                                     check = false;
-                                    if (checkbox) {
-                                        checkbox.disabled = false;
-                                    }
 
                                 }
                             }
                         }
                     }
                 }
-
             });
 
-            if (check == true) {
-                setTimeout(function() {
-                    alert('Bạn chỉ được phép chọn tối đa 6 ghế');
-                }, 200);
+            let selectedChangeSeatValues = [];
+            selectedSeats.forEach(function(seat) {
+                var seatVal = seat.value;
+                if (!selectedChangeSeatValues.includes(seatVal)) {
+                    selectedChangeSeatValues.push(seatVal);
+                }
+            });
+
+            var countSeatTM = <?php echo json_encode($_POST['tn']); ?>;
+            var countSeatTDB = <?php echo json_encode($_POST['tdb']); ?>;
+            var countSeatTVIP = <?php echo json_encode($_POST['tv']); ?>;
+
+            var SeatTM = 0,
+                SeatTDB = 0,
+                SeatVIP = 0;
+
+            const regex = /^[F-L](?:[3-9]|1[0-9]|2[0-2])$/;
+            const regexZ = /^Z/;
+
+            selectedChangeSeatValues.forEach(seat => {
+                if (regex.test(seat) && SeatVIP < countSeatTVIP) {
+                    SeatVIP++;
+                } else if (regexZ.test(seat) && SeatTDB < countSeatTDB) {
+                    SeatTDB++;
+                } else if (SeatTM < countSeatTM) {
+                    SeatTM++;
+                }
+            });
+
+            for (let i = 65; i <= 90; i++) {
+                let letter = String.fromCharCode(i);
+                for (let j = 1; j <= 50; j++) {
+                    let maxseat = `${letter}${j}`;
+                    let seatElement = document.querySelector(`.${maxseat}`);
+                    var checkbox = document.querySelector(`.checkbox${maxseat}`);
+                    var checkboxDB = document.querySelector(`.checkboxDB${j}`);
+
+                    if (seatElement && !selectedSeatValues.includes(maxseat)) {
+                        let isMaxSeat =
+                            (regex.test(maxseat) && SeatVIP >= countSeatTVIP) ||
+                            (regexZ.test(maxseat) && SeatTDB >= countSeatTDB) ||
+                            (!regex.test(maxseat) && !regexZ.test(maxseat) && SeatTM >= countSeatTM);
+
+                        seatElement.classList.toggle('maxSeat', isMaxSeat);
+
+                        if (checkbox && SeatVIP >= countSeatTVIP) {
+                            if (regex.test(maxseat)) {
+                                checkbox.disabled = true;
+                            }
+                        } else if (checkbox && SeatVIP < countSeatTVIP) {
+                            if (regex.test(maxseat)) {
+                                checkbox.disabled = false;
+                            }
+                        }
+                        if (checkbox && SeatTM >= countSeatTM) {
+                            if (!regex.test(maxseat)) {
+                                checkbox.disabled = true;
+                            }
+                        } else if (checkbox && SeatTM < countSeatTM) {
+                            if (!regex.test(maxseat)) {
+                                checkbox.disabled = false;
+                            }
+                        }
+                        if (checkboxDB && SeatTDB >= countSeatTDB) {
+                            if (regexZ.test(maxseat)) {
+                                checkboxDB.disabled = true;
+                            }
+                        } else if (checkboxDB && SeatTDB < countSeatTDB) {
+                            if (regexZ.test(maxseat)) {
+                                checkboxDB.disabled = false;
+                            }
+                        }
+                    }
+                }
             }
+
+
+            // if (check == true) {
+            //     setTimeout(function() {
+            //         alert('Bạn chỉ được phép chọn tối đa 6 ghế');
+            //     }, 200);
+            // }
+
 
             const seatValue = this.value;
             const priceCheckbox = document.querySelector(`input[type="checkbox"][name="seat[${seatValue}][price]"]`);

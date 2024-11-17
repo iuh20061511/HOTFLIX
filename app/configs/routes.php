@@ -21,8 +21,8 @@ $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
-$routes['thong-tin-tai-khoan.html'] = "account/profileInfo";
-$routes['lich-su-giao-dich.html'] = "account/transaction";
+$routes['thong-tin-tai-khoan.html'] = "client/inforuser/profileInfo";
+$routes['lich-su-giao-dich.html'] = "client/inforuser/transaction";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
@@ -69,7 +69,7 @@ $routes['xoa-qua-tang.html'] = 'admin/voucher/deleteGift';
 
 //đặt vé
 $routes['dat-ve-(.+).html']  = 'client/BookTickets/book/$1';
-$routes['chon-ghe.html'] = 'client/BookTickets/selectSeat';
+$routes['chon-ghe-(.+).html'] = 'client/BookTickets/selectSeat/$1';
 $routes['chon-thuc-an.html'] = 'client/BookTickets/chooseFood';
 $routes['thanh-toan.html'] = 'client/BookTickets/proceedPay';
 $routes['thanh-toan-thanh-cong.html'] = 'client/BookTickets/success';
@@ -103,11 +103,18 @@ $routes['hoa-don-dat-phong-(.+).html'] = 'book_room/rent_room/PDF/$1/';
 
 //errror
 $routes['404.html'] = 'home/error_404';
+///
 $routes['thue-phong/chon-rap-phong-chieu.html'] = 'client/rent_room';
 $routes['thue-phong/chon-khung-gio-thue.html'] = 'client/rent_room/chooseTime_room';
 $routes['hoa-don-dat-phong-(.+).html'] = 'client/rent_room/PDF/$1/';
+$routes['thanh-toan-hoa-don-thanh-cong.html'] = 'client/rent_room/paySuccessRoom';
 
 //Tra cứu thông tin
 $routes['tra-cuu-ve.html'] = 'admin/search';
 $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 // $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
+
+
+//Đổi suất chiếu
+$routes['doi-suat-chieu.html'] = 'client/ChangeTickets/selectSeat';
+$routes['xu-ly-doi-suat-chieu.html'] = 'client/ChangeTickets/handleShowTime';

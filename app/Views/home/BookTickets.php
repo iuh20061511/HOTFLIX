@@ -163,7 +163,7 @@
 
                         ?>
                             <div class="border border-2 m-2 p-2 col-2 hover-effect text-center rounded-3">
-                                <a href="chon-ghe.html?id_showTime=<?php echo $time['id_showTime'] ?>&id_movie=<?php echo $time['id_movie'] ?>&id_room=<?php echo $time['id_room'] ?>" class="text-light"><?php echo $start_time  ?></a>
+                                <a href="chon-ghe-<?php echo $time['id_showTime'] ?>.html"><?php echo $start_time  ?></a>
                             </div>
                         <?php
                         }

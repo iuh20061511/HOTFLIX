@@ -1,5 +1,5 @@
     <!-- page title -->
-    <section class="section section--first" style="padding: 10px 0; <?php echo !empty($invoices) ? 'margin-top: 22px;' : ''; ?>">
+    <section class="section section--first" style="padding: 10px 0; <?php echo !empty($invoices) ? 'margin-top: 65px;' : ''; ?>">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -60,21 +60,19 @@
                         <!-- active price plan -->
                         <div class="col-12 col-lg-6 order-md-1 order-lg-1">
                             <div class="transaction-list mt-4">
-                                <h3 class="text-white">Lịch sử đặt vé</h3>
+                                <h3 class="text-white">Lịch sử vé</h3>
                                 <?php
                                 if (empty($invoices)) { ?>
                                     <div class="ticket-item mb-1 d-flex align-items-center">
                                         <div class="row w-100">
-                                            <h5>Lịch sử đặt vé trống</h5>
+                                            <h5>Lịch sử vé trống</h5>
                                         </div>
                                     </div>
                                 <?php }
                                 ?>
                                 <!-- Các mục giao dịch -->
-
                                 <?php foreach ($invoices as $invoiceId => $invoice): ?>
-
-                                    <div type="button" data-bs-toggle="modal" data-bs-target="#plan-modal" class="ticket-item mb-1 d-flex align-items-center" data-invoice='<?php echo json_encode($invoice, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE); ?>'>
+                                    <div class="ticket-item mb-1 d-flex align-items-center">
                                         <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $invoice['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
                                         <div class="row w-100">
                                             <div class="col-md-8 ticket-item__details">
@@ -83,62 +81,186 @@
                                                     <span class="time"><?php echo date('H:i', strtotime($invoice['start_time'])); ?></span>
                                                     - <?php echo $invoice['show_date']; ?>
                                                 </p>
-                                            </div>
-                                            <div class="col-md-4 ticket-item__extra">
-                                                <p class="ticket-item__cinema"><?php echo $invoice['cinema_name']; ?></p>
-                                                <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
-                                                <span class="ticket-item__details-link">Chi tiết</span>
-                                                <span class="m-3" data-bs-toggle="modal" data-bs-target="#ex_ticket_<?php echo $invoice['tickets'][0]['id_showTime'] ?>">Đổi vé</span>
-                                                <div class="modal" id="ex_ticket_<?php echo $invoice['tickets'][0]['id_showTime'] ?>">
-                                                    <div class="modal-dialog">
+                                                <?php
+                                                $showDateTime = $invoice['show_date_default'] . ' ' . $invoice['start_time'];
+                                                if ($showDateTime >= date("Y-m-d H:i:s")): ?>
+                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#give-ticket" class="btn btn-primary w-200 mb-2">Tặng vé</button>
+                                                <?php endif; ?>
+
+                                                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#<?php echo $invoice['id_invoice'] ?>"> Đổi vé </button>
+
+                                                <div class="modal fade" id="<?php echo $invoice['id_invoice'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">
-                                                            <div class="modal-body">Modal body..</div>s
+                                                            <div class="modal-body">
+                                                                <h5 class="text-center text-danger"><b>Các suất chiếu có thể đổi</b></h5>
+                                                                <h6 class="text-center text-success mb-4"><b>Phim: <?php echo $invoice['movie_name']; ?></b></h6>
+
+                                                                <?php
+                                                                $quantity_ticket_double = 0;
+                                                                $quantity_ticket_normal = 0;
+                                                                $quantity_ticket_vip = 0;
+
+
+                                                                foreach ($invoice['tickets'] as $ticket) {
+                                                                    if ($invoice['id_roomType'] == 2) {
+
+                                                                        if (preg_match('/^[F-K](?:[1-9]|1[0-2])$/', $ticket['location'])) {
+                                                                            $quantity_ticket_vip++;
+                                                                        } elseif (preg_match('/^Z/', $ticket['location'])) {
+                                                                            $quantity_ticket_double++;
+                                                                        } else {
+                                                                            $quantity_ticket_normal++;
+                                                                        }
+                                                                    } elseif ($invoice['id_roomType'] == 3) {
+
+                                                                        if (preg_match('/^[F-K](?:[3-9]|1[0-8])$/', $ticket['location'])) {
+                                                                            $quantity_ticket_vip++;
+                                                                        } elseif (preg_match('/^Z/', $ticket['location'])) {
+                                                                            $quantity_ticket_double++;
+                                                                        } else {
+                                                                            $quantity_ticket_normal++;
+                                                                        }
+                                                                    } elseif ($invoice['id_roomType'] == 4) {
+
+
+                                                                        if (preg_match('/^[F-L](?:[3-9]|1[0-9]|2[0-2])$/', $ticket['location'])) {
+                                                                            $quantity_ticket_vip++;
+                                                                        } elseif (preg_match('/^Z/', $ticket['location'])) {
+                                                                            $quantity_ticket_double++;
+                                                                        } else {
+                                                                            $quantity_ticket_normal++;
+                                                                        }
+                                                                    } else {
+                                                                        $quantity_ticket_vip++;
+                                                                    }
+                                                                }
+                                                                $currentDate = null;
+
+                                                                foreach ($this->getShowtimeList($invoice['id_movie'], $invoice['id_showTime'], $invoice['double_seat_price'], $invoice['single_seat_price'], $invoice['vip_seat_price']) as $show) {
+                                                                    $showDate = date('d/m/Y', strtotime($show['show_date']));
+                                                                    if ($currentDate !== $showDate) {
+                                                                        if ($currentDate !== null) { ?>
+                                                            </div>
+                                                        <?php }
+                                                                        $currentDate = $showDate; ?>
+
+                                                        <h6 class="text-center text-primary mt-3"><b>Ngày: <?php echo $currentDate; ?></b></h6>
+                                                        <div class="row mt-3">
+                                                        <?php }
+
+                                                                    $time = date('H:i', strtotime($show['start_time'])); ?>
+
+
+                                                        <div class="col-md-3 mb-3">
+                                                            <div class="card shadow-sm">
+                                                                <div class="card-body text-center">
+                                                                    <h5 class="card-title text-warning"><?php echo rtrim((new DateTime("$time"))->modify('+30 minutes')->format('H:i')); ?></h5>
+                                                                    <p class="card-text text-muted"><?php echo $show['cinema_name']; ?></p>
+                                                                    <p class="card-text text-danger" style="font-size: 12px;"><b><?php echo $show['seat']; ?></b> ghế đã bán</p>
+                                                                    <?php
+                                                                    ?>
+
+                                                                    <form action="doi-suat-chieu.html" method="post">
+                                                                        <input type="hidden" name="id_showTime_old" value="<?php echo $invoice['id_showTime'] ?>">
+                                                                        <input type="hidden" name="id_showTime" value="<?php echo $show['id_showTime'] ?>">
+                                                                        <input type="hidden" name="id_invoice" value="<?php echo $invoice['id_invoice'] ?>">
+                                                                        <input type="hidden" name="tn" value="<?php echo $quantity_ticket_normal ?>">
+                                                                        <input type="hidden" name="tv" value="<?php echo $quantity_ticket_vip ?>">
+                                                                        <input type="hidden" name="tdb" value="<?php echo $quantity_ticket_double  ?>">
+                                                                        <input type="submit" value="Đổi vé" class="btn btn-outline-warning w-100" name="sub_change">
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    <?php }
+                                                                if ($currentDate !== null) { ?>
+                                                        </div>
+                                                    <?php } ?>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="col-md-4 ticket-item__extra">
+                                            <p class="ticket-item__cinema"><?php echo $invoice['cinema_name']; ?></p>
+                                            <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
+                                            <div type="button" data-bs-toggle="modal" data-bs-target="#plan-modal" class="ticket-item__details-link" data-invoice='<?php echo json_encode($invoice, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE); ?>'>Xem chi tiết</div>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
                             </div>
+                            <!-- Modal give ticket-->
+                            <div class="modal fade" id="give-ticket" tabindex="-1" aria-labelledby="plan-modal" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered modal-md">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="text-center text-pink ps-4">Tặng vé thành viên!</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body d-flex flex-column justify-content-center align-items-center" id="ticketDetailContent">
+                                            <!-- Phần hiển thị thông tin hóa đơn chính -->
+                                            <form method='post' style="width:90%">
+                                                <label for="email_sdt" class="d-flex justify-content-start mt-1">Nhập email hoặc số điện thoại thành viên được nhận:</label>
+                                                <input type="text" class="form-control border border-primary rounded mb-3" placeholder="Email hoặc số điện thoại" id="email_sdt" name="email_sdt" value="<?php echo isset($_POST['email_sdt']) ? $_POST['email_sdt'] : ''; ?>">
+                                                <?php if (isset($error['email_sdt'])): ?>
+                                                    <div class="row mt-4">
+                                                        <div class="col-12 d-flex align-items-center justify-content-center">
+                                                            <p class="error text-danger"><?php echo $error['email_sdt']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                <?php endif; ?>
+                                                <input type="text" value="<?php echo $invoice['id_invoice'] ?>" name="id_giveInvoice" style="display:none">
+                                                <div class="text-center">
+                                                    <input type="submit" value="Xác nhận tặng" class="btn btn-primary text-center w-200" name="giveTicket">
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal give ticket-->
+                        <?php endforeach; ?>
                         </div>
-                        <!-- end active price plan -->
-                        <div class="col-12 col-lg-6 order-md-2 order-lg-2">
-                            <div class="transaction-list mt-4">
-                                <h3 class="text-white">Lịch sử thuê phòng</h3>
-                                <?php
-                                if (empty($listInvoiceRoom)) { ?>
-                                    <div class="ticket-item mb-1 d-flex align-items-center">
-                                        <div class="row w-100">
-                                            <h5>Lịch sử thuê phòng trống</h5>
+                    </div>
+                    <!-- end active price plan -->
+                    <div class="col-12 col-lg-6 order-md-2 order-lg-2">
+                        <div class="transaction-list mt-4">
+                            <h3 class="text-white">Lịch sử thuê phòng</h3>
+                            <?php
+                            if (empty($listInvoiceRoom)) { ?>
+                                <div class="ticket-item mb-1 d-flex align-items-center">
+                                    <div class="row w-100">
+                                        <h5>Lịch sử thuê phòng trống</h5>
+                                    </div>
+                                </div>
+                            <?php }
+                            ?>
+                            <!-- Các mục giao dịch -->
+                            <?php foreach ($listInvoiceRoom as $invoiceRoom): ?>
+                                <a href="hoa-don-dat-phong-<?php echo $invoiceRoom['id_invoiceRoom'] ?>.html" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
+                                    <img src="<?php echo _WEB_ROOT; ?>/public/assets/img/rent_room.png" alt="Movie Poster" class="ticket-item__poster me-3">
+                                    <div class="row w-100">
+                                        <div class="col-md-8 ticket-item__details">
+                                            <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoiceRoom['cinema_name'], 'UTF-8') ?></h5>
+                                            <p class="ticket-item__showtime">
+                                                <span class="time"><?php echo $invoiceRoom['date_rent'] ?></span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-4 ticket-item__extra">
+                                            <p class="ticket-item__cinema"><?php echo mb_strtoupper($invoiceRoom['room_name'], 'UTF-8') ?> </p>
+                                            <p class="ticket-item__format"><?php echo $invoiceRoom['start_time'] . ' - ' . $invoiceRoom['end_time']; ?> </p>
+                                            <span class="ticket-item__details-link">Chi tiết</span>
                                         </div>
                                     </div>
-                                <?php }
-                                ?>
-                                <!-- Các mục giao dịch -->
-                                <?php foreach ($listInvoiceRoom as $invoiceRoom): ?>
-                                    <a href="hoa-don-dat-phong-<?php echo $invoiceRoom['id_invoiceRoom'] ?>.html" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
-                                        <img src="<?php echo _WEB_ROOT; ?>/public/assets/img/rent_room.png" alt="Movie Poster" class="ticket-item__poster me-3">
-                                        <div class="row w-100">
-                                            <div class="col-md-8 ticket-item__details">
-                                                <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoiceRoom['cinema_name'], 'UTF-8') ?></h5>
-                                                <p class="ticket-item__showtime">
-                                                    <span class="time"><?php echo $invoiceRoom['date_rent'] ?></span>
-                                                </p>
-                                            </div>
-                                            <div class="col-md-4 ticket-item__extra">
-                                                <p class="ticket-item__cinema"><?php echo mb_strtoupper($invoiceRoom['room_name'], 'UTF-8') ?> </p>
-                                                <p class="ticket-item__format"><?php echo $invoiceRoom['start_time'] . ' - ' . $invoiceRoom['end_time']; ?> </p>
-                                                <span class="ticket-item__details-link">Chi tiết</span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
-                            </div>
+                                </a>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </section>
     <!-- end content -->
@@ -147,7 +269,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a href="" id="printInvoiceLink" target="_blank"><button type="button" class="btn btn-primary w-200" download="ve-da-dat.pdf">In vé</button></a>
+                    <a href="" id="printInvoiceLink" target="_blank"><button type="button" class="btn btn-primary w-200">In vé</button></a>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body d-flex flex-column justify-content-center align-items-center" id="ticketDetailContent">
@@ -197,7 +319,7 @@
     <!-- Popup hiện poster -->
 
     <script>
-        document.querySelectorAll('.ticket-item').forEach(item => {
+        document.querySelectorAll('.ticket-item__details-link').forEach(item => {
             item.addEventListener('click', function() {
                 const invoiceData = JSON.parse(this.getAttribute('data-invoice'));
                 //Các đường dẫn ảnh:
@@ -293,3 +415,12 @@
             return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
         }
     </script>
+
+    <?php if (!empty($error)): ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var myModal = new bootstrap.Modal(document.getElementById('give-ticket'));
+                myModal.show();
+            });
+        </script>
+    <?php endif; ?>

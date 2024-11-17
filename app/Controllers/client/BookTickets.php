@@ -61,25 +61,23 @@ class BookTickets extends Controller
     }
 
 
-    public function selectSeat()
+    public function selectSeat($id_showTime)
     {
 
+        $show_time = $this->model->getListTable("show_time", "WHERE id_showTime=$id_showTime");
 
-
-        $rooms = $this->model->getListTable('room');
-        $id_movie = $_GET['id_movie'];
+        $id_movie = $show_time[0]['id_movie'];
         $this->data['sub']['id_movie'] = $id_movie;
-
-        $id_showTime = $_GET['id_showTime'];
         $this->data['sub']['id_showTime'] = $id_showTime;
-        $id_room = $_GET['id_room'];
+        $id_room = $show_time[0]['id_room'];
         $this->data['sub']['id_room'] =  $id_room;
+        $rooms = $this->model->getListTable('room');
         $this->data['sub']['seats_buy'] = $this->model->getListTable("seats", "WHERE id_showTime=$id_showTime");
 
         $this->data['sub']['movie'] = $this->model->getListFromTwoTables('movie', 'show_time', 'id_movie', "where show_time.id_movie = $id_movie and show_time.id_showTime  =  $id_showTime");
         $this->data['sub']['cinema'] = $this->model->getListFromTwoTables('room', 'cinemas', 'id_cinema', "where room.id_room = $id_room");
         foreach ($rooms as $room) {
-            if ($room['id_room'] == $_GET['id_room']) {
+            if ($room['id_room'] == $id_room) {
                 if ($room['id_roomType'] == 1) {
                     $this->data['content'] = 'home/room/roomVip';
                 } elseif ($room['id_roomType'] == 2) {
@@ -225,6 +223,9 @@ class BookTickets extends Controller
             $this->data['sub']['seats']  = $_POST['seats'];
             $this->data['sub']['total']  = $_POST['total'];
             $this->data['sub']['item']  = $_POST['item'];
+
+            $this->data['sub']['promotion']  = $this->model->getListTable('promotion');
+
 
             $seats = explode(', ', rtrim($_POST['seats'], ', '));
 
@@ -442,17 +443,16 @@ class BookTickets extends Controller
             }
 
             unset($_SESSION['payment_data']);
+            unset($_SESSION['hold_expiry_id_showTime']);
+            unset($_SESSION['hold_expiry_location']);
+            unset($_SESSION['cancel']['seat']);
             if ($_SESSION['is_login']['id_role'] == 1) {
                 $this->data['content'] = 'home/paySuccess';
                 $this->data['sub']['infor']  = "Thông báo thành công";
                 $this->view("layout/client", $this->data);
             } else {
                 echo "<script>alert('Đặt vé thành công')</script>";
-?>
-                <script>
-                    window.location.href = "dat-ve.html";
-                </script>
-<?php
+                echo "<script>window.location.href = 'dat-ve.html';</script>";
             }
         } else {
             echo "Thất bại";
@@ -536,6 +536,7 @@ class BookTickets extends Controller
         $id_cinema = $movieData[0]['id_cinema'];
         $cinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
         $this->data['ticket'] = array_merge($this->data['ticket'], $cinema);
+
 
 
 

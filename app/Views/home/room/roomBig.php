@@ -3,6 +3,7 @@
     .maxSeat {
         background-color: #000 !important;
         cursor: not-allowed !important;
+
     }
 </style>
 <?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
@@ -27,9 +28,9 @@
     <input type="hidden" name="projection_format" value="<?php echo $movie[0]['projection_format'] ?>">
     <input type="hidden" name="time" value="<?php echo substr($movie[0]['start_time'], 0, 5)  . ' - ' . substr($movie[0]['end_time'], 0, 5) . ', ' . date('d/m/Y', strtotime($movie[0]['show_date']));  ?>">
 
-    <input type="hidden" name="id_showtime" value="<?php echo $_GET['id_showTime'] ?>">
-    <input type="hidden" name="id_movie" value="<?php echo $_GET['id_movie'] ?>">
-    <input type="hidden" name="id_room" value="<?php echo $_GET['id_room'] ?>">
+    <input type="hidden" name="id_showtime" value="<?php echo $id_showTime ?>">
+    <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+    <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
 
     <section class="content">
         <div class="content__head">
@@ -105,7 +106,7 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
                                                                 <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <?php if ($isGreenSeat) { ?>
                                                                     <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
@@ -130,7 +131,7 @@
                                                         </label>
                                                     <?php } else { ?>
                                                         <label class="seat seat_double">
-                                                            <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>">
+                                                            <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkbox<?php echo $seat; ?>">
                                                             <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
                                                             <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                         </label>
@@ -158,7 +159,7 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
                                                                 <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <?php if ($isGreenSeat) { ?>
                                                                     <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
@@ -182,7 +183,7 @@
                                                     </label>
                                                 <?php } else { ?>
                                                     <label class="seat seat_double">
-                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>">
+                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkbox<?php echo $seat; ?>">
                                                         <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
                                                         <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                     </label>
@@ -209,7 +210,7 @@
                                                                 <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
                                                                 <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
                                                             <?php } else { ?>
-                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
                                                                 <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
                                                                 <?php if ($isGreenSeat) { ?>
                                                                     <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
@@ -233,7 +234,7 @@
                                                     </label>
                                                 <?php } else { ?>
                                                     <label class="seat seat_double">
-                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>">
+                                                        <input type="checkbox" name="seat[]" value="<?php echo "Z" . $i; ?>" class="checkbox<?php echo $seat; ?>">
                                                         <span class="<?php echo "Z" . $i ?>"><b><?php echo "Z" . $i; ?></b></span>
                                                         <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['double_seat_price'] ?>">
                                                     </label>
@@ -344,20 +345,26 @@
                 for (let i = 65; i <= 90; i++) {
                     let letter = String.fromCharCode(i);
                     for (let j = 1; j <= 50; j++) {
-                        var maxseat = letter + j;
-
+                        let maxseat = letter + j;
+                        let seatNA = document.querySelector(`.${maxseat}`);
+                        let checkbox = document.querySelector(`.checkbox${maxseat}`);
                         if (!selectedSeatValues.includes(maxseat)) {
-                            if (totalSelectedSeats == 6) {
-                                var seatNA = document.querySelector(`.${maxseat}`);
+                            if (totalSelectedSeats === 6) {
                                 if (seatNA) {
                                     seatNA.classList.add('maxSeat');
                                     check = true;
+                                    if (checkbox) {
+                                        checkbox.disabled = true;
+                                    }
+
                                 }
                             } else {
-                                var seatNA = document.querySelector(`.${maxseat}`);
                                 if (seatNA) {
                                     seatNA.classList.remove('maxSeat');
                                     check = false;
+                                    if (checkbox) {
+                                        checkbox.disabled = false;
+                                    }
 
                                 }
                             }

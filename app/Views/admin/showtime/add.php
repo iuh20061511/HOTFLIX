@@ -398,7 +398,23 @@
                                 <div class="modal-dialog bg-light">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Chọn giờ lênh lịch <?php echo $day ?></h5>
+                                            <h5 class="modal-title" id="exampleModalLabel">Chọn giờ lênh lịch <?php
+                                                                                                                if ($day == 't2') {
+                                                                                                                    echo 'Thứ 2';
+                                                                                                                } else if ($day == 't3') {
+                                                                                                                    echo 'Thứ 3';
+                                                                                                                } else if ($day == 't4') {
+                                                                                                                    echo 'Thứ 4';
+                                                                                                                } else if ($day == 't5') {
+                                                                                                                    echo 'Thứ 5';
+                                                                                                                } else if ($day == 't6') {
+                                                                                                                    echo 'Thứ 6';
+                                                                                                                } else if ($day == 't7') {
+                                                                                                                    echo 'Thứ 7';
+                                                                                                                } else {
+                                                                                                                    echo 'Chủ nhật';
+                                                                                                                }
+                                                                                                                ?></h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
@@ -428,17 +444,16 @@
                                                 </select>
                                                 <input type="hidden" name="date_time" value="<?php echo $$day ?>">
                                                 <?php
-                                                $_SESSION['roomType'] = '';
-                                                if (!empty($_POST['roomType'])) {
-                                                    $_SESSION['roomType'] =  $_POST['roomType'];
-                                                }
 
-                                                if ($_SESSION['roomType'] == 2 || $_SESSION['roomType'] == 3 || $_SESSION['roomType'] == 4) {
-                                                    echo $_SESSION['roomType'];
+
+
+                                                if ($id_roomType == 2 || $id_roomType == 3 || $id_roomType == 4) {
+
                                                 ?>
                                                     <input type="number" name="single_seat_price" id="single_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đơn..." min="10000" required>
                                                     <input type="number" name="double_seat_price" id="double_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đôi..." min="10000" required>
-                                                <?php } ?>
+                                                <?php }
+                                                ?>
                                                 <input type="number" name="vip_seat_price" id="vip_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế vip..." min="10000" required>
 
 
@@ -503,3 +518,8 @@
         });
     });
 </script>
+<?php
+echo "<pre>";
+print_r($_POST);
+echo "<pre>";
+print_r($_SESSION);

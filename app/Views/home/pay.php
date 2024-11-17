@@ -1,23 +1,49 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/book/css/book.css">
 
-<form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
-    <section class="content" style="margin-top: 150px;">
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-md-8">
-                    <!-- Khuyến mãi -->
-
+<section class="content" style="margin-top: 150px;">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Khuyến mãi -->
+                <form action="pay.html" method="post">
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="card-title">Khuyến mãi</h5>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Mã khuyến mãi">
+                                <input type="text" class="form-control" placeholder="Mã khuyến mãi" id="promoCode">
                             </div>
-                            <button class="btn btn-success mt-2">Áp Dụng</button>
+                            <button class="btn btn-success mt-2" onclick="applyPromoCode(event)">Áp Dụng</button>
                         </div>
-                    </div>
+                        <script>
+                            function applyPromoCode(event) {
+                                event.preventDefault();
 
-                    <!-- Phương thức thanh toán -->
+                                var promoCode = document.getElementById('promoCode').value;
+                                var promo = document.getElementById('total-price');
+                                var totalAmount = promo.textContent;
+                                var numericValue = parseInt(totalAmount.replace(/[^\d]/g, ''));
+                                var promotionCodes = <?php echo json_encode(array_column($promotion, 'promotion_code')); ?>;
+
+                                if (promoCode) {
+                                    if (promotionCodes.includes(promoCode)) {
+                                        var newAmount = numericValue - 10000;
+                                        var formattedAmount = newAmount.toLocaleString('vi-VN') + ' đ';
+                                        alert('Mã khuyến mãi áp dụng thành công!');
+                                        promo.innerHTML = formattedAmount;
+                                    } else {
+                                        alert('Mã khuyến mãi không hợp lệ!');
+                                    }
+                                } else {
+                                    alert('Vui lòng nhập mã khuyến mãi!');
+                                }
+                            }
+                        </script>
+
+
+                    </div>
+                </form>
+                <form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
+
                     <?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
 
                         <div class="card mb-4">
@@ -66,87 +92,87 @@
                             </div>
                         </div>
                     <?php } ?>
-                </div>
+            </div>
 
-                <div class="col-md-4">
+            <div class="col-md-4">
 
-                    <div class="card ">
-                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ ghế:<span id="countdown"></span></div>
+                <div class="card ">
+                    <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ ghế:<span id="countdown"></span></div>
 
-                        <table>
-                            <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $image ?>"
-                                    class="card-img-top movie-poster"></th>
-                            <?php $_SESSION['back']['image']  = $image ?>
-                            <th>
-                                <div class="m-3">
-                                    <h5 class="card-title"><?php echo $movie_name ?></h5>
-                                    <?php $_SESSION['back']['movie_name']  = $movie_name ?>
-                                    <p class="card-text"><?php echo $projection_format ?></p>
-                                    <?php $_SESSION['back']['projection_format']  = $projection_format ?>
+                    <table>
+                        <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $image ?>"
+                                class="card-img-top movie-poster"></th>
+                        <?php $_SESSION['back']['image']  = $image ?>
+                        <th>
+                            <div class="m-3">
+                                <h5 class="card-title"><?php echo $movie_name ?></h5>
+                                <?php $_SESSION['back']['movie_name']  = $movie_name ?>
+                                <p class="card-text"><?php echo $projection_format ?></p>
+                                <?php $_SESSION['back']['projection_format']  = $projection_format ?>
 
-                                </div>
+                            </div>
 
-                        </table>
+                    </table>
 
 
 
-                        <div class="card-body">
+                    <div class="card-body">
 
-                            <p><?php echo $cinema ?></p>
-                            <?php $_SESSION['back']['cinema']  = $cinema ?>
+                        <p><?php echo $cinema ?></p>
+                        <?php $_SESSION['back']['cinema']  = $cinema ?>
 
-                            <p>Suất: <?php echo $time ?></p>
-                            <?php $_SESSION['back']['time']  = $time ?>
+                        <p>Suất: <?php echo $time ?></p>
+                        <?php $_SESSION['back']['time']  = $time ?>
 
-                            <hr>
-                            <p>Ghế: <?php echo $seats ?></p>
+                        <hr>
+                        <p>Ghế: <?php echo $seats ?></p>
+                        <?php $_SESSION['back']['seats']  = $seats ?>
+
+                        <hr>
+                        <div id="selected-combos">
+                            <?php
+                            $_SESSION['back']['item']  = $_POST['item'];
+                            foreach ($_POST['item'] as $item) {
+                                if ($item['quantity'] > 0) {
+                            ?>
+                                    <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
+                                    <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
+
+                            <?php }
+                            }
+                            ?>
+                        </div>
+                        <hr>
+                        <p class="d-flex justify-content-between"><strong>Tổng cộng</strong> <span
+                                class="text-danger" id="total-price"><?php echo $total ?></span></p>
+                        <?php $_SESSION['back']['total']  = $total ?>
+
+                        <div class="d-flex justify-content-between">
+                            <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
+                            <?php $_SESSION['back']['id_showtime']  = $id_showtime ?>
+
+                            <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+                            <?php $_SESSION['back']['id_movie']  = $id_movie ?>
+
+                            <input type="hidden" name="id_room" value="<?php echo  $id_room ?>">
+                            <?php $_SESSION['back']['id_room']  = $id_room  ?>
+
+                            <input type="hidden" name="seats" value="<?php echo  $seats ?>">
                             <?php $_SESSION['back']['seats']  = $seats ?>
 
-                            <hr>
-                            <div id="selected-combos">
-                                <?php
-                                $_SESSION['back']['item']  = $_POST['item'];
-                                foreach ($_POST['item'] as $item) {
-                                    if ($item['quantity'] > 0) {
-                                ?>
-                                        <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
-                                        <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
-
-                                <?php }
-                                }
-                                ?>
-                            </div>
-                            <hr>
-                            <p class="d-flex justify-content-between"><strong>Tổng cộng</strong> <span
-                                    class="text-danger" id="total-price"><?php echo $total ?></span></p>
-                            <?php $_SESSION['back']['total']  = $total ?>
-
-                            <div class="d-flex justify-content-between">
-                                <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
-                                <?php $_SESSION['back']['id_showtime']  = $id_showtime ?>
-
-                                <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
-                                <?php $_SESSION['back']['id_movie']  = $id_movie ?>
-
-                                <input type="hidden" name="id_room" value="<?php echo  $id_room ?>">
-                                <?php $_SESSION['back']['id_room']  = $id_room  ?>
-
-                                <input type="hidden" name="seats" value="<?php echo  $seats ?>">
-                                <?php $_SESSION['back']['seats']  = $seats ?>
-
-                                <input type="hidden" name="total" value="<?php echo  $total ?>">
+                            <input type="hidden" name="total" value="<?php echo  $total ?>">
 
 
 
 
-                                <button class="btn btn-primary">Thanh toán</button>
-                            </div>
+                            <button class="btn btn-primary">Thanh toán</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 </form>
 <?php
 $hod =  $hold_chairs[0]['hold_expiry'];

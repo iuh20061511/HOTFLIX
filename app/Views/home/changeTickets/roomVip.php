@@ -3,25 +3,28 @@
     .maxSeat {
         background-color: #000 !important;
         cursor: not-allowed !important;
-
     }
 </style>
-<?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
-    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:40%; z-index: 800;">
-        <div class="card p-4" style="width: 400px;  <?php echo $check ? 'display: none;' : ''; ?>">
-            <i class="bi bi-x-circle" style="position: absolute; right: 10px; top: 2px; font-size: 20px; cursor: pointer;" onclick="closeCard()"></i>
-            <form action="" method="post">
-                <h5 class="card-title text-center mb-4">Thông tin khách hàng</h5>
-                <div class="form-group">
-                    <input type="text" class="form-control" placeholder="SĐT hoặc email khách hàng thành viên..." name="info">
-                    <span class="text-danger"><?php if (isset($error))  echo $error ?></span>
-                </div>
-                <input type="submit" class="btn btn-success w-100 mt-3" value="Xác nhận" name="btn_inforCus">
-            </form>
+<?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
+    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:30%; z-index: 800; right: 12%; top:27%">
+        <div class="card p-4" style="width: 800px;  height: 400px;   box-shadow: 5px 5px 8px 5px blue; <?php echo $check ? 'display: none;' : ''; ?>">
+            <h4 class="text-center text-primary"><b>Chính sách đổi suất chiếu</b></h4>
+            <p> Quý khách chỉ có thể thực hiện thay đổi số lượng ghế trong phạm vi các ghế mà quý khách đã đặt trước, bao gồm:
+                <?php if ($_POST['tv'] > 0) { ?>
+                    <span class="text-danger"><b><?php echo $_POST['tv'] . " ghế " ?></b></span><br>
+                <?php } ?>
+
+            </p>
+            <p> Việc thay đổi số lượng ghế không được phép giảm bớt so với số ghế ban đầu mà quý khách đã chọn.
+                Trong trường hợp quý khách có nhu cầu đặt thêm ghế, vui lòng thực hiện quy trình mua vé mới, giống như khi quý khách đặt vé lần đầu tiên.</p>
+            <p>Chúng tôi khuyến nghị quý khách kiểm tra kỹ lưỡng số lượng và loại ghế trước khi thực hiện đặt vé để đảm bảo sự hài lòng và tiện lợi trong suốt quá trình sử dụng dịch vụ.</p>
+            <p class="text-center text-danger"><b>Cảm ơn quý khách đã lựa chọn dịch vụ của chúng tôi!</b></p>
+            <button onclick="closeCard()" class="btn btn-success">Xác nhận</button>
+
         </div>
     </div>
 <?php } ?>
-<form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();" id="myForm">
+<form action="xu-ly-doi-suat-chieu.html" method="POST" onsubmit="return checkSeats();" id="myForm">
     <input type="hidden" name="movie_name" value="<?php echo $movie[0]['movie_name'] ?>">
     <input type="hidden" name="image" value="<?php echo $movie[0]['poster'] ?>">
     <input type="hidden" name="cinema" value="<?php echo $cinema[0]['cinema_name'] ?>">
@@ -31,7 +34,8 @@
     <input type="hidden" name="id_showtime" value="<?php echo $id_showTime ?>">
     <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
     <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
-
+    <input type="hidden" name="id_invoice" value="<?php echo $id_invoice ?>">
+    <input type="hidden" name="id_showTime_old" value="<?php echo $id_showTime_old ?>">
 
 
 
@@ -273,68 +277,66 @@
     function checkSeats() {
 
         const seats = document.querySelectorAll('input[name="seat[]"]:checked');
-
+        var sum = <?php echo json_encode($_POST['tv']); ?>;
         if (seats.length === 0) {
             alert("Vui lòng chọn ghế!");
+            return false;
+        } else if (sum > seats.length) {
+            alert("Vui lòng chọn đủ số lượng ghế!");
             return false;
         }
         return true;
     }
 </script>
-<script>
-    localStorage.removeItem('endTime');
-    localStorage.removeItem('remainingTime');
-</script>
+
 <script>
     document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
         seatCheckbox.addEventListener('change', function() {
 
-            let totalSelectedSeats = 0;
-            let selectedSeatValues = [];
-            var check = false;
+
+            var countSeatTVIP = <?php echo json_encode($_POST['tv']); ?>;
+
+            var SeatVIP = 0;
+
+            var DomSeats = [];
             const selectedSeats = document.querySelectorAll('input[type="checkbox"][name="seat[]"]:checked');
             selectedSeats.forEach(function(seat) {
                 var seatVal = seat.value;
-                totalSelectedSeats++;
-                if (!selectedSeatValues.includes(seatVal)) {
-                    selectedSeatValues.push(seatVal);
-                }
-                for (let i = 65; i <= 90; i++) {
-                    let letter = String.fromCharCode(i);
-                    for (let j = 1; j <= 50; j++) {
-                        let maxseat = letter + j;
-                        let seatNA = document.querySelector(`.${maxseat}`);
-                        let checkbox = document.querySelector(`.checkbox${maxseat}`);
-                        if (!selectedSeatValues.includes(maxseat)) {
-                            if (totalSelectedSeats === 6) {
-                                if (seatNA) {
-                                    seatNA.classList.add('maxSeat');
-                                    check = true;
-                                    if (checkbox) {
-                                        checkbox.disabled = true;
-                                    }
+                SeatVIP++;
+                DomSeats.push(seat);
+            });
+            for (let i = 65; i <= 90; i++) {
+                let letter = String.fromCharCode(i);
+                for (let j = 1; j <= 50; j++) {
+                    let maxseat = `${letter}${j}`;
+                    let seatElement = document.querySelector(`.${maxseat}`);
+                    var checkbox = document.querySelector(`.checkbox${maxseat}`);
 
-                                }
-                            } else {
-                                if (seatNA) {
-                                    seatNA.classList.remove('maxSeat');
-                                    check = false;
-                                    if (checkbox) {
-                                        checkbox.disabled = false;
-                                    }
 
-                                }
+                    if (seatElement) {
+                        if (checkbox && SeatVIP >= countSeatTVIP) {
+                            if (!DomSeats.includes(checkbox)) {
+                                checkbox.disabled = true;
+                                seatElement.classList.add('maxSeat');
                             }
+
+                        } else if (checkbox && SeatVIP < countSeatTVIP) {
+                            seatElement.classList.remove('maxSeat');
+                            checkbox.disabled = false;
+
                         }
+
                     }
                 }
-            });
-
-            if (check == true) {
-                setTimeout(function() {
-                    alert('Bạn chỉ được phép chọn tối đa 6 ghế');
-                }, 200);
             }
+
+
+
+            // if (check == true) {
+            //     setTimeout(function() {
+            //         alert('Bạn chỉ được phép chọn tối đa 6 ghế');
+            //     }, 200);
+            // }
 
 
 
