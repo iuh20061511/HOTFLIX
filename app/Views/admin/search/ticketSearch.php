@@ -23,7 +23,7 @@
 							<!-- content tabs nav -->
 							<ul class="nav nav-tabs content__tabs content__tabs--profile" id="content__tabs" role="tablist">
 								<li class="nav-item" role="presentation">
-                                   <button id="1-tab" data-bs-toggle="tab" class="active" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="false">Tra cứu vé</button>
+                                   <button id="1-tab" data-bs-toggle="tab" class="active" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="false">Tra cứu vé - thuê phòng</button>
 								</li>
 
 								<li class="nav-item" role="presentation">
@@ -64,7 +64,7 @@
                     <?php
                         if(isset($_GET['search_ticket']) && empty($error['search_ticket'])){ ?>
                         <div class="row">
-                            <div class="col-12 col-lg-3 order-md-1 order-lg-1">
+                            <div class="col-12 col-lg-3 order-md-1 order-lg-1" style="margin-top: 40px">
                                 <div class="plan plan--active">
                                     <h3 class="plan__title text-pink" style="font-size: 22px;">Thông tin khách hàng</h3>
                                     <ul class="plan__list">
@@ -161,6 +161,96 @@
                             </form>
                         </div>
                     </div>
+                    <?php if (isset($error['search_ticket'])): ?>
+                    <div class="row mt-4">
+                        <div class="col-12 d-flex align-items-center justify-content-center">
+                            <p class="error text-danger"><?php echo $error['search_ticket']; ?></p>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <?php
+                        if(isset($_GET['search_ticket']) && empty($error['search_ticket'])){ ?>
+                        <div class="row">
+                            <div class="col-12 col-lg-3 order-md-1 order-lg-1" style="margin-top: 40px">
+                                <div class="plan plan--active">
+                                    <h3 class="plan__title text-pink" style="font-size: 22px;">Thông tin khách hàng</h3>
+                                    <ul class="plan__list">
+                                        <li><?= mb_strtoupper($infoMember[0]['full_name'], 'UTF-8');?></li>
+                                        <li><?= date('d/m/Y', strtotime($infoMember[0]['birthday']))?></li>
+                                        <li><?= $infoMember[0]['phone']?></li>
+                                        <li><?= $infoMember[0]['email']?></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-9 order-md-2 order-lg-2">
+                                <div class="w-100 mt-3">
+                                    <h3 class="text-white" style="text-align:center">Danh sách quà</h3>
+                                    <div class="table-container-search">
+                                        <table class="table text-center scrollable-table-search" style="width: 100%; background-color: white;">
+                                            <thead>
+                                                <tr class="table-active">
+                                                    <th>Hình ảnh</th>
+                                                    <th>Tên quà</th>
+                                                    <th>Số lượng</th>
+                                                    <th>Chi tiết</th>
+                                                    <th>Trạng thái</th>
+                                                    <th>Chức năng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                    // Kiểm tra nếu mảng $listGiftDetails rỗng
+                                                    if (empty($listGiftDetails)) {
+                                                ?>
+                                                    <tr>
+                                                        <td colspan="5" class="text-center">Danh sách quà trống</td>
+                                                    </tr>
+                                                <?php
+                                                    } else {
+                                                        // Nếu mảng có phần tử, thực hiện vòng lặp như bình thường
+                                                        // $stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'];
+                                                        foreach ($listGiftDetails as $index => $giftDetail) { ?>
+                                                            <tr>
+                                                                <td class="align-middle">
+                                                                    <?php $img = _WEB_ROOT . '/public/admin/img/gift/' . $giftDetail['image']; ?>
+                                                                    <div class="catalog__img__wheel">
+                                                                        <img src="<?php echo $img; ?>" alt="PosterGift">
+                                                                    </div>
+                                                                </td>
+                                                                <td class="align-middle"><?php echo $giftDetail['gift_name']; ?></td>
+                                                                <td class="align-middle">1</td>
+                                                                <td class="align-middle">
+                                                                <?php 
+                                                                    if (!empty($giftDetail['receiveTime'])) {
+                                                                        echo date('d-m-Y H:i:s', strtotime($giftDetail['receiveTime'])) . ' - ' . $giftDetail['cinemaLocation'];
+                                                                    } else {
+                                                                        echo 'Chưa xác định';
+                                                                    }
+                                                                ?>
+                                                                </td>
+                                                                <td class="align-middle <?php echo $giftDetail['status'] == 1 ? 'text-success' : 'text-danger'; ?>">
+                                                                    <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Chưa nhận'; ?>
+                                                                </td>
+                                                                <td class="align-middle">
+                                                                    <form method="POST" action="">
+                                                                        <!-- Truyền dữ liệu ẩn qua input -->
+                                                                        <input type="hidden" name="id_giftDetail" value="<?php echo $giftDetail['id_giftDetails']; ?>">
+                                                                        <!-- Nút duyệt nhận quà -->
+                                                                        <button type="submit" class="btn btn-primary" name="approve_gift" <?php echo $giftDetail['status'] == 1 ? 'disabled' : ''; ?>> <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Duyệt nhận quà'; ?></button>
+                                                                    </form>
+                                                                </td>
+                                                            </tr>
+                                                        <?php }
+                                                    }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php }
+                    ?>
                 </div>
             </div>
 		</div>

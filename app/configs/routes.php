@@ -16,7 +16,7 @@ $routes['chi-tiet-phim-(.+).html'] = 'home/movieDetail/$1';
 $routes['thong-tin-rap-(.+).html'] = 'home/cinemaDetail/$1';
 $routes['khuyen-mai.html'] = 'home/promotion/';
 $routes['dang-nhap.html'] = 'account/login';
-$routes['dang-xuat.html'] = 'account/login';
+$routes['dang-xuat.html'] = 'account/logout';
 $routes['dang-ki.html'] = 'account/register';
 $routes['quen-mat-khau.html'] = 'account/forgot';
 $routes['dat-lai-mat-khau.html'] = "account/reset";
@@ -92,3 +92,6 @@ $routes['hoa-don-dat-phong-(.+).html'] = 'client/rent_room/PDF/$1/';
 $routes['tra-cuu-ve.html'] = 'admin/search';
 $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 // $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
+
+//Vòng quay may mắn
+$routes['vong-quay-may-man.html'] = 'client/LuckyWheel';

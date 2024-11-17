@@ -1,0 +1,417 @@
+:root {
+    --size-wheel: 30rem;
+}
+
+.row-wheel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-wheel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    min-height: 550px;
+    max-height: 650px;
+    padding-bottom: 0;
+    width: 100%;
+}
+
+.wheel {
+    position: relative;
+    padding: 0;
+    margin: 1rem 0;
+    width: var(--size-wheel);
+    height: var(--size-wheel);
+    /* border: 10px solid rgb(0, 12, 184); */
+    border: 15px solid #ffd619;
+    border-radius: 50%;
+    list-style: none;
+    transition: cubic-bezier(0.075, 0.8, 0.2, 1) 7s;
+    overflow: hidden;
+    /* Ẩn phần bên trong nhưng bóng đèn nằm ngoài */
+    z-index: 2;
+    /* Vòng quay nằm dưới bóng đèn */
+    box-shadow: 0 0 15px rgba(255, 223, 0, 0.8), 0 0 30px rgba(255, 223, 0, 0.6), 0 0 45px rgba(255, 223, 0, 0.4);
+}
+
+.span-wheel {
+    display: inline-block;
+    position: relative;
+    padding: 0.5rem;
+    z-index: 5;
+}
+
+.span-wheel::before {
+    content: '';
+    position: absolute;
+    top: 0rem;
+    left: 50%;
+    border-left: 2rem solid transparent;
+    border-right: 2rem solid transparent;
+    border-top: 3rem solid #fff;
+    /* border-top: 3rem solid rgb(255, 217, 0); */
+    z-index: 2;
+    transform: translateX(-50%);
+    animation: arrow ease-out 0.8s infinite;
+    z-index: 5;
+}
+
+@keyframes arrow {
+    0% {
+        top: -2rem;
+    }
+
+    80% {
+        top: 0;
+    }
+
+    100% {
+        top: -1.5rem;
+    }
+}
+
+.main-wheel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: relative;
+}
+
+
+.item-wheel {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 50%;
+    transform-origin: 0% 100%;
+}
+
+.text-wheel {
+    font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
+    left: -100%;
+    width: 200%;
+    height: 200%;
+    display: block;
+    text-align: center;
+    padding-top: 1.7rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.text-wheel>b {
+    display: inline-block;
+    word-break: break-word;
+    max-width: 20%;
+}
+
+.text-wheel-1 {
+    /* background-color: rgb(0, 89, 255); */
+    background-color: #db1700;
+}
+
+.text-wheel-2 {
+    /* background-color: rgb(126, 182, 255); */
+    background-color: #ffffff;
+    color: #b70506;
+
+}
+
+.wheel__arrow {
+    width: 70px;
+    height: 70px;
+    background: #fbe877;
+    position: absolute;
+    top: 51%;
+    /* Căn giữa theo chiều dọc */
+    left: 50%;
+    /* Căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    /* Dịch chuyển để căn giữa */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Open sans', sans-serif;
+    z-index: 5;
+}
+
+.wheel__arrow::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: solid;
+    border-width: 0 14px 25px;
+    border-color: transparent;
+    border-bottom-color: #fbe877;
+    top: -20px;
+    left: 21px;
+}
+
+.wheel__button {
+    width: 60px;
+    height: 60px;
+    background-color: #d60c03;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.wheel__button:hover {
+    color: #fbe877;
+    font-weight: bold;
+}
+
+.wheel__button:active {
+    border: solid 3px rgba(0, 0, 0, 0.1);
+    font-size: 15px;
+}
+
+/* Danh sách bóng đèn */
+.list-light-bulbs {
+    position: absolute;
+    top: -8px;
+    left: -5px;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    /* Đảm bảo bóng đèn nằm trên vòng quay */
+}
+
+/* Bóng đèn */
+.light-bulb {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: radial-gradient(circle, #fff 50%, #ffcc00 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00;
+    top: 50%;
+    left: 50%;
+    transform-origin: center;
+    z-index: 4;
+    /* Đảm bảo bóng đèn nằm cao hơn */
+}
+
+/* Hiệu ứng sao nhấp nháy */
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.light-bulb:nth-child(even) {
+    animation: blink 1.5s infinite ease-in-out;
+}
+
+.light-bulb:nth-child(odd) {
+    animation: blink 1.5s infinite ease-in-out reverse;
+}
+
+.table-wrapper {
+    max-height: 200px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+}
+
+.catalog__img__wheel {
+    width: 80px;
+    height: 80px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.catalog__img__wheel img {
+    /* width: 100%; */
+    max-width: 100%;
+    max-height: 100%;
+    /* height: auto; */
+    object-fit: cover;
+    /* Ảnh lấp đầy khung và cắt phần dư */
+}
+
+.catalog__img__modal_wheel {
+    width: 40%;
+    height: auto;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.catalog__img__modal_wheel img {
+    /* width: 100%; */
+    max-width: 100%;
+    max-height: 100%;
+    /* height: auto; */
+    object-fit: cover;
+    /* Ảnh lấp đầy khung và cắt phần dư */
+}
+
+/* Phân trang */
+.main__paginator {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.paginator {
+    margin-top: 0;
+    background-color: #fff;
+}
+
+.paginator__item a {
+    color: #222028;
+}
+
+.paginator__item a:hover {
+    color: #222028;
+    font-size: 18px;
+}
+
+.paginator__item--next a,
+.paginator__item--prev a {
+    transition: transform 0.3s ease, color 0.3s ease;
+    /* Thêm hiệu ứng cho màu và kích thước */
+}
+
+.paginator__item--next a:hover,
+.paginator__item--prev a:hover {
+    color: #222028;
+    font-size: 18px;
+    transform: scale(1.2);
+    /* Tăng kích thước phần tử lên 1.2 lần */
+}
+
+.main__paginator-pages {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    height: 36px;
+    width: auto;
+    color: #222028;
+    font-weight: 400;
+    margin-top: 40px;
+    cursor: default;
+    border-radius: 8px;
+    background-color: #c0c0c0;
+    padding: 0 15px;
+}
+
+.main__paginator-list {
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    margin-top: 0;
+}
+
+.main__paginator-list li {
+    margin-right: 15px;
+}
+
+.main__paginator-list li:first-child a {
+    padding-left: 10px;
+}
+
+.main__paginator-list li:first-child a span {
+    margin-left: 4px;
+}
+
+.main__paginator-list li:last-child {
+    margin-right: 0;
+}
+
+.main__paginator-list li:last-child a {
+    padding-right: 10px;
+}
+
+.main__paginator-list li:last-child a span {
+    margin-right: 4px;
+}
+
+.main__paginator-list a {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    width: auto;
+    padding: 0 15px;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #ff55a5 0%, #ff5860 100%);
+}
+
+.main__paginator-list a span {
+    font-size: 14px;
+    line-height: 20px;
+    text-transform: uppercase;
+}
+
+.main__paginator-list a i {
+    font-size: 20px;
+}
+
+.main__paginator-list a:hover {
+    color: #ccc8c8
+}
+
+@media (min-width: 768px) {
+
+    .main__paginator-pages {
+        height: 40px;
+        padding: 0 20px;
+    }
+
+    .main__paginator-list {
+        display: none;
+    }
+}
+
+/* Vòng quay may mắn */
+.lucky-draw {
+    font-size: 40px;
+    font-weight: bold;
+    color: #f8e64b;
+    text-shadow: 0 0 3px #fff, 0 0 20px #f8e64b, 0 0 30px #f1c40f, 0 0 40px #f1c40f;
+    font-family: 'Arial', sans-serif;
+}
+
+.lucky-draw span {
+    font-family: "Courier New", Courier, monospace;
+    display: inline-block;
+    transform: rotate(-5deg);
+}
+
+.lucky-draw span:nth-child(odd) {
+    transform: rotate(5deg);
+}

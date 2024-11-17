@@ -35,6 +35,24 @@
                                         	<?php endif; ?>
 										</div>
 									</div>
+
+									<div class="col-12">
+										<div class="sign__group">
+                                            <label class="sign__label">Tỷ lệ % trúng thưởng(ít nhất 1%):</label>
+											<input type="number" class="sign__input" name="percent" value="<?php echo isset($_POST['percent']) ? $_POST['percent'] : ''; ?>">
+											<?php if (isset($error['percent'])): ?>
+                                            	<p class="error text-danger"><?php echo $error['percent']; ?></p>
+                                        	<?php endif; ?>
+										</div>
+									</div>
+									<div class="col-12">
+										<label class="sign__label">Loại quà:</label>
+										<select class="sign__selectjs" id="sign__country" name="typeGift">
+											<option value="không trúng">May mắn lần sau</option>
+											<option value="quà">Quà</option>
+											<option value="điểm">Điểm thưởng</option>
+										</select>
+									</div>
 								</div>
 							</div>
 

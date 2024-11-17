@@ -75,7 +75,7 @@
                             }
                         </style>
                         <li class="header__nav-item ">
-                            <a class="header__nav-link rounded-3 p-3 text-change" href="dat-ve.html" role="button"><b>Đặt vé</b></a>
+                            <a class="header__nav-link rounded-3 p-3 text-change" href="<?php echo _LINK ?>/dat-ve.html" role="button"><b>Đặt vé</b></a>
 
                         </li>
                         <!-- end dropdown -->
