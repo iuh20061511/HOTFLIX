@@ -41,7 +41,7 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button id="3-tab" data-bs-toggle="tab" data-bs-target="#tab-3" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Settings</button>
+                                    <a href="danh-sach-qua.html"><button id="3-tab" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Danh sách quà</button></a>
                                 </li>
                             </ul>
                             <!-- end content tabs nav -->

@@ -34,6 +34,7 @@
                     <span>VÒNG</span> <span>QUAY</span> <span>MAY</span> <span>MẮN</span>
                 </h2>
                 <section class="main-wheel" style="padding-top: 10px">
+                <?php if (!empty($listGift) && count($listGift)>=6) { ?>
                     <span class="span-wheel">
                         <ul class="wheel">
                         <?php
@@ -69,6 +70,13 @@
                     <div class="wheel__arrow">
                         <button class="wheel__button">QUAY</button>
                     </div>
+                <?php } else { ?>
+                    <div class="no-wheel-items">
+                        <p class="text-center" style="font-size: 22px; font-weight: bold; color: #f8e64b;">
+                            Sự kiện đang tạm thời đóng, xin quý vị thông cảm!
+                        </p>
+                    </div>
+                <?php } ?>
                 </section>
                 <!-- <h1 class="msg-lucky"></h1> -->
             </div>
@@ -81,7 +89,6 @@
                 <table class="table text-center" style="width: 100%; background-color: white;">
                     <thead>
                         <tr class="table-active">
-                            <th>id</th>
                             <th>Hình ảnh</th>
                             <th>Tên quà</th>
                             <th>Số lượng</th>
@@ -96,7 +103,6 @@
                         } else {
                             foreach ($listGiftDetails as $giftDetail) { ?>
                                 <tr>
-                                    <td><?php echo $giftDetail['id_giftDetails']; ?></td>
                                     <td class="align-middle">
                                         <div class="catalog__img__wheel">
                                             <img src="<?php echo _WEB_ROOT . '/public/admin/img/gift/' . $giftDetail['image']; ?>" alt="Gift">

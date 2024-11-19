@@ -114,27 +114,56 @@ class Search extends Controller
 
             //Danh sách quà:
             $this->data['sub']['listGiftDetails'] = $this->model->getListFromTwoTables('gift_details','gifts','id_gift',"where id_customer = $id_account ORDER BY  id_giftDetails  DESC" );
-            if(isset($_POST['approve_gift'])){
-                $id_cinema= $_SESSION['is_login']['id_cinema'];
-                $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
-                $cinema_name = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
-                $id_giftDetail = $_POST['id_giftDetail'];
-                $data = [
-                    'status' =>1,
-                    'cinemaLocation' => $cinema_name,
-                    'receiveTime' => date('Y-m-d H:i:s'),
-                ];
-                $result = $this->model->updateData('gift_details', $data, "where id_giftDetails  = $id_giftDetail");
-                if ($result) {
-                    echo "<script>alert('Cập nhật trạng thái nhận quà thành công')</script>";
-                }else{
-                    echo "<script>alert('Thực hiện thất bại')</script>";
-                }
-            }
+            // if(isset($_POST['approve_gift'])){
+            //     $id_cinema= $_SESSION['is_login']['id_cinema'];
+            //     $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
+            //     $cinema_name = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
+            //     $id_giftDetail = $_POST['id_giftDetail'];
+            //     $data = [
+            //         'status' =>1,
+            //         'cinemaLocation' => $cinema_name,
+            //         'receiveTime' => date('Y-m-d H:i:s'),
+            //     ];
+            //     $result = $this->model->updateData('gift_details', $data, "where id_giftDetails  = $id_giftDetail");
+            //     if ($result) {
+            //         echo "<script>alert('Cập nhật trạng thái nhận quà thành công')</script>";
+            //     }else{
+            //         echo "<script>alert('Thực hiện thất bại')</script>";
+            //     }
+            // }
         }
 
         $this->data['content'] = 'admin/search/ticketSearch';
 
         $this->view("layout/client", $this->data);
+    }
+
+
+    public function approve()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $input = json_decode(file_get_contents('php://input'), true);
+                $id_giftDetail = $input['id_giftDetail'] ?? null;
+                $id_account = $_SESSION['is_login']['id_account'];
+                $id_cinema= $_SESSION['is_login']['id_cinema'];
+                $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
+                $cinema_name = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
+                $data = [
+                    'status' =>1,
+                    'cinemaLocation' => $cinema_name,
+                    'receiveTime' => date('Y-m-d H:i:s'),
+                ];
+                $this->model->updateData('gift_details', $data, "where id_giftDetails  = $id_giftDetail");
+
+                $giftDetail = $this->model->getListFromTwoTables('gift_details','gifts','id_gift',"where id_giftDetails = $id_giftDetail" );
+                $details = date('d-m-Y H:i:s', strtotime($giftDetail[0]['receiveTime'])) . ' - ' . $giftDetail[0]['cinemaLocation'];
+                echo json_encode([
+                    'status' => 'success',
+                    'detail' => $details,
+                ]);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Yêu cầu không hợp lệ!']);
+            }
     }
 }

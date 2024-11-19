@@ -184,9 +184,9 @@
                             </div>
                             <div class="col-12 col-lg-9 order-md-2 order-lg-2">
                                 <div class="w-100 mt-3">
-                                    <h3 class="text-white" style="text-align:center">Danh sách quà</h3>
-                                    <div class="table-container-search">
-                                        <table class="table text-center scrollable-table-search" style="width: 100%; background-color: white;">
+                                    <h3 class="text-white" style="text-align:center;">Danh sách quà</h3>
+                                    <div class="table-container-search" style="border:none;">
+                                        <table class="table text-center scrollable-table-search" style="width: 100%; background-color: white; ">
                                             <thead>
                                                 <tr class="table-active">
                                                     <th>Hình ảnh</th>
@@ -203,7 +203,7 @@
                                                     if (empty($listGiftDetails)) {
                                                 ?>
                                                     <tr>
-                                                        <td colspan="5" class="text-center">Danh sách quà trống</td>
+                                                        <td colspan="6" class="text-center">Danh sách quà trống</td>
                                                     </tr>
                                                 <?php
                                                     } else {
@@ -232,12 +232,12 @@
                                                                     <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Chưa nhận'; ?>
                                                                 </td>
                                                                 <td class="align-middle">
-                                                                    <form method="POST" action="">
+                                                                    <!-- <form method="POST" action=""> -->
                                                                         <!-- Truyền dữ liệu ẩn qua input -->
-                                                                        <input type="hidden" name="id_giftDetail" value="<?php echo $giftDetail['id_giftDetails']; ?>">
+                                                                        <!-- <input type="hidden" name="id_giftDetail" value=""> -->
                                                                         <!-- Nút duyệt nhận quà -->
-                                                                        <button type="submit" class="btn btn-primary" name="approve_gift" <?php echo $giftDetail['status'] == 1 ? 'disabled' : ''; ?>> <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Duyệt nhận quà'; ?></button>
-                                                                    </form>
+                                                                        <button type="button" class="btn btn-primary approve-gift-btn" data-img="<?php echo $img; ?>" data-name="<?php echo $giftDetail['gift_name']; ?>" data-id="<?php echo $giftDetail['id_giftDetails']; ?>" <?php echo $giftDetail['status'] == 1 ? 'disabled' : ''; ?>> <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Duyệt nhận quà'; ?> </button>
+                                                                    <!-- </form> -->
                                                                 </td>
                                                             </tr>
                                                         <?php }
@@ -299,6 +299,34 @@
                 <div class="modal-footer d-flex justify-content-center">
                     <h5 class="modal-title" id="ticketDetailModalLabel">Chi tiết hóa đơn</h5>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Thông báo phần thưởng -->
+    <div class="modal fade" id="notificationModal" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="text-center text-pink ps-4"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                    <div class="modal-body d-flex flex-column justify-content-center align-items-center">
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="text-center" id="notify_message">Yêu cầu duyệt nhận quà "<?php echo $giftDetail['gift_name']?>" thành công</h6>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <img src="" alt="" id="notify_image" style="width: 80px; height: auto;">
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-12">
+                                <h6 class="text-center">Hãy tiến hành trao quà cho khách hàng!</h6>
+                            </div>
+                        </div>
+                    </div>
             </div>
         </div>
     </div>
@@ -374,4 +402,67 @@
         // Chuyển đổi số thành chuỗi và thêm dấu phân cách hàng nghìn
         return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "đ";
     }
+    </script>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Lấy danh sách tất cả các nút "Duyệt nhận quà"
+        const buttons = document.querySelectorAll(".approve-gift-btn");
+
+        buttons.forEach((button) => {
+            button.addEventListener("click", function () {
+                const giftIdDetail = this.getAttribute("data-id");
+                const giftName = this.getAttribute("data-name");
+                const giftImg = this.getAttribute("data-img");
+                // Gửi yêu cầu AJAX tới server
+                fetch("<?php echo _LINK; ?>/admin/search/approve", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_giftDetail: giftIdDetail,
+                    }),
+                })
+                .then(response => response.json())
+                .then((data) => {
+                    if (data.status === 'success') {
+                        // Cập nhật giao diện nút
+                        button.setAttribute("disabled", "true");
+                        button.innerHTML = "Đã nhận";
+
+                        // Tìm hàng chứa nút vừa nhấn
+                        const row = button.closest("tr");
+
+                        // Cập nhật trạng thái "Đã nhận" trong hàng đó
+                        const statusCell = row.querySelector(".text-danger, .text-success");
+                        if (statusCell) {
+                            statusCell.innerHTML = "Đã nhận";
+                            statusCell.classList.remove("text-danger");
+                            statusCell.classList.add("text-success");
+                        }
+
+                        // Cập nhật thời gian nhận quà và vị trí rạp trong hàng
+                        const timeCell = row.querySelector("td:nth-child(4)");
+                        if (timeCell) {
+                            timeCell.innerHTML = `${data.detail}`;
+                        }
+
+                        // Hiển thị modal thông báo
+                        const modalMessage = document.getElementById("notify_message");
+                        const modalImage = document.getElementById("notify_image");
+
+                        modalMessage.innerHTML = `Yêu cầu duyệt nhận quà "${giftName}" thành công!`;
+                        modalImage.src = giftImg;
+                        modalImage.style.display = "block";
+
+                        const modal = new bootstrap.Modal(document.getElementById("notificationModal"));
+                        modal.show();
+                    } else {
+                        alert("Có lỗi xảy ra, vui lòng thử lại!");
+                    }
+                })
+            });
+        });
+    });
     </script>

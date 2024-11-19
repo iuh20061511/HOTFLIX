@@ -116,6 +116,7 @@
                 $id_account = $_SESSION['is_login']['id_account'];
                 $currentPage = $input['currentPage'];
                 $offset = ($currentPage - 1) * 4;
+
                 // Logic xử lý quay thưởng
                 $gift = $this->model->getListTable('gifts', "where id_gift = $id_gift");
                 $typeGift = mb_strtolower($gift[0]['type']);
@@ -145,10 +146,13 @@
                 );
 
                 $totalGifts = count($listGiftDetails);
+                $totalPages = $totalGifts > 0 ? ceil($totalGifts / 4) : 1;  
 
                 echo json_encode([
                     'status' => 'success',
                     'newPoints' => $data['points'],
+                    'totalPages' => $totalPages,
+                    'currentPage' => $currentPage,
                     'giftDetails' => $listGiftDetails,
                 ]);
             } else {
