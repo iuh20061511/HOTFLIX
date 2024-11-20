@@ -117,6 +117,7 @@ $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 
 //Vòng quay may mắn
 $routes['vong-quay-may-man.html'] = 'client/LuckyWheel';
+$routes['doi-qua.html'] = 'client/ExchangeGifts';
 
 //Đổi suất chiếu
 $routes['doi-suat-chieu.html'] = 'client/ChangeTickets/selectSeat';

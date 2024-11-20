@@ -14,9 +14,6 @@
     <div class="row row-wheel"  style=" margin-bottom: 20px; background-image: url('<?php echo _WEB_ROOT ?>/public/luckywheel/bg/bg-wheel3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="col-12 col-lg-6">
             <div class="plan plan--active" style="background-color:#fff">
-                <ul class="plan__list">
-                    <h5>Điểm hiện có: <span id="userPoints"><?php echo $user[0]['points']; ?></span></h5>
-                </ul>
                 <h3 class="plan__title text-pink" style="font-size: 22px;">Luật chơi:</h3>
                 <ul class="plan__list">
                     <li style="color: black">Để tham gia vòng quay may mắn, khách hàng cần tích lũy ít nhất 10 điểm (từ việc đặt vé). Mỗi lần quay sẽ tiêu tốn 10 điểm.</li>
@@ -29,10 +26,13 @@
             </div>
         </div>
         <div class="col-12 col-lg-5">
-            <div class="container-wheel mt-1">
+            <div class="container-wheel">
                 <h2 class="lucky-draw">
                     <span>VÒNG</span> <span>QUAY</span> <span>MAY</span> <span>MẮN</span>
                 </h2>
+                <h6 class="lucky-draw-point">
+                    <p>Điểm hiện có: <span id="userPoints"><?php echo $user[0]['points']; ?></span></p>
+                </h6>
                 <section class="main-wheel" style="padding-top: 10px">
                 <?php if (!empty($listGift) && count($listGift)>=6) { ?>
                     <span class="span-wheel">
@@ -204,7 +204,7 @@
     let numberPage = '<?php echo isset($_GET['page']) ?(int)($_GET['page']) : 1?>';
     let userPoints = <?php echo $user[0]['points']; ?>;
     const minPointsRequired = 10;
-    let srcImageFail = `<?php echo _WEB_ROOT; ?>/public/admin/img/gift/matbuon.jpg`;
+    let srcImageFail = `<?php echo _WEB_ROOT; ?>/public/luckywheel/bg/matbuon.jpg`;
     const urlSever = '<?php echo _LINK; ?>/client/luckywheel/spin';
     const urlGift ='<?php echo _WEB_ROOT; ?>/public/admin/img/gift/';
 </script>
