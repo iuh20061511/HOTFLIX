@@ -130,10 +130,8 @@ class InforUser extends Controller
                 }
             }
             //Nạp thông tin chung
-            foreach ($this->data['sub']['invoices'] as &$invoice) {
-                // Kiểm tra nếu tồn tại vé trong hóa đơn
+            foreach ($this->data['sub']['invoices'] as $index => $invoice) {
                 if (!empty($invoice['tickets'])) {
-                    // Lấy vé đầu tiên
                     $firstTicket = $invoice['tickets'][0];
                     $id_room = $firstTicket['id_room'];
                     $id_showTime = $firstTicket['id_showTime'];
@@ -141,25 +139,25 @@ class InforUser extends Controller
                     $infoShowtime = $this->model->getListFromTwoTables('show_time', 'movie', 'id_movie', "where id_showTime = $id_showTime");
                     $id_roomType = $this->model->getListTable('room', "where id_room=" . $infoShowtime[0]['id_room'])[0]['id_roomType'];
 
-                    $invoice['show_date'] = $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
-                    $invoice['movie_name'] = $infoShowtime[0]['movie_name'];
-                    $invoice['poster'] = $infoShowtime[0]['poster'];
-                    $invoice['id_movie'] = $infoShowtime[0]['id_movie'];
-                    $invoice['id_roomType'] = $id_roomType;
-                    $invoice['id_showTime'] = $infoShowtime[0]['id_showTime'];
-                    $invoice['start_time'] = $infoShowtime[0]['start_time'];
-                    $invoice['end_time'] = $infoShowtime[0]['end_time'];
-                    $invoice['format'] = $infoShowtime[0]['projection_format'];
-                    $invoice['room_name'] = $infoCinema[0]['room_name'];
-                    $invoice['cinema_name'] = $infoCinema[0]['cinema_name'];
-                    $invoice['address'] = $infoCinema[0]['address'];
-                    $invoice['double_seat_price'] = $infoShowtime[0]['double_seat_price'];
-                    $invoice['single_seat_price'] = $infoShowtime[0]['single_seat_price'];
-                    $invoice['vip_seat_price'] = $infoShowtime[0]['vip_seat_price'];
-
-                    $invoice['show_date_default'] = $infoShowtime[0]['show_date'];
+                    $this->data['sub']['invoices'][$index]['show_date'] = $this->model->convertDayToVietnamese($infoShowtime[0]['show_date']);
+                    $this->data['sub']['invoices'][$index]['movie_name'] = $infoShowtime[0]['movie_name'];
+                    $this->data['sub']['invoices'][$index]['poster'] = $infoShowtime[0]['poster'];
+                    $this->data['sub']['invoices'][$index]['id_movie'] = $infoShowtime[0]['id_movie'];
+                    $this->data['sub']['invoices'][$index]['id_roomType'] = $id_roomType;
+                    $this->data['sub']['invoices'][$index]['id_showTime'] = $infoShowtime[0]['id_showTime'];
+                    $this->data['sub']['invoices'][$index]['start_time'] = $infoShowtime[0]['start_time'];
+                    $this->data['sub']['invoices'][$index]['end_time'] = $infoShowtime[0]['end_time'];
+                    $this->data['sub']['invoices'][$index]['format'] = $infoShowtime[0]['projection_format'];
+                    $this->data['sub']['invoices'][$index]['room_name'] = $infoCinema[0]['room_name'];
+                    $this->data['sub']['invoices'][$index]['cinema_name'] = $infoCinema[0]['cinema_name'];
+                    $this->data['sub']['invoices'][$index]['address'] = $infoCinema[0]['address'];
+                    $this->data['sub']['invoices'][$index]['double_seat_price'] = $infoShowtime[0]['double_seat_price'];
+                    $this->data['sub']['invoices'][$index]['single_seat_price'] = $infoShowtime[0]['single_seat_price'];
+                    $this->data['sub']['invoices'][$index]['vip_seat_price'] = $infoShowtime[0]['vip_seat_price'];
+                    $this->data['sub']['invoices'][$index]['show_date_default'] = $infoShowtime[0]['show_date'];
                 }
             }
+
 
             //danh sách thuê phòng
             $this->data['sub']['listInvoiceRoom'] = $this->model->getListFromThreeTables('invoice_room', 'room', 'room_type', 'id_room', 'id_roomType', "where id_customer = $id_account ORDER BY invoice_room.id_invoiceRoom DESC");

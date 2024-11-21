@@ -91,71 +91,37 @@ class Home extends Controller
         $this->view("layout/client", $this->data);
     }
 
-    public function roomAgv()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
 
-        $this->data['content'] = 'home/room/roomAgv';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomBig()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomBig';
-
-        $this->view("layout/client", $this->data);
-    }
-
-
-    public function roomSmall()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomSmall';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomVip()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomVip';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomPrivate()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomPrivate';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function book()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/book';
-
-        $this->view("layout/client", $this->data);
-    }
-    public function pay()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/pay';
-
-        $this->view("layout/client", $this->data);
-    }
 
     public function error_404()
     {
         $this->view("errors/404");
+    }
+
+    public function huan()
+    {
+
+        $this->library("Pusher/vendor/autoload.php");
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+        );
+        $pusher = new Pusher\Pusher(
+            '9b780886dd99c5bc8616',
+            '493f567787b71d528c2a',
+            '1898906',
+            $options
+        );
+
+        $data['message'] = 'hello world';
+        $pusher->trigger('my-channel', 'my-event', $data);
+    }
+
+    public function test()
+    {
+        $a = 5;
+
+        $this->library("Pusher/test.php");
     }
 }

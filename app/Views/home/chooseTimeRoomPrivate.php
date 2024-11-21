@@ -1,3 +1,9 @@
+<style>
+    .book {
+        cursor: not-allowed;
+        background-color: #000;
+    }
+</style>
 <section class="content " style="margin-top: 100px;">
     <div class="container mt-4 bg-light rounded-3 shadow p-3 mb-5 bg-body rounded">
         <div class="d-flex justify-content-center align-items-start flex-wrap mt-3">
@@ -95,7 +101,7 @@
                                     }
                                     if ($order_found) { ?>
                                         <div class="col-4 col-sm-3 col-md-2 text-center">
-                                            <a href=" thue-phong-nhom-<?php echo $room['id_room'] ?>.html?date=<?php echo $_GET['day'] ?>&time=<?php echo $hour ?>" class="d-block" style=" cursor: not-allowed">
+                                            <a href="#" class="d-block" style=" cursor: not-allowed">
                                                 <div class="border border-dark p-2 rounded text-light bg-dark shadow-sm">
                                                     <span class="font-weight-bold" style="font-size: 14px;"><?php echo $hour; ?>(đã đặt)</span>
                                                 </div>
@@ -103,9 +109,10 @@
                                         </div>
                                     <?php } else { ?>
                                         <div class="col-4 col-sm-3 col-md-2 text-center">
-                                            <a href="thue-phong-nhom-<?php echo $room['id_room'] ?>.html?date=<?php echo $_GET['day'] ?>&time=<?php echo $hour ?>" class="d-block">
-                                                <div class="border border-dark p-2 rounded text-light bg-danger shadow-sm">
-                                                    <span class="font-weight-bold" style="font-size: 14px;"><?php echo $hour; ?></span>
+                                            <a href="thue-phong-nhom-<?php echo $room['id_room'] ?>.html?date=<?php echo $_GET['day'] ?>&time=<?php echo $hour ?>" class="d-block"
+                                                id="<?php echo $room['id_room'] . '-' . $_GET['day'] . ':' . $hour . '-' . $room['id_cinema'] ?>">
+                                                <div class="border border-dark p-2 rounded text-light bg-danger shadow-sm " id="<?php echo $room['id_room'] . '-' . $_GET['day'] . ':' . $hour . '-' . $room['id_cinema'] . '-order' ?>">
+                                                    <span class="font-weight-bold" style="font-size: 14px;" id="<?php echo $room['id_room'] . '-' . $_GET['day'] . ':' . $hour . '-' . $room['id_cinema'] . '-hour' ?>"><?php echo $hour; ?></span>
                                                 </div>
                                             </a>
                                         </div>
@@ -120,3 +127,64 @@
 
     </div>
 </section>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('9b780886dd99c5bc8616', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+        if (data) {
+            if (data.time && data.show_date && data.id_room && data.id_cinema) {
+                const time = data.time;
+                const showDate = data.show_date;
+                const idRoom = data.id_room;
+                const id_cinema_push = data.id_cinema;
+
+                var book = idRoom + "-" + showDate + ":" + time + "-" + id_cinema_push;
+
+
+
+                const timeSlots = ['08:30', '11:30', '14:30', '17:30', '20:30'];
+                const result = [];
+                const day = "<?php echo $_GET['day'] ?>";
+                const id_cinema = "<?php echo $_GET['id_cinema'] ?>";
+
+
+                for (let x = 1; x <= 500; x++) {
+                    for (let time of timeSlots) {
+                        result.push(`${x}-${day}:${time}-${id_cinema}`);
+                    }
+
+                }
+
+
+                result.forEach(id => {
+                    if (id == book) {
+                        const a = document.getElementById(id);
+                        var order = id + '-order';
+                        var hour = id + '-hour';
+                        const div_order = document.getElementById(order);
+                        const span_hour = document.getElementById(hour);
+
+                        div_order.classList.add('bg-dark')
+                        span_hour.innerHTML = time + "(Đã đặt)";
+                        a.classList.add('book');
+                        a.setAttribute('href', '#');
+
+                    }
+
+
+                });
+            }
+        }
+    });
+</script>
+
+<script>
+
+</script>

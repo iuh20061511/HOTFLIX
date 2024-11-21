@@ -42,14 +42,6 @@
                                     </label>
                                 </div>
                                 <div class="form-check m-3">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/zalopay.webp" alt=""
-                                        style="width: 40px;">
-                                    <input class="form-check-input" type="radio" name="payment" id="zalopay" value="zalopay">
-                                    <label class="form-check-label" for="zalopay">
-                                        ZaloPay - Bạn mới ZaloPay nhập mã GLX50 - Giảm 50k cho đơn từ 200k
-                                    </label>
-                                </div>
-                                <div class="form-check m-3">
                                     <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/vnpay.png" alt=""
                                         style="width: 40px;">
                                     <input class="form-check-input" type="radio" name="payment" id="vnpay" value="vnpay">
@@ -144,24 +136,16 @@ $timeDifferenceInSeconds = $targetTime - $currentTime;
             paymentButton.addEventListener("click", function(event) {
                 const momoOption = document.getElementById("momo");
                 const ATM = document.getElementById("ATM");
-
-                const zalopayOption = document.getElementById("zalopay");
                 const vnpayOption = document.getElementById("vnpay");
 
-                if (!momoOption.checked && !zalopayOption.checked && !vnpayOption.checked && !ATM.checked) {
+                if (!momoOption.checked && !vnpayOption.checked && !ATM.checked) {
                     event.preventDefault();
                     alert("Vui lòng chọn một phương thức thanh toán.");
                     return;
                 }
 
-                if (zalopayOption.checked) {
-                    event.preventDefault();
-                    alert("Hiện tại chưa hỗ trợ thanh toán qua ZaloPay.");
-                }
-                if (vnpayOption.checked) {
-                    event.preventDefault();
-                    alert("Hiện tại chưa hỗ trợ thanh toán qua VNPay.");
-                }
+
+
             });
         });
     </script>
