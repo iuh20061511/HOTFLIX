@@ -6256,3 +6256,55 @@ body::-webkit-scrollbar-thumb {
   cursor: pointer;
   caret-color: #ff55a5;
 }
+
+/* img danh sách quà */
+.catalog__img__wheel {
+  width: 80px;
+  height: 80px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.catalog__img__wheel img {
+  /* width: 100%; */
+  max-width: 100%;
+  max-height: 100%;
+  /* height: auto; */
+  object-fit: cover;
+  /* Ảnh lấp đầy khung và cắt phần dư */
+}
+
+/* Đặt chiều cao cố định và cho phép cuộn */
+.table-container-search {
+  max-height: 400px;
+  /* Chiều cao tối đa của bảng */
+  overflow-y: auto;
+  /* Bật cuộn dọc */
+  border: 1px solid #ddd;
+  /* Viền cho bảng */
+}
+
+/* Giữ nguyên tiêu đề bảng */
+.scrollable-table-search thead {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  /* Nền của tiêu đề bảng */
+  z-index: 10;
+  /* Đảm bảo nằm trên các hàng khác */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Thêm viền cho hàng */
+.scrollable-table-search th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.scrollable-table-search th {
+  font-weight: bold;
+  text-align: center;
+}

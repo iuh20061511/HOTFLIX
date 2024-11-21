@@ -196,6 +196,7 @@ class Voucher extends Controller
                 $this->data['sub']['error']['gift_name'] = $this->validate->checkFullName($_POST['gift_name']);
             }
             $this->data['sub']['error']['point'] = $this->validate->checkEmptyNumber($_POST['point'], 2000);
+            $this->data['sub']['error']['percent'] = $this->validate->checkEmptyNumber($_POST['percent'], 1);
 
             if (empty($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
                 $this->data['sub']['error']['image'] = "Vui lòng chọn hình ảnh cho quà tặng!";
@@ -213,7 +214,9 @@ class Voucher extends Controller
                         $data = [
                             'gift_name' => $_POST['gift_name'],
                             'point' => $_POST['point'],
-                            'image' => $name
+                            'image' => $name,
+                            'percent' => (float)$_POST['percent'] / 100,
+                            'type' => $_POST['typeGift']
                         ];
                         $result = $this->model->InsertData('gifts', $data);
                         if ($result) {

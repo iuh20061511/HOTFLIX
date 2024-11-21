@@ -23,6 +23,7 @@ $routes['dat-lai-mat-khau.html'] = "account/reset";
 $routes['xac-thuc-tai-khoan.html'] = "account/verify";
 $routes['thong-tin-tai-khoan.html'] = "client/inforuser/profileInfo";
 $routes['lich-su-giao-dich.html'] = "client/inforuser/transaction";
+$routes['danh-sach-qua.html'] = "client/inforuser/getlistmygift";
 //ADMIN
 //--USER
 $routes['quan-ly.html'] = 'admin/dashboard';
@@ -114,6 +115,9 @@ $routes['tra-cuu-ve.html'] = 'admin/search';
 $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
 // $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
 
+//Vòng quay may mắn
+$routes['vong-quay-may-man.html'] = 'client/LuckyWheel';
+$routes['doi-qua.html'] = 'client/ExchangeGifts';
 
 //Đổi suất chiếu
 $routes['doi-suat-chieu.html'] = 'client/ChangeTickets/selectSeat';
