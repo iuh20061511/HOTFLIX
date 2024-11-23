@@ -55,10 +55,11 @@
 <body>
     <div class="container">
         <div class="content">
-            <h1>404 - Page Not Found</h1>
-            <p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+            <h1>404 - Không tìm thấy trang</h1>
+            <p>Trang bạn đang tìm kiếm có thể đã bị xóa, được đổi tên, hoặc tạm thời không khả dụng.</p>
             <a href="/">Về trang chủ</a>
         </div>
+
     </div>
 </body>
 

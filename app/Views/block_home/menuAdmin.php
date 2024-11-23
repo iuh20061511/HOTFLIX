@@ -55,12 +55,10 @@
 
 			<li class="sidebar__nav-item">
 				<a class="sidebar__nav-link" href="quan-ly-suat-chieu.html" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
-					<span>Quản lý suất chiếu</span> <i class="ti ti-chevron-down"></i></a>
-				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="add-item.html">Add cinema</a></li>
-					<li><a href="edit-user.html">Edit cinema</a></li>
-				</ul>
+					<span>Quản lý suất chiếu</span></a>
+
 			</li>
+
 
 			<li class="sidebar__nav-item">
 				<a class="sidebar__nav-link" href="quan-ly-bap-nuoc.html" role="button" aria-expanded="false"><i

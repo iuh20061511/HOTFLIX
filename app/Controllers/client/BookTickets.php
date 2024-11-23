@@ -50,7 +50,7 @@ class BookTickets extends Controller
         if (isset($_GET['id_cinema'])) {
             $id_cinema = $_GET['id_cinema'];
         } else {
-            $id_cinema = $_SESSION['id_cinema_customer'];
+            $id_cinema = $this->data['sub']['listCinema'][0]['id_cinema'];
         }
         $day = $_GET['day'];
 
@@ -404,6 +404,7 @@ class BookTickets extends Controller
                         'discount_total' => (int)str_replace(['.', ' ₫'], '', $_POST['discount']),
                         'final_total' => $moneyNumber * 1,
                         'payment_method' => ($_SESSION['is_login']['id_role'] == 1) ? 'Online' : 'Tại quầy',
+                        'id_showTime' => $id_showtime
                     ],
                     isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1
                         ? ['id_customer' => $_SESSION['is_login']['id_account']]
@@ -426,6 +427,8 @@ class BookTickets extends Controller
                     $this->library('PayOnline/QRmomo.php', $this->data);
                 } elseif ($_POST['payment'] == 'ATM') {
                     $this->library('PayOnline/Momo.php', $this->data);
+                } elseif ($_POST['payment'] == 'vnpay') {
+                    $this->library('PayOnline/VNpayTicket.php', $this->data);
                 }
             }
 

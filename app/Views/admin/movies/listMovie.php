@@ -7,21 +7,21 @@
 					<div class="main__title">
 						<h2>Quản lý phim</h2>
 
-						<span class="main__title-stat">Số lượng phim: <?php echo $pagination['totalMovies'];?></span>
+						<span class="main__title-stat">Số lượng phim: <?php echo $pagination['totalMovies']; ?></span>
 
 						<div class="main__title-wrap">
-						<a href="them-bo-phim.html">
-							<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm phim mới</button>
-						</a>
+							<a href="them-bo-phim.html">
+								<button type="button" data-bs-toggle="modal" class="main__title-link main__title-link--wrap">Thêm phim mới</button>
+							</a>
 
-						<form action="quan-ly-phim.html" class="m-3">
-							<select class="filter__select" name="movie_sort" id="filter__sort" onchange="this.form.submit()">
-								<option value="3" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 3) ? 'selected' : '' ?>>Tất cả</option>
-								<option value="0" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 0) ? 'selected' : '' ?>>Sắp chiếu</option>
-								<option value="1" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 1) ? 'selected' : '' ?>>Đang chiếu</option>
-								<option value="2" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 2) ? 'selected' : '' ?>>Đã chiếu</option>
-							</select>
-						</form>
+							<form action="quan-ly-phim.html" class="m-3">
+								<select class="filter__select" name="movie_sort" id="filter__sort" onchange="this.form.submit()">
+									<option value="3" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 3) ? 'selected' : '' ?>>Tất cả</option>
+									<option value="0" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 0) ? 'selected' : '' ?>>Sắp chiếu</option>
+									<option value="1" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 1) ? 'selected' : '' ?>>Được chiếu</option>
+									<option value="2" <?= (isset($_GET['movie_sort']) && $_GET['movie_sort'] == 2) ? 'selected' : '' ?>>Đã chiếu</option>
+								</select>
+							</form>
 
 							<!-- search -->
 							<form action="quan-ly-phim.html" class="main__title-form">
@@ -54,53 +54,110 @@
 							</thead>
 
 							<tbody>
-							<?php
-                                $stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'];
-                                foreach ($listMovie as $index => $movie) { ?>
-								<tr>
-									<td>
-										<div class="catalog__text"><?php echo ++$stt?></div>
-									</td>
-									<td>
-										<div class="catalog__text"><div class="view-poster" data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>">Poster</div></div>
-									</td>
-									<td>
-										<div class="catalog__text"><?php echo $movie['movie_name']; ?></div>
-									</td>
-									<td>
-										<div class="catalog__text"><?php echo $movie['duration']; ?> phút</div>
-									</td>
-									<td>
-										<div class="catalog__text"><?php echo date('d/m/Y', strtotime($movie['release_date'])) ?></div>
-									</td>
-									<td>
-									<?php if ($movie['status'] == 0 ): ?>
-										<div class="catalog__text catalog__text--red">Sắp chiếu</div>
-									<?php endif; ?>
-									<?php if ($movie['status'] == 1 ): ?>
-										<div class="catalog__text catalog__text--green">Đang chiếu</div>
-									<?php endif; ?>
-									</td>
-									<td>
-										<div class="catalog__text"><div class="play_trailer" data-trailer="<?php echo $movie['trailer']; ?>">Trailer</div></div>
-									</td>
-									<td>
-										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view" 
-												data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>"
-												data-movie='<?php echo htmlspecialchars(json_encode($movie, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>'>
-												<i class="ti ti-eye"></i>
-											</button>
-											<a href="cap-nhat-phim-<?php echo $movie['id_movie'] ?>.html" class="catalog__btn catalog__btn--edit">
-												<i class="ti ti-edit"></i>
-											</a>
-											<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-movie-id="<?php echo $movie['id_movie'] ?>" data-movie-name="<?php echo $movie['movie_name'] ?>" data-bs-target="#modal-delete">
-												<i class="ti ti-trash"></i>
-											</button>
-										</div>
-									</td>
-								</tr>
-							<?php } ?>
+								<?php
+								$stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'];
+								foreach ($listMovie as $index => $movie) {
+
+								?>
+									<tr>
+										<td>
+											<div class="catalog__text"><?php echo ++$stt ?></div>
+										</td>
+										<td>
+											<div class="catalog__text">
+												<div class="view-poster" data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>">Poster</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__text"><?php echo $movie['movie_name']; ?></div>
+										</td>
+										<td>
+											<div class="catalog__text"><?php echo $movie['duration']; ?> phút</div>
+										</td>
+										<td>
+											<div class="catalog__text"><?php echo date('d/m/Y', strtotime($movie['release_date'])) ?></div>
+										</td>
+										<td>
+											<?php if ($movie['status'] == 0): ?>
+												<div class="catalog__text catalog__text--red">Sắp chiếu</div>
+											<?php endif; ?>
+											<?php if ($movie['status'] == 1): ?>
+												<div class="catalog__text catalog__text--green">Được chiếu</div>
+											<?php endif; ?>
+											<?php if ($movie['status'] == 2): ?>
+												<div class="catalog__text text-primary">Đã chiếu</div>
+											<?php endif; ?>
+										</td>
+										<td>
+											<div class="catalog__text">
+												<div class="play_trailer" data-trailer="<?php echo $movie['trailer']; ?>">Trailer</div>
+											</div>
+										</td>
+										<td>
+											<div class="catalog__btns">
+
+												<button class="catalog__btn text-info">
+													<i class="bi bi-gear" id="openModal<?php echo $movie['id_movie']; ?>"></i>
+												</button>
+
+
+												<div id="customModal<?php echo $movie['id_movie']; ?>" class="d-none position-fixed top-0 start-0 w-50 h-100 bg-dark bg-opacity-50" style="z-index: 100; margin-left: 15%;">
+													<div class="d-flex justify-content-center align-items-center h-100">
+														<div class="bg-white p-4 rounded shadow modal-content">
+															<button id="closeModal<?php echo $movie['id_movie']; ?>" style="position: absolute; right: 10px; top:5px; font-size: 22px;"><b><i class="bi bi-x-lg text-danger"></i></b></button>
+															<h5 class="mb-3">Thay đổi trạng thái phim <span class="text-primary"><?php echo $movie['movie_name']; ?></span></h5>
+															<p>Trạng thái hiện tại:<?php if ($movie['status'] == 0): ?>
+																<span class="text-danger">Sắp chiếu</span>
+															<?php endif; ?>
+															<?php if ($movie['status'] == 1): ?>
+																<span class="text-success">Được chiếu</span>
+															<?php endif; ?>
+															<?php if ($movie['status'] == 2): ?>
+																<span class="text-primary">Đã chiếu</span>
+															<?php endif; ?>
+															</p>
+															<form action="" method="post" class="m-3 p-3">
+																<input type="hidden" name="id_movie" value="<?php echo $movie['id_movie']; ?>">
+																<select name="status" id="status" class="form-control">
+																	<option value="" disabled selected>--- Thay đổi trạng thái ---</option>
+																	<?php if ($movie['status'] == 1 || $movie['status'] == 2): ?>
+																		<option value="0">Sắp chiếu</option>
+																	<?php endif; ?>
+																	<?php if ($movie['status'] == 0 || $movie['status'] == 2): ?>
+																		<option value="1">Được chiếu</option>
+																	<?php endif; ?>
+																	<?php if ($movie['status'] == 0 || $movie['status'] == 1): ?>
+																		<option value="2">Đã chiếu</option>
+																	<?php endif; ?>
+
+																</select>
+
+																<input type="submit" name="sub_status_movie" value="Xác nhận" class="btn btn-success mt-2" style="position: absolute; right: 55px">
+
+															</form>
+
+														</div>
+													</div>
+												</div>
+
+
+
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view"
+													data-poster="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster'] ?>"
+													data-movie='<?php echo htmlspecialchars(json_encode($movie, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>'>
+													<i class="ti ti-eye"></i>
+												</button>
+												<a href="cap-nhat-phim-<?php echo $movie['id_movie'] ?>.html" class="catalog__btn catalog__btn--edit">
+													<i class="ti ti-edit"></i>
+												</a>
+												<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-movie-id="<?php echo $movie['id_movie'] ?>" data-movie-name="<?php echo $movie['movie_name'] ?>" data-bs-target="#modal-delete">
+													<i class="ti ti-trash"></i>
+												</button>
+											</div>
+										</td>
+									</tr>
+								<?php
+								} ?>
 							</tbody>
 						</table>
 					</div>
@@ -130,18 +187,18 @@
 								</a>
 							</li>
 						</ul>
-						
+
 						<ul class="paginator">
 							<li class="paginator__item paginator__item--prev">
 								<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>"><i class="ti ti-chevron-left"></i></a>
 							</li>
-							
+
 							<?php for ($i = 1; $i <= $pagination['totalPages']; $i++): ?>
 								<li class="paginator__item <?= $i == $pagination['currentPage'] ? 'paginator__item--active' : ''; ?>">
 									<a href="?page=<?= $i; ?>"><?= $i; ?></a>
 								</li>
 							<?php endfor; ?>
-							
+
 							<li class="paginator__item paginator__item--next">
 								<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>"><i class="ti ti-chevron-right"></i></a>
 							</li>
@@ -253,19 +310,19 @@
 
 	<!-- Popup video-->
 	<div class="popupvideo" id="popupvideo">
-        <div class="popupvideo_inner">
-            <div class="popupvideo_inner_iframe">
-                <iframe id="videoIframe" width="100%" height="100%"
-                    src="" frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                </iframe>
-            </div>
-            <div class="popupvideo_inner_close" id="closeVideoPopup">
-                <img src="<?php echo _WEB_ROOT ?>/public/admin/img/icons8-close.svg" alt="close">
-            </div>
-        </div>
-    </div>
+		<div class="popupvideo_inner">
+			<div class="popupvideo_inner_iframe">
+				<iframe id="videoIframe" width="100%" height="100%"
+					src="" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+				</iframe>
+			</div>
+			<div class="popupvideo_inner_close" id="closeVideoPopup">
+				<img src="<?php echo _WEB_ROOT ?>/public/admin/img/icons8-close.svg" alt="close">
+			</div>
+		</div>
+	</div>
 	<!-- Popup video-->
 
 
@@ -362,12 +419,12 @@
 			// Ảnh Poster
 			document.querySelector('.movie-poster').src = posterUrl; // Cập nhật với posterUrl
 			//Thời lượng
-			document.querySelector('.movie-duration').textContent = movie.duration+" phút";
+			document.querySelector('.movie-duration').textContent = movie.duration + " phút";
 			//Ngày phát hành
 			const releaseDate = new Date(movie.release_date);
 			const formattedDate = releaseDate.getDate().toString().padStart(2, '0') + '/' +
-								(releaseDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
-								releaseDate.getFullYear(); // Định dạng ngày/tháng/năm
+				(releaseDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
+				releaseDate.getFullYear(); // Định dạng ngày/tháng/năm
 
 			document.querySelector('.movie-release-date').textContent = formattedDate;
 			//Thể loại
@@ -384,13 +441,13 @@
 		// <-------------Modal view detail movie--------------->
 
 		// <-------------Modal delete movie--------------->
-		document.addEventListener('DOMContentLoaded', function () {
+		document.addEventListener('DOMContentLoaded', function() {
 			// Lấy tất cả các nút xóa
 			var deleteButtons = document.querySelectorAll('.catalog__btn--delete');
 
 			// Thêm sự kiện click cho từng nút xóa
-			deleteButtons.forEach(function (button) {
-				button.addEventListener('click', function () {
+			deleteButtons.forEach(function(button) {
+				button.addEventListener('click', function() {
 					var movieId = this.getAttribute('data-movie-id');
 					var movieName = this.getAttribute('data-movie-name');
 					document.getElementById('movie-id').textContent = movieId;
@@ -399,6 +456,29 @@
 				});
 			});
 		});
-
 	</script>
 
+	<script>
+		document.querySelectorAll('[id^="openModal"]').forEach(openButton => {
+			const movieId = openButton.id.replace('openModal', '');
+			const customModal = document.getElementById('customModal' + movieId);
+			const closeModalButton = document.getElementById('closeModal' + movieId);
+			const modalContent = customModal.querySelector('.modal-content');
+
+			openButton.addEventListener('click', () => {
+				customModal.classList.remove('d-none');
+			});
+
+
+			closeModalButton.addEventListener('click', () => {
+				customModal.classList.add('d-none');
+			});
+
+
+			customModal.addEventListener('click', (e) => {
+				if (!modalContent.contains(e.target)) {
+					customModal.classList.add('d-none');
+				}
+			});
+		});
+	</script>

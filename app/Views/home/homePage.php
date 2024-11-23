@@ -123,7 +123,7 @@
                         if (!in_array($movieShowing['id_movie'], $shownMovies)) {
                             $shownMovies[] = $movieShowing['id_movie'];
                     ?>
-                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3" style="position: relative; ">
+                            <div class="col-xl-3 " style="position: relative; ">
                                 <?php if (isset($_SESSION['is_login']['id_account'])) { ?>
                                     <?php
                                     if (isset($showtime_notifications)) {
@@ -221,7 +221,7 @@
                         if (!in_array($movieComing['id_movie'], $shownMovies)) {
                             $shownMovies[] =  $movieComing['id_movie'];
                     ?>
-                            <div class="col-6 col-sm-4 col-lg-3 col-xl-2 mx-3" style="position: relative; ">
+                            <div class="col-3 " style="position: relative; ">
                                 <?php if (isset($_SESSION['is_login']['id_account'])) {
                                     if (isset($showtime_notifications)) {
 
@@ -363,50 +363,25 @@
 
                     <div class="splide__track">
                         <ul class="splide__list">
-                            <li class="splide__slide">
-                                <div class="item item--carousel">
-                                    <a href="details1.html" class="item__cover">
-                                        <img src="<?php echo _WEB_ROOT ?>/public/assets/img/covers/7.png" alt="">
-                                        <span class="item__play">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z" />
-                                            </svg>
-                                        </span>
-                                    </a>
-                                    <div class="item__content">
-                                        <h3 class="item__title"><a href="details1.html">I Dream in Another
-                                                Language</a></h3>
-                                        <span class="item__category">
-                                            <a href="#">Action</a>
-                                            <a href="#">Triler</a>
-                                        </span>
-                                        <span class="item__rate">8.4</span>
-                                    </div>
-                                </div>
-                            </li>
+                            <?php foreach ($listMoive as $movie) { ?>
+                                <li class="splide__slide">
+                                    <div class="item item--carousel">
+                                        <a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html" class="item__cover">
+                                            <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster']; ?>" alt="">
+                                            <span class="item__play text-light">
+                                                chi tiết
+                                            </span>
+                                        </a>
+                                        <div class="item__content">
+                                            <h3 class="item__title"><a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html"><?php echo $movie['movie_name'] ?></a></h3>
 
-                            <li class="splide__slide">
-                                <div class="item item--carousel">
-                                    <a href="details1.html" class="item__cover">
-                                        <img src="<?php echo _WEB_ROOT ?>/public/assets/img/covers/8.png" alt="">
-                                        <span class="item__play">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                <path
-                                                    d="M18.54,9,8.88,3.46a3.42,3.42,0,0,0-5.13,3V17.58A3.42,3.42,0,0,0,7.17,21a3.43,3.43,0,0,0,1.71-.46L18.54,15a3.42,3.42,0,0,0,0-5.92Zm-1,4.19L7.88,18.81a1.44,1.44,0,0,1-1.42,0,1.42,1.42,0,0,1-.71-1.23V6.42a1.42,1.42,0,0,1,.71-1.23A1.51,1.51,0,0,1,7.17,5a1.54,1.54,0,0,1,.71.19l9.66,5.58a1.42,1.42,0,0,1,0,2.46Z" />
-                                            </svg>
-                                        </span>
-                                    </a>
-                                    <div class="item__content">
-                                        <h3 class="item__title"><a href="details1.html">Undercurrents</a></h3>
-                                        <span class="item__category">
-                                            <a href="#">Comedy</a>
-                                        </span>
-                                        <span class="item__rate">7.1</span>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            <?php } ?>
+
                         </ul>
+
                     </div>
                 </div>
             </div>

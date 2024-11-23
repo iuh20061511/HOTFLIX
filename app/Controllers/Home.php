@@ -14,9 +14,10 @@ class Home extends Controller
     }
     public function index()
     {
+        $this->data['sub']['listMoive'] = $this->model->getListTable('movie', 'where id_movie != 0');
 
-        $this->data['sub']['listShowing'] = $this->model->getListFromTwoTables('show_time', 'movie',  'id_movie', "WHERE show_time.show_date BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 6 DAY)");
-        $this->data['sub']['listComingSoon'] = $this->model->getListFromTwoTables('show_time', 'movie',  'id_movie', "WHERE show_time.show_date >= NOW() + INTERVAL 6 DAY");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
+        $this->data['sub']['listComingSoon'] = $this->model->getListTable('movie', "where status= 0");
         if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1) {
             $id_customer = $_SESSION['is_login']['id_account'];
             $this->data['sub']['showtime_notifications'] = $this->model->getListTable('showtime_notifications', "where id_customer =  $id_customer");

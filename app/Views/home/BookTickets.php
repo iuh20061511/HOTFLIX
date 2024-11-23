@@ -123,7 +123,7 @@
                         if (isset($_GET['id_cinema'])) {
                             $id_cinema = $_GET['id_cinema'];
                         } else {
-                            $id_cinema = $_SESSION['id_cinema_customer'];
+                            $id_cinema = $listCinema[0]['id_cinema'];
                         }
                         if ($day['value'] == $_GET['day']) {
                             echo "<div class='text-center'>

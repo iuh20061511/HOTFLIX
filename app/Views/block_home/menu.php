@@ -8,29 +8,13 @@
                         <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" alt="">
                     </a>
                     <!-- end header logo -->
-                    <li class="header__nav-item bg-danger rounded-3">
+                    <li class="header__nav-item rounded-3">
                         <button class="header__categories-btn" type="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                             <span></span>
                             <span></span>
                         </button>
-                        <a href="#" class="header__nav-link p-3">
-                            <?php
-                            $cinema =   (new Model())->getListTable('cinemas');
 
-                            if (isset($_POST['cinema_name'])) {
-                                $_SESSION['id_cinema_customer'] =  $_POST['id_cinema'];
-                                $_SESSION['name_cinema_customer'] =  $_POST['cinema_name'];
-                                echo $_SESSION['name_cinema_customer'];
-                            } elseif (isset($_SESSION['name_cinema_customer'])) {
-                                $_SESSION['id_cinema_customer'] =  $cinema[0]['id_cinema'];
-                                echo  $_SESSION['name_cinema_customer'];
-                            } else {
-                                $_SESSION['id_cinema_customer'] =  $cinema[0]['id_cinema'];
-                                $_SESSION['name_cinema_customer'] =  $cinema[0]['cinema_name'];
-                                echo  $_SESSION['name_cinema_customer'];
-                            } ?>
-                        </a>
 
                         <div class="header__categories">
                             <?php
@@ -38,17 +22,14 @@
 
                             ?>
 
-                            <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories">
-                                <ul class="header__categories-list">
-                                    <?php foreach ($cinemas as $cinema) { ?>
-                                        <li>
-                                            <form action="" method="post">
-                                                <input type="hidden" name="id_cinema" value="<?php echo $cinema['id_cinema'] ?>">
-                                                <input type="hidden" name="cinema_name" value="<?php echo $cinema['cinema_name'] ?>">
+                            <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories" style="width: 300px;">
 
-                                                <input type="submit" name="cinema_btn" class="border-0 text-light" style="background: none;" value="<?php echo $cinema['cinema_name']; ?>">
-                                            </form>
-                                        </li>
+                                <ul class="header__categories-list">
+                                    <h6 class="text-center text-danger"><b>Hệ thống rạp:</b></h6>
+                                    <?php foreach ($cinemas as $cinema) { ?>
+
+                                        <p class="border-0 text-light" style="background: none;"><?php echo $cinema['cinema_name']; ?></p>
+
                                     <?php } ?>
                                 </ul>
 
@@ -108,7 +89,7 @@
                         </li>
 
                         <!-- dropdown -->
-                        <li class="header__nav-item">
+                        <!-- <li class="header__nav-item">
                             <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">Pages <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
@@ -123,7 +104,7 @@
                                 <li><a href="contacts.html">Contacts</a></li>
                                 <li><a href="privacy.html">Privacy policy</a></li>
                             </ul>
-                        </li>
+                        </li> -->
                         <!-- end dropdown -->
 
 
@@ -133,7 +114,7 @@
                     <!-- header actions -->
                     <div class="header__actions">
                         <form action="#" class="header__search">
-                            <input type="text" placeholder="Search">
+                            <input type="text" placeholder="Tìm kiếm">
                             <button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">

@@ -2,23 +2,34 @@
 	<main class="main">
 		<div class="container-fluid">
 			<div class="row">
-				<!-- main title -->
 				<div class="col-12">
-					<div class="main__title">
-						<h2>Dashboard</h2>
+					<div class="main__title m-3">
+						<div class="mb-3 align-items-center ">
+							<label class="mb-2 text-light" for="">Chọn thời gian xem thống kê:</label>
+							<form action="" method="post">
+								<input type="week" id="week" name="week" class="form-control" value="<?php echo isset($_POST['week']) ? $_POST['week'] : date('Y-\WW'); ?>">
+								<input type="submit" value="SUB">
+							</form>
 
-						<a href="add-item.html" class="main__title-link">add item</a>
+						</div>
+
 					</div>
 				</div>
-				<!-- end main title -->
 
-				<!-- stats -->
 				<div class="col-12 col-sm-6 col-xl-3">
 					<div class="stats">
-						<span>Subscriptions this month</span>
-						<!-- or .red -->
-						<p>1 678 <b class="green">+15</b></p>
-						<i class="ti ti-diamond"></i>
+						<span>Doanh vé tuần</span>
+						<p style="font-size: 20px;">
+							<?php if (isset($total_revenue)) : ?>
+								<?= number_format($total_revenue, 0, ',', '.') ?> VNĐ
+								<b class="<?= $weeklyRevenueRate > 1 ? 'green' : 'red' ?>">
+									<?= ($weeklyRevenueRate > 1 ? '+' : '') . $weeklyRevenueRate ?>%
+								</b>
+							<?php endif; ?>
+						</p>
+						<br>
+
+						<i class="ti ti-diamond" style="font-size: 20px;"></i>
 					</div>
 				</div>
 				<!-- end stats -->
@@ -26,9 +37,16 @@
 				<!-- stats -->
 				<div class="col-12 col-sm-6 col-xl-3">
 					<div class="stats">
-						<span>Items added this month</span>
-						<p>376 <b class="red">-44</b></p>
-						<i class="ti ti-movie"></i>
+						<span>Doanh vé thu tháng</span>
+						<p style="font-size: 20px;">
+							<?php if (isset($total_revenue_month)) : ?>
+								<?= number_format($total_revenue_month, 0, ',', '.') ?> VNĐ
+								<b class="<?= $monthlyRevenueRate > 1 ? 'green' : 'red' ?>">
+									<?= ($monthlyRevenueRate > 1 ? '+' : '') . $monthlyRevenueRate ?>%
+								</b>
+							<?php endif; ?>
+						</p><br>
+						<i class="ti ti-movie" style="font-size: 20px;"></i>
 					</div>
 				</div>
 				<!-- end stats -->
@@ -36,9 +54,9 @@
 				<!-- stats -->
 				<div class="col-12 col-sm-6 col-xl-3">
 					<div class="stats">
-						<span>Views this month</span>
-						<p>509 573 <b class="green">+3.1%</b></p>
-						<i class="ti ti-eye"></i>
+						<span>Tỉ lệ lấp đầy</span>
+						<p style="font-size: 20px;">78%<b class="green">+3.1%</b></p><br>
+						<i class="ti ti-eye" style="font-size: 20px;"></i>
 					</div>
 				</div>
 				<!-- end stats -->
@@ -59,7 +77,7 @@
 				<div class="col-12 col-xl-6">
 					<div class="dashbox">
 						<div class="dashbox__title">
-							<h3><i class="ti ti-trophy"></i> Top items</h3>
+							<h3><i class="ti ti-trophy"></i>Doanh thu phim</h3>
 
 							<div class="dashbox__wrap">
 								<a class="dashbox__refresh" href="#"><i class="ti ti-refresh"></i></a>
@@ -71,84 +89,33 @@
 							<table class="dashbox__table">
 								<thead>
 									<tr>
-										<th>ID</th>
-										<th>TITLE</th>
-										<th>CATEGORY</th>
-										<th>RATING</th>
+										<th>STT</th>
+										<th>Tên phim</th>
+										<th>Tổng số suất chiếu</th>
+										<th>Doanh Thu</th>
 									</tr>
 								</thead>
 
 								<tbody>
-									<tr>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--grey">241</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text"><a href="#">The Lost City</a></div>
-										</td>
-										<td>
-											<div class="dashbox__table-text">Movie</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--rate"><i class="ti ti-star"></i> 9.2</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--grey">825</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text"><a href="#">Undercurrents</a></div>
-										</td>
-										<td>
-											<div class="dashbox__table-text">Movie</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--rate"><i class="ti ti-star"></i> 9.1</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--grey">9271</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text"><a href="#">Tales from the Underworld</a></div>
-										</td>
-										<td>
-											<div class="dashbox__table-text">TV Series</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--rate"><i class="ti ti-star"></i> 9.0</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--grey">635</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text"><a href="#">The Unseen World</a></div>
-										</td>
-										<td>
-											<div class="dashbox__table-text">TV Series</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--rate"><i class="ti ti-star"></i> 8.9</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--grey">825</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text"><a href="#">Redemption Road</a></div>
-										</td>
-										<td>
-											<div class="dashbox__table-text">TV Series</div>
-										</td>
-										<td>
-											<div class="dashbox__table-text dashbox__table-text--rate"><i class="ti ti-star"></i> 8.9</div>
-										</td>
-									</tr>
+									<?php
+									$i = 0;
+									foreach ($calculateMovieRevenue as $item) { ?>
+										<tr>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--grey"><?php echo ++$i ?></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><a href="#"><?php echo $item['movie_name'] ?></a></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text"><?php echo $item['total_movie'] ?></div>
+											</td>
+											<td>
+												<div class="dashbox__table-text dashbox__table-text--rate"></i><?php echo number_format($item['total_revenue'], 0, ',', '.')  ?> VNĐ</div>
+											</td>
+										</tr>
+									<?php } ?>
+
 								</tbody>
 							</table>
 						</div>
@@ -160,7 +127,7 @@
 				<div class="col-12 col-xl-6">
 					<div class="dashbox">
 						<div class="dashbox__title">
-							<h3><i class="ti ti-movie"></i> Latest items</h3>
+							<h3><i class="ti ti-movie"></i>Doanh thu rạp</h3>
 
 							<div class="dashbox__wrap">
 								<a class="dashbox__refresh" href="#"><i class="ti ti-refresh"></i></a>
@@ -172,7 +139,7 @@
 							<table class="dashbox__table">
 								<thead>
 									<tr>
-										<th>ID</th>
+										<th></th>
 										<th>ITEM</th>
 										<th>CATEGORY</th>
 										<th>RATING</th>

@@ -12,9 +12,9 @@
 
 
 $authenticated = [
-    "Home/error_404"              =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
-    "Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
-    "admin/dashboard/index"       =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
-    "admin/Showtime/addShowTime"  =>      [CINEMA_MANAGER]
+    // "Home/error_404"              =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
+    // "Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
+    // "admin/dashboard/index"       =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
+    // "admin/Showtime/addShowTime"  =>      [CINEMA_MANAGER]
 
 ];

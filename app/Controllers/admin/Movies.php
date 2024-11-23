@@ -4,13 +4,14 @@ class Movies extends Controller
 
     private $model;
     private $validate;
-
+    private $hander;
     private $data = [];
 
     public function __construct()
     {
         $this->model = $this->model('AdminModel');
         $this->validate = new Validate();
+        $this->hander = new Handler();
     }
 
     public function index()
@@ -24,7 +25,7 @@ class Movies extends Controller
         // Xử lý tìm kiếm
         if (isset($_GET['search_nameMovie']) && !empty($_GET['search_nameMovie'])) {
             $search_nameMovie = $_GET['search_nameMovie'];
-            $getConditions[] = "movie_name LIKE '%$search_nameMovie%'";
+            $getConditions[] = "movie_name LIKE '%$search_nameMovie%' ";
         }
 
         // Xử lý sắp xếp
@@ -44,7 +45,7 @@ class Movies extends Controller
                     break;
             }
         }
-        
+
         // Tạo điều kiện cho câu truy vấn
         if (!empty($getConditions)) {
             $conditions = " WHERE " . implode(" AND ", $getConditions);
@@ -55,7 +56,7 @@ class Movies extends Controller
         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
 
         // Tổng số phim và tính tổng số trang
-        $totalMovies = count($this->model->getListTable('movie', $conditions)); // Đếm tổng số phim với điều kiện
+        $totalMovies = count($this->model->getListTable('movie', $conditions));
         $totalPages = ceil($totalMovies / $itemsPerPage);
 
         // Lấy danh sách phim theo trang hiện tại
@@ -69,6 +70,23 @@ class Movies extends Controller
             'itemsPerPage' => $itemsPerPage,
             'totalMovies' => $totalMovies,
         ];
+
+        if (isset($_POST['status'])) {
+            $id_movie = $_POST['id_movie'];
+            $data = [
+                'status' => $_POST['status'],
+                'id_movie' => $id_movie,
+            ];
+            $result = $this->model->updateData('movie', $data, "where id_movie = $id_movie");
+            if ($result) {
+                if (isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                    echo "<script>window.location.href = 'quan-ly-phim.html?page=$page';</script>";
+                } else {
+                    echo "<script>window.location.href = 'quan-ly-phim.html;</script>";
+                }
+            }
+        }
 
         $this->data['content'] = 'admin/movies/listMovie';
         $this->view("layout/admin", $this->data);
@@ -108,6 +126,7 @@ class Movies extends Controller
                     echo "<script>alert('Lưu poster phim thất bại!');</script>";
                 } else {
                     $genre_string = implode(', ', $_POST['genre']);
+                    $color = $this->hander->randomColor();
                     $data = [
                         'movie_name' => $_POST['movie_name'],
                         'genre' => $genre_string,
@@ -119,13 +138,13 @@ class Movies extends Controller
                         'release_date' => $_POST['release_date'],
                         'nation' => $_POST['nation'],
                         'poster' => $name,
-                        'status' => "Sắp chiếu"
+                        'status' => "0",
+                        'color_code' =>  "$color"
                     ];
                     $result = $this->model->InsertData('movie', $data);
                     if ($result) {
                         echo "<script>alert('Thêm phim mới thành công')</script>";
-                        $redirectUrl = "quan-ly-phim.html";
-                        header("refresh:0.5; url=$redirectUrl");
+                        echo "<script>window.location.href = 'quan-ly-phim.html';</script>";
                     }
                 }
             }
@@ -228,6 +247,5 @@ class Movies extends Controller
                 header("refresh:0.5; url=$redirectUrl");
             }
         }
-
     }
 }

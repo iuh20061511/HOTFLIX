@@ -102,4 +102,22 @@ class Handler
 
         return $randomColor;
     }
+
+
+    function randomColor()
+    {
+        do {
+            $color = '#' . str_pad(dechex(mt_rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
+            $rgb = sscanf($color, "#%02x%02x%02x");
+
+            $r = $rgb[0];
+            $g = $rgb[1];
+            $b = $rgb[2];
+
+            $isBlackish = ($r < 50 && $g < 50 && $b < 50);
+            $isRedish = ($r > 200 && $g < 100 && $b < 100);
+        } while ($isBlackish || $isRedish);
+
+        return $color;
+    }
 }
