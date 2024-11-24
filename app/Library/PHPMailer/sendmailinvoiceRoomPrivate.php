@@ -28,77 +28,104 @@ try {
 
     $html = "
    
-<!DOCTYPE html>
-<html lang='en'>
-<head>
-  <meta charset='UTF-8'>
-  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-  <title>PDF Icon</title>
-  <style>
-      
-      .pdf-icon {
-          width: 160px;
-          height: 200px;
-          background-color: #3498db;
-          border-radius: 12px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          color: white;
-          font-family: 'Arial', sans-serif;
-          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-          position: relative;
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
+ <!DOCTYPE html>
+    <html lang='en'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <title>Your Tickets</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                line-height: 1.6;
+                color: #333;
+                margin: 0;
+                padding: 20px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background: #f9f9f9;
+                padding: 20px;
+                border-radius: 8px;
+            }
+            .header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .header h1 {
+                color: #2c3e50;
+                margin: 0;
+                padding: 0;
+            }
+            .ticket-container {
+                background: #ffffff;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                padding: 15px;
+                margin-bottom: 15px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .ticket-header {
+                border-bottom: 1px solid #eee;
+                padding-bottom: 10px;
+                margin-bottom: 10px;
+            }
+            .ticket-number {
+                font-size: 14px;
+                color: #666;
+            }
+            .download-button {
+                display: inline-block;
+                background-color: red;
+                color: #fff !important;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                margin-top: 10px;
+            }
+            .footer {
+                margin-top: 30px;
+                text-align: center;
+                font-size: 12px;
+                color: #666;
+            }
+            .download-invoice{
+                 display: inline-block;
+                background-color: #a87f32;
+                color: #fff !important;
+                padding: 10px 20px;
+                text-decoration: none;
+                border-radius: 4px;
+                margin-botom: 10px;
+                margin-left: 40%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='header'>
+                <h1 class='invoice_cinema'>HỆ THỐNG RẠP <span style='color:#ff55a5'>HOT</span><span style='color:rgb(120, 115, 115);'>FLIX</span></h1>
+                <h1 style='color:#ff55a5'>Đặt phòng chiếu</h1>
+            </div>
+            <div>
+                <a href='" . htmlspecialchars($invoice_url) . "' class='download-invoice'>
+                    Tải hóa đơn tại đây
+                </a>
+            </div>
+            ";
 
-  
-      .pdf-icon:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      }
-
-    
-      .pdf-icon::before {
-          content: '📄';
-          font-size: 50px;
-          margin-bottom: 20px;
-      }
-
-      .pdf-file-icon {
-          font-size: 18px;
-          font-weight: bold;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-      }
+    $html .= "
+            <div class='footer'>
+                <p>Nếu bạn có bất kỳ câu hỏi nào, vui lòng liên hệ với nhóm hỗ trợ của chúng tôi.</p>
+            </div>
+        </div>
+    </body>
+    </html>";
 
 
-      .pdf-text {
-          font-size: 14px;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 1px;
-      }
-
-      a {
-          text-decoration: none;
-          color: inherit;
-      }
-  </style>
-</head>
-<body>
-  <div class='pdf-icon'>
-    <a href='$invoice_url'>
-      <div class='pdf-file-icon'></div>
-      <div class='pdf-text'>Hóa đơn</div>
-    </a>
-  </div>
-</body>
-</html>
 
 
-    ";
 
 
 

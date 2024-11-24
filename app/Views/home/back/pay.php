@@ -23,7 +23,7 @@
                     </div>
                 </form>
                 <!-- Phương thức thanh toán -->
-                <form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
+                <form action="thanh-toan.html" method="POST">
 
                     <?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
 
@@ -93,7 +93,9 @@
                         <p>Suất: <?php echo  $_SESSION['back']['time'] ?></p>
 
                         <hr>
+                        <p><?php echo $_SESSION['back']['count_seats'] ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php echo $_SESSION['back']['total_price_seat'] ?></span></p>
                         <p>Ghế: <?php echo $_SESSION['back']['seats'] ?></p>
+
 
                         <hr>
                         <div id="selected-combos">

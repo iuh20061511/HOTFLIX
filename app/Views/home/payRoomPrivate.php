@@ -1,23 +1,11 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/book/css/book.css">
 
-<form action="check-ttoan-pnhom.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
+<form action="check-ttoan-pnhom.html" method="POST">
     <section class="content" style="margin-top: 150px;">
         <div class="container mt-4">
             <div class="row">
                 <div class="col-md-8">
-                    <!-- Khuyến mãi -->
 
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Khuyến mãi</h5>
-                            <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Mã khuyến mãi">
-                            </div>
-                            <button class="btn btn-success mt-2">Áp Dụng</button>
-                        </div>
-                    </div>
-
-                    <!-- Phương thức thanh toán -->
                     <?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
 
                         <div class="card mb-4">
@@ -63,7 +51,7 @@
                 <div class="col-md-4">
 
                     <div class="card ">
-                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ phòng:<span id="countdown"></span></div>
+                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded"></div>
 
                         <table>
                             <th> <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $_POST['image'] ?>"
@@ -114,17 +102,7 @@
         </div>
     </section>
 </form>
-<?php
-$hod =  $InvoiceRoomPrivate[0]['hold_expiry'];
-$targetTime = strtotime($hod);
-$currentTime = time();
-$timeDifferenceInSeconds = $targetTime - $currentTime;
 
-
-?>
-<script>
-    var time = <?php echo $timeDifferenceInSeconds ?>
-</script>
 
 <script src="<?php echo _WEB_ROOT ?>/public/client/book/js/book.js"></script>
 <script src="<?php echo _WEB_ROOT ?>/public/client/book/js/time.js"></script>

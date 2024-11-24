@@ -94,6 +94,7 @@ $routes['check-ttoan-pnhom.html'] = 'client/BookTickets/checkPayRoomPrivate';
 $routes['thanh-toan-phong-thanh-cong.html'] = 'client/BookTickets/PaySucessRoomPrivate';
 $routes['hoa-don-phong-rieng-(.+).html'] = 'client/BookTickets/PDFTotalInvoicePrivate/$1';
 
+$routes['vnpay-phong-ca-nhan.html'] = 'client/BookTickets/VNPayRoomPrivate';
 
 
 //Rent_Room

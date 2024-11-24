@@ -158,7 +158,9 @@ class BookTickets extends Controller
                 }
             }
             $id_showTime =  $_POST['id_showtime'];
+            $total_price_seat = 0;
             foreach ($filteredData as $seat => $value) {
+                $total_price_seat += $value['price'];
                 $data = [
                     'location' => $seat,
                     'id_room' => $_POST['id_room'],
@@ -191,7 +193,8 @@ class BookTickets extends Controller
             }
 
             $this->data['sub']['seats']  = $seats;
-
+            $this->data['sub']['count_seats']  = count($filteredData);
+            $this->data['sub']['total_price_seat']  = $total_price_seat;
 
             $this->library("Pusher/vendor/autoload.php");
 
@@ -213,6 +216,8 @@ class BookTickets extends Controller
             $this->data['content'] = 'home/chooseFood';
 
             $this->view("layout/client", $this->data);
+            // echo "<pre>";
+            // print_r($_POST);
         } else {
             $redirectUrl = "404.html";
             header("refresh:0.1; url=$redirectUrl");
@@ -438,6 +443,7 @@ class BookTickets extends Controller
     }
 
 
+
     public function success()
     {
 
@@ -494,6 +500,18 @@ class BookTickets extends Controller
                 $id_tickets[] = $this->model->getInsertId();
                 $this->model->updateData('seats', $hold_expiry, "where id_seat  = $id");
             }
+
+            if (isset($_SESSION['infor_id_customer'])) {
+                $id_customer = $_SESSION['infor_id_customer'];
+            } else {
+                $id_customer = $_SESSION['is_login']['id_account'];
+            }
+            $customer =   $this->model->getListTable('customer', "where id_customer = $id_customer");
+            $point = $customer[0]['points'];
+            $data_point = [
+                'points' => $point + count($id_seat)
+            ];
+            $this->model->updateData('customer', $data_point, "where id_customer = $id_customer");
 
             $this->model->InsertData('invoice', $invoice_data);
             $id_invoice = $this->model->getInsertId();
@@ -770,7 +788,7 @@ class BookTickets extends Controller
 
     public function bookPrivateRoom($id_room)
     {
-        $this->data['sub']['movies'] = $this->model->getListTable('movie');
+        $this->data['sub']['movies'] = $this->model->getListTable('movie', "WHERE status != 0");
         if (isset($_POST['movieSelect'])) {
             $id_movie = $_POST['movieSelect'];
             $this->data['sub']['id_room'] = $id_room;
@@ -866,17 +884,23 @@ class BookTickets extends Controller
 
 
 
+
     public function  PaySucessRoomPrivate()
     {
+        if (isset($_SESSION['id_itemRomPrivate'])) {
 
-        foreach ($_SESSION['id_itemRomPrivate'] as $item => $quantity) {
-            $data = [
-                'id_InvoiceRoomPrivate' => $_SESSION['invoice_room_private'],
-                'id_item' => $item,
-                'quantity' => $quantity,
-            ];
-            $this->model->InsertData('invoice_detail_private', $data);
+            foreach ($_SESSION['id_itemRomPrivate'] as $item => $quantity) {
+                if (isset($item)) {
+                    $data = [
+                        'id_InvoiceRoomPrivate' => $_SESSION['invoice_room_private'],
+                        'id_item' => $item,
+                        'quantity' => $quantity,
+                    ];
+                    $this->model->InsertData('invoice_detail_private', $data);
+                }
+            }
         }
+        unset($_SESSION['id_itemRomPrivate']);
         $id_InvoiceRoomPrivate  = $_SESSION['invoice_room_private'];
 
         $this->data['invoice_url'] = _LINK . "/hoa-don-phong-rieng-$id_InvoiceRoomPrivate.html";

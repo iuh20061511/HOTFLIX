@@ -42,7 +42,7 @@
                         </div>
                     </div>
                 </form>
-                <form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
+                <form action="thanh-toan.html" method="POST">
 
                     <?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
 
@@ -118,8 +118,11 @@
                         <?php $_SESSION['back']['time']  = $time ?>
 
                         <hr>
+                        <p><?php echo $_POST['count_seats'] ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php echo $_POST['total_price_seat'] ?></span></p>
                         <p>Ghế: <?php echo $seats ?></p>
                         <?php $_SESSION['back']['seats']  = $seats ?>
+                        <?php $_SESSION['back']['count_seats'] = $_POST['count_seats'] ?>
+                        <?php $_SESSION['back']['total_price_seat'] = $_POST['total_price_seat'] ?>
 
                         <hr>
                         <div id="selected-combos">

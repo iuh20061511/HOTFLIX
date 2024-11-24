@@ -63,13 +63,13 @@
                     <div class="col-12 col-sm-8 col-lg-12 ">
                         <div class="item ">
                             <form action="" method="post" class="p-4 bg-white rounded-3 shadow border">
-                                <div class="mb-4">
+                                <div class="">
                                     <label for="movieSelect" class="form-label fw-semibold text-primary">Chọn Phim:</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light border-0">
                                             <i class="bi bi-film text-primary"></i>
                                         </span>
-                                        <select name="movieSelect" id="movieSelect" class="form-select border-0 shadow bg-body rounded">
+                                        <select name="movieSelect" id="movieSelect" class="form-select border-0 shadow bg-body rounded" onchange="this.form.submit()">
                                             <option disabled selected>Chọn một bộ phim...</option>
                                             <?php foreach ($movies as $movie) {
                                                 if ($movie['id_movie'] != 0) {
@@ -83,7 +83,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">Xác Nhận</button>
                             </form>
 
 
