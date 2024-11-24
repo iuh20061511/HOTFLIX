@@ -56,6 +56,7 @@
 									<button id="1-tab" class="active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">Thông tin cá nhân</button>
 								</li>
 
+							<?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1) { ?>
 								<li class="nav-item" role="presentation">
 									<a href="lich-su-giao-dich.html"><button id="2-tab" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Lịch sử giao dịch</button></a>
 								</li>
@@ -63,6 +64,8 @@
 								<li class="nav-item" role="presentation">
 									<a href="danh-sach-qua.html"><button id="3-tab" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Danh sách quà</button></a>
 								</li>
+							<?php } ?>
+
 							</ul>
 							<!-- end content tabs nav -->
 						</div>

@@ -46,16 +46,19 @@ class Home extends Controller
         $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1 and id_movie!=$id_movie");
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas', "ORDER BY id_cinema asc");
         // Kiểm tra xem có giá trị cinema từ GET không, nếu không thì lấy giá trị mặc định
-        $id_cinema_default = isset($_GET['select-cinema']) ? $_GET['select-cinema'] : $this->data['sub']['listCinema'][0]['id_cinema'];
-        // Lấy danh sách suất chiếu dựa trên rạp đã chọn
-        $showtimes = $this->model->getListFromThreeTables('show_time', 'room', 'cinemas', 'id_room', 'id_cinema', "where cinemas.id_cinema=$id_cinema_default and id_movie=$id_movie");
-        // Tổ chức suất chiếu theo ngày và định dạng
-        $showtimesByDate = [];
-        foreach ($showtimes as $showtime) {
-            $showtimesByDate[$showtime['show_date']][$showtime['projection_format']][] = $showtime;
+        $showtimes = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie',  "WHERE show_time.show_date >= CURDATE() AND show_time.id_movie = $id_movie");
+
+        $current_time = new DateTime();
+        $new_array = [];
+
+        foreach ($showtimes  as $item) {
+            $show_time = new DateTime($item['show_date'] . ' ' . $item['start_time']);
+            if ($show_time->getTimestamp() >= $current_time->getTimestamp() + 1.5 * 60 * 60) {
+                $new_array[] = $item;
+            }
         }
-        $this->data['sub']['listShowTime'] = $showtimesByDate;
-        $this->data['sub']['selectedCinema'] = $id_cinema_default;
+        $this->data['sub']['show_time'] = $new_array;
+
         $this->data['content'] = 'home/movieDetail';
         $this->view("layout/client", $this->data);
     }

@@ -39,6 +39,7 @@ class Account extends Controller
                     } else {
                         $_SESSION['is_login']['id_account'] = $user['id_staff'];
                         $_SESSION['is_login']['id_cinema'] = $user['id_cinema'];
+                        $_SESSION['is_login']['cinema_name'] = $user['name_cinema'];
                     }
 
                     $_SESSION['is_login']['fullname'] = $user['full_name'];

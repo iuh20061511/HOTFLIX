@@ -147,16 +147,21 @@
                                     <img width="40px" src="<?php echo _WEB_ROOT ?>/public/assets/img/user/user_account.png" alt="User avatar">
                                 </div>
                                 <div class="header__info">
-                                    <p>Xin chào,</p>
+                                    <!-- <p>Xin chào,</p> -->
                                     <p><?php echo $_SESSION['is_login']['fullname'] ?></p>
                                 </div>
                                 <ul class="dropdown-user">
+                                    <p class="text-pink fw-bold pe-none"><?php echo $_SESSION['is_login']['name_role']?></p>
                                     <li><a href="<?php echo _LINK ?>/thong-tin-tai-khoan.html">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
+                                    <?php } ?>
+                                    <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 4) { ?>
                                         <li><a href="<?php echo _LINK ?>/tra-cuu-ve.html">Tra cứu</a></li>
                                     <?php } ?>
-                                    <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
+                                    <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1) { ?>
+                                        <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
+                                    <?php } ?>
                                     <li><a href="<?php echo _LINK ?>/dang-xuat.html">Đăng xuất</a></li>
                                 </ul>
                             </div>
