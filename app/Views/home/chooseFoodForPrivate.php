@@ -36,7 +36,7 @@
                 <div class="col-md-4">
 
                     <div class="card ">
-                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">Thời gian giữ phòng: <span id="countdown"></span>
+                        <div class="timer mb-3 text-center shadow-sm p-3 bg-body rounded">
                         </div>
 
                         <table>
@@ -116,7 +116,3 @@
         updateInputValue();
     }
 </script>
-<script>
-    var time = 360
-</script>
-<script src="<?php echo _WEB_ROOT ?>/public/client/book/js/time.js"></script>

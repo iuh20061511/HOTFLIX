@@ -87,8 +87,10 @@
                                                     <button type="button" data-bs-toggle="modal" data-bs-target="#give-ticket" class="btn btn-primary w-200 mb-2">Tặng vé</button>
                                                 <?php endif; ?>
 
-                                                <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#<?php echo $invoice['id_invoice'] ?>"> Đổi vé </button>
-
+                                                <?php
+                                                if ($_SESSION['is_login']['id_rank'] == 4) { ?>
+                                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#<?php echo $invoice['id_invoice'] ?>"> Đổi vé </button>
+                                                <?php } ?>
                                                 <div class="modal fade" id="<?php echo $invoice['id_invoice'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog modal-lg">
                                                         <div class="modal-content">

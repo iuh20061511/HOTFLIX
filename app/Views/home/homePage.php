@@ -369,7 +369,7 @@
                                         <a href="chi-tiet-phim-<?php echo $movie['id_movie']; ?>.html" class="item__cover">
                                             <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster']; ?>" alt="">
                                             <span class="item__play text-light">
-                                               Xem chi tiết
+                                                Xem chi tiết
                                             </span>
                                         </a>
                                         <div class="item__content">

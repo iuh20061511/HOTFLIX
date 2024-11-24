@@ -35,7 +35,24 @@ class Account extends Controller
                     if ($user['id_role'] == 1) {
                         $_SESSION['is_login']['id_account'] = $user['id_customer'];
                         $_SESSION['is_login']['id_point'] = $user['points'];
-                        $_SESSION['is_login']['id_rank'] = $user['id_rank'];
+
+                        $id_customer = $user['id_customer'];
+                        $customer =   $this->model->getListTable('customer', "where id_customer = $id_customer");
+                        $point = $customer[0]['points'];
+                        if ($point >= 10 && $point < 20) {
+                            $id_rank = 2;
+                        } elseif ($point >= 20 && $point < 30) {
+                            $id_rank = 3;
+                        } elseif ($point >= 30) {
+                            $id_rank = 4;
+                        } else {
+                            $id_rank = 1;
+                        }
+                        $data_rank = [
+                            'id_rank' => $id_rank
+                        ];
+                        $_SESSION['is_login']['id_rank'] = $id_rank;
+                        $this->model->updateData('customer', $data_rank, "where id_customer = $id_customer");
                     } else {
                         $_SESSION['is_login']['id_account'] = $user['id_staff'];
                         $_SESSION['is_login']['id_cinema'] = $user['id_cinema'];
@@ -104,6 +121,7 @@ class Account extends Controller
                     'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
                     'id_rank' => 1,
                     'id_role' => 1,
+                    'points' => 0,
                     'status' => 0,
                     'reset_token' => "$token",
                     'token_expiration' => date("Y-m-d H:i:s", strtotime('+6 hours')),

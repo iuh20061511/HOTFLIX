@@ -69,8 +69,14 @@
                             <?php $_SESSION['back']['time '] = $time; ?>
                             <input type="hidden" name="time" value="<?php echo $time ?>">
                             <hr>
-                            <p>1x Người Lớn - Member</p>
+                            <p><?php echo $count_seats ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php echo   number_format($total_price_seat, 0, ',', '.') . ' đ'; ?></span></p>
+                            <input type="hidden" name="count_seats" value="<?php echo $count_seats ?>">
+                            <input type="hidden" name="total_price_seat" value="<?php echo number_format($total_price_seat, 0, ',', '.') . ' đ'; ?>">
+                            <?php $_SESSION['back']['count_seats'] = $count_seats ?>
+                            <?php $_SESSION['back']['total_price_seat'] = number_format($total_price_seat, 0, ',', '.') . ' đ'; ?>
+
                             <p>Ghế: <?php echo $seats ?></p>
+
                             <input type="hidden" name="seats" value="<?php echo $seats ?>">
                             <?php $_SESSION['back']['seats'] = $seats ?>
 
@@ -83,7 +89,7 @@
                             <hr>
                             <p class="d-flex justify-content-between" id="total-price-display">
                                 <strong>Tổng cộng</strong>
-                                <span class="text-danger" id="total-price"><?php echo $total ?> VNĐ</span>
+                                <span class="text-danger" id="total-price"><?php echo $total ?> đ</span>
                                 <?php $_SESSION['back']['total'] = $total ?>
 
                             </p>

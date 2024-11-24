@@ -65,7 +65,9 @@
                             <p>Suất: <?php echo $_SESSION['back']['time '] ?></p>
                             <input type="hidden" name="time" value="<?php echo $_SESSION['back']['time '] ?>">
                             <hr>
-                            <p>1x Người Lớn - Member</p>
+
+                            <p><?php echo  $_SESSION['back']['count_seats'] ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php echo  $_SESSION['back']['total_price_seat'] ?></span></p>
+
                             <p>Ghế: <?php echo $_SESSION['back']['seats'] ?></p>
                             <input type="hidden" name="seats" value="<?php echo $_SESSION['back']['seats'] ?>">
 
