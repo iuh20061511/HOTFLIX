@@ -11,17 +11,17 @@ class AdminModel extends Model
 
     public function getListStaff($condition)
     {
-        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema', $condition);
+        return $this->model->getListFromTwoTables('role', 'staff', 'id_role', $condition);
     }
 
     public function getListMember($condition)
     {
-        return $this->model->getListFromThreeTables('role', 'customer', 'rank', 'id_role', 'id_rank',$condition);
+        return $this->model->getListFromThreeTables('role', 'customer','`rank`', 'id_role', 'id_rank',$condition);
     }
 
     public function infoStaff($id_staff)
     {
-        return $this->model->getListFromThreeTables('role', 'staff', 'cinemas', 'id_role', 'id_cinema', "WHERE staff.id_staff = $id_staff");
+        return $this->model->getListFromTwoTables('role', 'staff', 'id_role', "WHERE staff.id_staff = $id_staff");
     }
 
     public function getListRoom()

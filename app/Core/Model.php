@@ -140,7 +140,11 @@ class Model extends Database
         $this->connectIfNeeded();
         $setUpdate = [];
         foreach ($updates as $column => $value) {
-            $setUpdate[] = "`$column` = '$value'";
+            if ($value === null) {
+                $setUpdate[] = "`$column` = NULL"; // Không cần bao quanh với dấu nháy đơn
+            } else {
+                $setUpdate[] = "`$column` = '$value'"; // Giá trị chuỗi sẽ có dấu nháy đơn
+            }
         }
         $set = implode(", ", $setUpdate);
         $update = "UPDATE `$tableName` SET $set $condition";

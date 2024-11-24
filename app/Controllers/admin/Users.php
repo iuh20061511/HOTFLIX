@@ -28,7 +28,28 @@ class Users extends Controller
         // Lấy danh sách nhân viên theo trang hiện tại
         $offset = ($currentPage - 1) * $itemsPerPage;
         $this->data['sub']['listStaff'] = $this->model->getListStaff("LIMIT 5 OFFSET $offset");
-        
+        $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
+
+        // Lặp qua danh sách staff
+        foreach ($this->data['sub']['listStaff'] as &$staff) {
+            // Kiểm tra nếu id_cinema là null thì gán 'Toàn Rạp'
+            if ($staff['id_cinema'] === null) {
+                $staff['cinema_name'] = 'Hệ thống Rạp';
+            } else {
+                // Tìm tên rạp trong listCinema
+                $cinemaName = null;
+                foreach ($this->data['sub']['listCinema'] as $cinema) {
+                    // So sánh id_cinema trong staff với id_cinema trong cinemas
+                    if ($cinema['id_cinema'] == $staff['id_cinema']) {
+                        $cinemaName = $cinema['cinema_name']; // Gán tên rạp vào biến $cinemaName
+                    }
+                }
+                
+                // Nếu tìm thấy tên rạp, gán vào staff['name_cinema'], nếu không thì gán 'Rạp không xác định'
+                $staff['cinema_name'] = $cinemaName ? $cinemaName : 'Rạp không xác định';
+            }
+        }
+
         // Thêm thông tin phân trang vào $this->data để sử dụng trong view
         $this->data['sub']['pagination'] = [
             'totalPages' => $totalPages,
@@ -82,18 +103,12 @@ class Users extends Controller
             $this->data['sub']['error']['fullname'] = $this->validate->checkFullName($_POST['fullname']);
             $this->data['sub']['error']['birthday'] = $this->validate->checkDateOfBirth($_POST['birthday']);
             $this->data['sub']['error']['role'] = $this->validate->checkSelect($_POST['role']);
-            $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
+            if($_POST['role'] !=2 && $_POST['role'] !=6){
+                $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
+            }
             $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone']);
 
             if (array_filter($this->data['sub']['error']) == []) {
-                $this->data['fullname'] = $_POST['fullname'];
-                $this->data['email'] = $_POST['email'];
-                $this->data['phone'] = $_POST['phone'];
-                $this->data['role'] = $_POST['role'];
-                $this->data['birthday'] = $_POST['birthday'];
-                $this->data['cinema'] = $_POST['cinema'];
-                $this->data['phone'] = $_POST['phone'];
-                $this->data['password'] = '123456';
                 $data = [
                     'email' => $_POST['email'],
                     'full_name' => $_POST['fullname'],
@@ -101,10 +116,13 @@ class Users extends Controller
                     'birthday' => $_POST['birthday'],
                     'gender' => $_POST['gender'],
                     'password' => password_hash('123456', PASSWORD_DEFAULT),
-                    'id_cinema' => $_POST['cinema'],
                     'id_role' => $_POST['role'],
                     'status' => 1
                 ];
+
+                if($_POST['role'] !=2 && $_POST['role'] !=6){
+                    $data['id_cinema'] = $_POST['cinema'];
+                }
 
                 $result = $this->model->InsertData('staff', $data);
                 if ($result) {
@@ -128,7 +146,9 @@ class Users extends Controller
             $this->data['sub']['error']['fullname'] = $this->validate->checkFullName($_POST['fullname']);
             $this->data['sub']['error']['birthday'] = $this->validate->checkDateOfBirth($_POST['birthday']);
             $this->data['sub']['error']['role'] = $this->validate->checkSelect($_POST['role']);
-            $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
+            if($_POST['role'] !=2 && $_POST['role'] !=6){
+                $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
+            }
             $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone'], true, false, $id_staff);
 
             if (array_filter($this->data['sub']['error']) == []) {
@@ -137,10 +157,14 @@ class Users extends Controller
                     'phone' => $_POST['phone'],
                     'birthday' => $_POST['birthday'],
                     'gender' => $_POST['gender'],
-                    'id_cinema' => $_POST['cinema'],
                     'id_role' => $_POST['role'],
                 ];
 
+                if($_POST['role'] !=2 && $_POST['role'] !=6){
+                    $data['id_cinema'] = $_POST['cinema'];
+                }elseif ($_POST['role'] ==2 || $_POST['role'] ==6) {
+                    $data['id_cinema'] = NULL;
+                }
                 $result = $this->model->updateData('staff', $data, "where id_staff = $id_staff");
                 if ($result) {
                     echo "<script>alert('Cập nhật thành công')</script>";

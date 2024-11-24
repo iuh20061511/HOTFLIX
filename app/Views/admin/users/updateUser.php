@@ -17,7 +17,7 @@
 						<div class="profile__user">
 							<!-- or red -->
 							<div class="profile__meta profile__meta--green">
-								<h3><?php echo $infoStaff[0]['full_name']; ?><span>(Approved)</span></h3>
+								<h3><?php echo $infoStaff[0]['full_name']; ?></h3>
 								<span>HotFlix ID: <?php echo $infoStaff[0]['id_staff']; ?></span>
 							</div>
 						</div>
@@ -30,13 +30,6 @@
 							</li>
 						</ul>
 						<!-- end profile tabs nav -->
-
-						<!-- profile btns -->
-						<div class="profile__actions">
-							<button type="button" data-bs-toggle="modal" class="profile__action profile__action--banned" data-bs-target="#modal-status3"><i class="ti ti-lock"></i></button>
-							<button type="button" data-bs-toggle="modal" class="profile__action profile__action--delete" data-bs-target="#modal-delete3"><i class="ti ti-trash"></i></button>
-						</div>
-						<!-- end profile btns -->
 					</div>
 				</div>
 				<!-- end profile -->
@@ -66,25 +59,25 @@
 									</div>
 									<div class="col-12" style="margin-top: 15px">
 										<div class="sign__group">
-										<select class="sign__selectjs" id="sign__director" name="cinema">
+										<select class="sign__selectjs" id="sign__actors" name="role">
 											<?php
-											// Gán tên rạp mặc định
-											$selectedCinemaId = isset($_POST['cinema']) ? $_POST['cinema'] : $infoStaff[0]['id_cinema'];
-											$cinemaName = '';
+											// Gán giá trị mặc định cho role
+											$selectedRoleId = isset($_POST['role']) ? $_POST['role'] : $infoStaff[0]['id_role'];
+											$roleName = '';
 
-											// Tìm tên rạp đã chọn
-											foreach ($listCinema as $cinema) {
-												if ($cinema['id_cinema'] == $selectedCinemaId) {
-													$cinemaName = $cinema['cinema_name'];
+											// Tìm tên role đã chọn
+											foreach ($listRole as $role) {
+												if ($role['id_role'] == $selectedRoleId) {
+													$roleName = $role['name_role'];
 													break;
 												}
 											}
 											?>
-											<option value="<?php echo $selectedCinemaId; ?>" selected><?php echo $cinemaName ?: 'Chọn rạp - nơi làm việc'; ?></option>
+											<option value="<?php echo $selectedRoleId; ?>" selected><?php echo $roleName ?: 'Chọn vai trò'; ?></option>
 
-											<?php foreach ($listCinema as $cinema) : ?>
-												<?php if ($cinema['id_cinema'] != $selectedCinemaId) : ?>
-													<option value="<?php echo $cinema['id_cinema']; ?>"><?php echo $cinema['cinema_name']; ?></option>
+											<?php foreach ($listRole as $role) : ?>
+												<?php if ($role['id_role'] != 1 && $role['id_role'] != $selectedRoleId) : ?>
+													<option value="<?php echo $role['id_role']; ?>"><?php echo $role['name_role']; ?></option>
 												<?php endif; ?>
 											<?php endforeach; ?>
 										</select>
@@ -116,32 +109,33 @@
 
 									<div class="col-12" style="margin-top: 15px">
 										<div class="sign__group">
-										<select class="sign__selectjs" id="sign__actors" name="role">
+										<select class="sign__selectjs" id="sign__director" name="cinema">
 											<?php
-											// Gán giá trị mặc định cho role
-											$selectedRoleId = isset($_POST['role']) ? $_POST['role'] : $infoStaff[0]['id_role'];
-											$roleName = '';
+											// Gán tên rạp mặc định
+											$selectedCinemaId = isset($_POST['cinema']) ? $_POST['cinema'] : $infoStaff[0]['id_cinema'];
+											$cinemaName = '';
 
-											// Tìm tên role đã chọn
-											foreach ($listRole as $role) {
-												if ($role['id_role'] == $selectedRoleId) {
-													$roleName = $role['ten_role'];
+											// Tìm tên rạp đã chọn
+											foreach ($listCinema as $cinema) {
+												if ($cinema['id_cinema'] == $selectedCinemaId) {
+													$cinemaName = $cinema['cinema_name'];
 													break;
 												}
 											}
 											?>
-											<option value="<?php echo $selectedRoleId; ?>" selected><?php echo $roleName ?: 'Chọn vai trò'; ?></option>
+											<option value="0" selected><?php echo $cinemaName ?: 'Chọn rạp - nơi làm việc'; ?></option>
 
-											<?php foreach ($listRole as $role) : ?>
-												<?php if ($role['id_role'] != 1 && $role['id_role'] != $selectedRoleId) : ?>
-													<option value="<?php echo $role['id_role']; ?>"><?php echo $role['ten_role']; ?></option>
+											<?php foreach ($listCinema as $cinema) : ?>
+												<?php if ($cinema['id_cinema'] != $selectedCinemaId) : ?>
+													<option value="<?php echo $cinema['id_cinema']; ?>"><?php echo $cinema['cinema_name']; ?></option>
 												<?php endif; ?>
 											<?php endforeach; ?>
 										</select>
+										<?php if (isset($error['cinema'])): ?>
+											<p class="error text-danger"><?php echo $error['cinema']; ?></p>
+										<?php endif; ?>
 										</div>
 									</div>
-
-
 								</div>
 							</div>
 
@@ -206,129 +200,30 @@
 	</main>
 	<!-- end main content -->
 
-	<!-- view modal -->
-	<!-- <div class="modal fade" id="modal-view" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content modal__content--view">
-					<div class="comments__autor">
-						<img class="comments__avatar" src="img/user.svg" alt="">
-						<span class="comments__name">John Doe</span>
-						<span class="comments__time">30.08.2023, 17:53</span>
-					</div>
-					<p class="comments__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-					<div class="comments__actions">
-						<div class="comments__rate">
-							<span><i class="ti ti-thumb-up"></i>12</span>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+		const selectRole = document.getElementById("sign__actors");
+		const selectCinema = document.getElementById("sign__director");
 
-							<span>7<i class="ti ti-thumb-down"></i></span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end view modal -->
+		// Các ID vai trò cần vô hiệu hóa chọn rạp
+		const disabledRoles = [2, 6];
 
-	<!-- delete modal -->
-	<!-- <div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Comment delete</h4>
+		// Hàm cập nhật trạng thái của danh sách rạp
+		function updateCinemaState() {
+			if (disabledRoles.includes(parseInt(selectRole.value))) {
+				selectCinema.disabled = true; // Vô hiệu hóa
+				selectCinema.classList.add("disabled-select"); // Thêm hiệu ứng CSS
+			} else {
+				selectCinema.disabled = false; // Kích hoạt lại
+				selectCinema.classList.remove("disabled-select"); // Bỏ hiệu ứng CSS
+			}
+		}
 
-						<p class="modal__text">Are you sure to permanently delete this comment?</p>
+		// Lắng nghe sự kiện thay đổi trên danh sách vai trò
+		selectRole.addEventListener("change", updateCinemaState);
 
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end delete modal -->
+		// Cập nhật trạng thái ban đầu
+			updateCinemaState();
+		});
 
-	<!-- view modal -->
-	<!-- <div class="modal fade" id="modal-view2" tabindex="-1" aria-labelledby="modal-view2" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content modal__content--view">
-					<div class="reviews__autor">
-						<img class="reviews__avatar" src="img/user.svg" alt="">
-						<span class="reviews__name">Best Marvel movie in my opinion</span>
-						<span class="reviews__time">24.08.2018, 17:53 by John Doe</span>
-
-						<span class="reviews__rating reviews__rating--green">8.4</span>
-					</div>
-					<p class="reviews__text">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text.</p>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end view modal -->
-
-	<!-- delete modal -->
-	<!-- <div class="modal fade" id="modal-delete2" tabindex="-1" aria-labelledby="modal-delete2" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Review delete</h4>
-
-						<p class="modal__text">Are you sure to permanently delete this review?</p>
-
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end delete modal -->
-
-	<!-- status modal -->
-	<!-- <div class="modal fade" id="modal-status3" tabindex="-1" aria-labelledby="modal-status3" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">Status change</h4>
-
-						<p class="modal__text">Are you sure about immediately change status?</p>
-
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Apply</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end status modal -->
-
-	<!-- delete modal -->
-	<!-- <div class="modal fade" id="modal-delete3" tabindex="-1" aria-labelledby="modal-delete3" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered">
-			<div class="modal-content">
-				<div class="modal__content">
-					<form action="#" class="modal__form">
-						<h4 class="modal__title">User delete</h4>
-
-						<p class="modal__text">Are you sure to permanently delete this user?</p>
-
-						<div class="modal__btns">
-							<button class="modal__btn modal__btn--apply" type="button"><span>Delete</span></button>
-							<button class="modal__btn modal__btn--dismiss" type="button" data-bs-dismiss="modal" aria-label="Close"><span>Dismiss</span></button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div> -->
-	<!-- end delete modal -->
+	</script>

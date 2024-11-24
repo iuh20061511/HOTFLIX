@@ -16,7 +16,7 @@
 						<div class="profile__user">
 							<!-- or red -->
 							<div class="profile__meta profile__meta--green">
-								<h3><?php echo $cinema[0]['cinema_name']; ?><span>(Approved)</span></h3>
+								<h3><?php echo $cinema[0]['cinema_name']; ?></h3>
 								<h3><?php echo $listRoom[0]['room_name']; ?></h3>
 								<span>HotFlix Room-ID: <?php echo $listRoom[0]['id_room']; ?></span>
 							</div>
@@ -30,13 +30,6 @@
 							</li>
 						</ul>
 						<!-- end profile tabs nav -->
-
-						<!-- profile btns -->
-						<div class="profile__actions">
-							<button type="button" data-bs-toggle="modal" class="profile__action profile__action--banned" data-bs-target="#modal-status3"><i class="ti ti-lock"></i></button>
-							<button type="button" data-bs-toggle="modal" class="profile__action profile__action--delete" data-bs-target="#modal-delete3"><i class="ti ti-trash"></i></button>
-						</div>
-						<!-- end profile btns -->
 					</div>
 				</div>
 				<!-- end profile -->

@@ -20,7 +20,7 @@ class Movies extends Controller
 
         // Khởi tạo biến điều kiện
         $getConditions = [];
-        $conditions = "";
+        $conditions = "WHERE id_movie != 0 ";
 
         // Xử lý tìm kiếm
         if (isset($_GET['search_nameMovie']) && !empty($_GET['search_nameMovie'])) {
@@ -35,7 +35,7 @@ class Movies extends Controller
                 case 0:
                 case 1:
                 case 2:
-                    $getConditions[] = "status = '$status_sort'";
+                    $getConditions[] = "status = $status_sort";
                     break;
                 case 3: // Tất cả
                     $redirectUrl = "quan-ly-phim.html";
@@ -48,8 +48,9 @@ class Movies extends Controller
 
         // Tạo điều kiện cho câu truy vấn
         if (!empty($getConditions)) {
-            $conditions = " WHERE " . implode(" AND ", $getConditions);
+            $conditions .= " AND " . implode(" AND ", $getConditions);
         }
+
 
         // Thiết lập phân trang
         $itemsPerPage = 5; // Số phim trên mỗi trang
@@ -61,7 +62,9 @@ class Movies extends Controller
 
         // Lấy danh sách phim theo trang hiện tại
         $offset = ($currentPage - 1) * $itemsPerPage;
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $conditions . "WHERE id_movie != 0  ORDER BY id_movie DESC LIMIT $itemsPerPage OFFSET $offset");
+
+        $queryConditions = $conditions. " ORDER BY id_movie DESC LIMIT $itemsPerPage OFFSET $offset";
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $queryConditions);
 
         // Thêm thông tin phân trang vào $this->data để sử dụng trong view
         $this->data['sub']['pagination'] = [

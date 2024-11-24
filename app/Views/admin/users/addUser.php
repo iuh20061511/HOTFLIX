@@ -1,3 +1,9 @@
+<style>
+	.disabled-select {
+    background-color: #f5f5f5;
+    opacity: 0.6;
+}
+</style>
 <!-- main content -->
 <main class="main">
 	<div class="container-fluid">
@@ -37,33 +43,33 @@
 								</div>
 								<div class="col-12" style="margin-top: 15px">
 									<div class="sign__group">
-										<select class="sign__selectjs" id="sign__director" name="cinema">
+										<select class="sign__selectjs" id="sign__actors" name="role">
 											<?php
-											$cinemaName = 'Chọn rạp - nơi làm việc';
-											$selectedCinemaId = isset($_POST['cinema']) ? $_POST['cinema'] : 0;
+											// Mặc định tên vai trò
+											$selectedRoleId = isset($_POST['role']) ? $_POST['role'] : 0;
+											$roleName = 'Chọn vai trò';
 
-											// Nếu đã chọn rạp
-											if ($selectedCinemaId) {
-												foreach ($listCinema as $cinema) {
-													if ($cinema['id_cinema'] == $selectedCinemaId) {
-														$cinemaName = $cinema['cinema_name'];
-														break;
-													}
+											// Tìm tên vai trò đã chọn
+											foreach ($listRole as $role) {
+												if ($role['id_role'] == $selectedRoleId) {
+													$roleName = $role['name_role'];
+													break;
 												}
 											}
 											?>
-											<option value="<?php echo $selectedCinemaId; ?>"><?php echo $cinemaName; ?>
+											<option value="<?php echo $selectedRoleId; ?>"><?php echo $roleName; ?>
 											</option>
-											<?php foreach ($listCinema as $cinema): ?>
-												<?php if ($cinema['id_cinema'] != $selectedCinemaId): ?>
-													<option value="<?php echo $cinema['id_cinema']; ?>">
-														<?php echo $cinema['cinema_name']; ?>
+											<?php foreach ($listRole as $role): ?>
+												<?php if ($role['id_role'] != 1 && $role['id_role'] != $selectedRoleId): ?>
+													<option value="<?php echo $role['id_role']; ?>">
+														<?php echo $role['name_role']; ?>
 													</option>
 												<?php endif; ?>
 											<?php endforeach; ?>
 										</select>
-										<?php if (isset($error['cinema'])): ?>
-											<p class="error text-danger"><?php echo $error['cinema']; ?></p>
+
+										<?php if (isset($error['role'])): ?>
+											<p class="error text-danger"><?php echo $error['role']; ?></p>
 										<?php endif; ?>
 									</div>
 								</div>
@@ -96,33 +102,33 @@
 
 								<div class="col-12" style="margin-top: 15px">
 									<div class="sign__group">
-										<select class="sign__selectjs" id="sign__actors" name="role">
+										<select class="sign__selectjs" id="sign__director" name="cinema">
 											<?php
-											// Mặc định tên vai trò
-											$selectedRoleId = isset($_POST['role']) ? $_POST['role'] : 0;
-											$roleName = 'Chọn vai trò';
+											$cinemaName = 'Chọn rạp - nơi làm việc';
+											$selectedCinemaId = isset($_POST['cinema']) ? $_POST['cinema'] : 0;
 
-											// Tìm tên vai trò đã chọn
-											foreach ($listRole as $role) {
-												if ($role['id_role'] == $selectedRoleId) {
-													$roleName = $role['name_role'];
-													break;
+											// Nếu đã chọn rạp
+											if ($selectedCinemaId) {
+												foreach ($listCinema as $cinema) {
+													if ($cinema['id_cinema'] == $selectedCinemaId) {
+														$cinemaName = $cinema['cinema_name'];
+														break;
+													}
 												}
 											}
 											?>
-											<option value="<?php echo $selectedRoleId; ?>"><?php echo $roleName; ?>
+											<option value="<?php echo $selectedCinemaId; ?>"><?php echo $cinemaName; ?>
 											</option>
-											<?php foreach ($listRole as $role): ?>
-												<?php if ($role['id_role'] != 1 && $role['id_role'] != $selectedRoleId): ?>
-													<option value="<?php echo $role['id_role']; ?>">
-														<?php echo $role['name_role']; ?>
+											<?php foreach ($listCinema as $cinema): ?>
+												<?php if ($cinema['id_cinema'] != $selectedCinemaId): ?>
+													<option value="<?php echo $cinema['id_cinema']; ?>">
+														<?php echo $cinema['cinema_name']; ?>
 													</option>
 												<?php endif; ?>
 											<?php endforeach; ?>
 										</select>
-
-										<?php if (isset($error['role'])): ?>
-											<p class="error text-danger"><?php echo $error['role']; ?></p>
+										<?php if (isset($error['cinema'])): ?>
+											<p class="error text-danger"><?php echo $error['cinema']; ?></p>
 										<?php endif; ?>
 									</div>
 								</div>
@@ -163,3 +169,31 @@
 	</div>
 </main>
 <!-- end main content -->
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+    const selectRole = document.getElementById("sign__actors");
+    const selectCinema = document.getElementById("sign__director");
+
+    // Các ID vai trò cần vô hiệu hóa chọn rạp
+    const disabledRoles = [2, 6];
+
+    // Hàm cập nhật trạng thái của danh sách rạp
+    function updateCinemaState() {
+        if (disabledRoles.includes(parseInt(selectRole.value))) {
+            selectCinema.disabled = true; // Vô hiệu hóa
+            selectCinema.classList.add("disabled-select"); // Thêm hiệu ứng CSS
+        } else {
+            selectCinema.disabled = false; // Kích hoạt lại
+            selectCinema.classList.remove("disabled-select"); // Bỏ hiệu ứng CSS
+        }
+    }
+
+    // Lắng nghe sự kiện thay đổi trên danh sách vai trò
+    selectRole.addEventListener("change", updateCinemaState);
+
+	// Cập nhật trạng thái ban đầu
+		updateCinemaState();
+	});
+
+</script>

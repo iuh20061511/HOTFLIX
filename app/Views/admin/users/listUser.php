@@ -14,20 +14,6 @@
 							<button type="button" data-bs-toggle="modal"
 								class="main__title-link main__title-link--wrap">Thêm nhân viên</button>
 						</a>
-
-						<!-- <select class="filter__select" name="sort" id="filter__sort">
-							<a href="quan-ly-tai-khoan.html"><option value="1">Nhân viên</option></a>
-							<a href="danh-sach-thanh-vien.html"><option value="2">Thành viên</option></a>
-							</select> -->
-
-						<!-- search -->
-						<form action="#" class="main__title-form">
-							<input type="text" placeholder="Find user..">
-							<button type="button">
-								<i class="ti ti-search"></i>
-							</button>
-						</form>
-						<!-- end search -->
 					</div>
 				</div>
 			</div>
@@ -84,10 +70,6 @@
 									</td>
 									<td>
 										<div class="catalog__btns">
-											<button type="button" data-bs-toggle="modal"
-												class="catalog__btn catalog__btn--banned" data-bs-target="#modal-status">
-												<i class="ti ti-lock"></i>
-											</button>
 											<a href="cap-nhat-tai-khoan-<?php echo $staff['id_staff'] ?>.html"
 												class="catalog__btn catalog__btn--edit">
 												<i class="ti ti-edit"></i>
