@@ -17,6 +17,18 @@ class BookTickets extends Controller
         $this->accountmodel = $this->model('AccountModel');
         $currentTime = date('Y-m-d H:i:s');
         $this->model->deleteData('seats', "where hold_expiry <= '$currentTime' AND status = 0 ");
+        $this->model->deleteData('invoice_room_private', "where hold_expiry <= '$currentTime' AND 	is_paid = 0 ");
+
+        if (isset($_SESSION['back']['seat'])) {
+            $location =  $_SESSION['back']['seat'];
+            $id_showtime = $_SESSION['back']['id_showtime'];
+            $seat =   $this->model->getListTable('seats', "where location= '$location' AND id_showTime = $id_showtime ");
+        }
+        if (empty($seat)) {
+            unset($_SESSION['hold_expiry_location']);
+            unset($_SESSION['back']);
+        }
+
         $this->model->deleteData('invoice_room_private', "where hold_expiry <= '$currentTime' AND is_paid = 0 ");
     }
 
@@ -38,7 +50,7 @@ class BookTickets extends Controller
         if (isset($_GET['id_cinema'])) {
             $id_cinema = $_GET['id_cinema'];
         } else {
-            $id_cinema = $_SESSION['id_cinema_customer'];
+            $id_cinema = $this->data['sub']['listCinema'][0]['id_cinema'];
         }
         $day = $_GET['day'];
 
@@ -181,6 +193,23 @@ class BookTickets extends Controller
             $this->data['sub']['seats']  = $seats;
 
 
+            $this->library("Pusher/vendor/autoload.php");
+
+            $options = array(
+                'cluster' => 'ap1',
+                'useTLS' => true
+            );
+            $pusher = new Pusher\Pusher(
+                '9b780886dd99c5bc8616',
+                '493f567787b71d528c2a',
+                '1898906',
+                $options
+            );
+
+            $data_pusher['location'] = $seats;
+            $data_pusher['id_showTime']  = $id_showTime;
+
+            $pusher->trigger('my-channel', 'my-event', $data_pusher);
             $this->data['content'] = 'home/chooseFood';
 
             $this->view("layout/client", $this->data);
@@ -222,10 +251,36 @@ class BookTickets extends Controller
             $this->data['sub']['time']  = $_POST['time'];
             $this->data['sub']['seats']  = $_POST['seats'];
             $this->data['sub']['total']  = $_POST['total'];
-            $this->data['sub']['item']  = $_POST['item'];
-
-            $this->data['sub']['promotion']  = $this->model->getListTable('promotion');
-
+            if (isset($_POST['item'])) {
+                $this->data['sub']['item']  = $_POST['item'];
+            }
+            $promotions  = $this->model->getListTable('promotion');
+            if (isset($_POST['promoCode'])) {
+                $checkpromoCode = false;
+                foreach ($promotions as $pro) {
+                    if ($_POST['promoCode'] == $pro['promotion_code']) {
+                        $checkpromoCode = true;
+                        if ($pro['discount_type']  == 2) {
+                            $total_promotion =  intval(preg_replace('/[^\d]/', '', $_POST['total'])) - $pro['discount_value'];
+                            $this->data['sub']['discount']  = number_format($pro['discount_value'], 0, '', '.') . ' ₫';
+                            $formatted_price = number_format($total_promotion, 0, '', '.') . ' ₫';
+                            $this->data['sub']['total_after_discount']  = $formatted_price;
+                            break;
+                        } else {
+                            $total_promotion =  intval(preg_replace('/[^\d]/', '', $_POST['total'])) * (100 - $pro['discount_value']) / 100;
+                            $this->data['sub']['discount']  =  number_format(intval(preg_replace('/[^\d]/', '', $_POST['total'])) - $total_promotion, 0, '', '.') . ' ₫';
+                            $formatted_price = number_format($total_promotion, 0, '', '.') . ' ₫';
+                            $this->data['sub']['total_after_discount']  = $formatted_price;
+                            break;
+                        }
+                    }
+                }
+                if ($checkpromoCode) {
+                    $this->data['sub']['check_promotions_true']  = "Áp dụng mã giảm giá thành công !";
+                } else {
+                    $this->data['sub']['check_promotions']  = "Không tìm thấy mã giảm giá";
+                }
+            }
 
             $seats = explode(', ', rtrim($_POST['seats'], ', '));
 
@@ -250,6 +305,35 @@ class BookTickets extends Controller
 
     public function backPay()
     {
+        $promotions  = $this->model->getListTable('promotion');
+
+        if (isset($_POST['promoCode'])) {
+            $checkpromoCode = false;
+            foreach ($promotions as $pro) {
+                if ($_POST['promoCode'] == $pro['promotion_code']) {
+                    $checkpromoCode = true;
+                    if ($pro['discount_type']  == 2) {
+                        $total_promotion =  intval(preg_replace('/[^\d]/', '', $_SESSION['back']['total'])) - $pro['discount_value'];
+                        $_SESSION['back']['total_discount']  = number_format($pro['discount_value'], 0, '', '.') . ' ₫';
+                        $formatted_price = number_format($total_promotion, 0, '', '.') . ' ₫';
+                        $_SESSION['back']['total_after_discount']  = $formatted_price;
+                        break;
+                    } else {
+                        $total_promotion =  intval(preg_replace('/[^\d]/', '', $_SESSION['back']['total'])) * (100 - $pro['discount_value']) / 100;
+                        $_SESSION['back']['total_discount']  =  number_format(intval(preg_replace('/[^\d]/', '', $_SESSION['back']['total'])) - $total_promotion, 0, '', '.') . ' ₫';
+                        $formatted_price = number_format($total_promotion, 0, '', '.') . ' ₫';
+                        $_SESSION['back']['total_after_discount']  = $formatted_price;
+                        break;
+                    }
+                }
+            }
+            if ($checkpromoCode) {
+                $this->data['sub']['check_promotions_true']  = "Áp dụng mã giảm giá thành công !";
+            } else {
+                $this->data['sub']['check_promotions']  = "Không tìm thấy mã giảm giá";
+            }
+        }
+
         $seat =  $_SESSION['back']['seat'];
         $id_showTime = $_SESSION['back']['id_showtime'];
         $this->data['sub']['hold_chairs']  = $this->model->getListTable('seats', "WHERE location = '$seat' AND id_showTime = $id_showTime");
@@ -302,7 +386,7 @@ class BookTickets extends Controller
             }
 
             $id_tickets = array();
-            $moneyNumber = (int)str_replace(['.', ' ₫'], '', $_POST['total']);
+            $moneyNumber = (int)str_replace(['.', ' ₫'], '', $_POST['total_after_discount']);
             $id_showtime = $_POST['id_showtime'];
             $showtime = $this->model->getListTable('show_time', "where id_showtime = $id_showtime ");
             $date = $showtime[0]['show_date'] . ' ' . $showtime[0]['end_time'];
@@ -317,9 +401,10 @@ class BookTickets extends Controller
                     [
                         'create_date' => date('Y-m-d H:i:s'),
                         'total_amount' => $moneyNumber,
-                        'discount_total' => 1,
+                        'discount_total' => (int)str_replace(['.', ' ₫'], '', $_POST['discount']),
                         'final_total' => $moneyNumber * 1,
                         'payment_method' => ($_SESSION['is_login']['id_role'] == 1) ? 'Online' : 'Tại quầy',
+                        'id_showTime' => $id_showtime
                     ],
                     isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1
                         ? ['id_customer' => $_SESSION['is_login']['id_account']]
@@ -342,6 +427,8 @@ class BookTickets extends Controller
                     $this->library('PayOnline/QRmomo.php', $this->data);
                 } elseif ($_POST['payment'] == 'ATM') {
                     $this->library('PayOnline/Momo.php', $this->data);
+                } elseif ($_POST['payment'] == 'vnpay') {
+                    $this->library('PayOnline/VNpayTicket.php', $this->data);
                 }
             }
 
@@ -677,7 +764,7 @@ class BookTickets extends Controller
             $this->data['sub']['rooms'] = $this->model->getListTable('room', "WHERE id_roomType = 5 AND id_cinema = $id_cinema");
             $this->data['sub']['room_order'] = $this->model->getListFromThreeTables('invoice_room_private', "room", "cinemas", "id_room", "id_cinema", "WHERE cinemas.id_cinema = $id_cinema ");
         }
-        $this->data['content'] = 'home/ok';
+        $this->data['content'] = 'home/chooseTimeRoomPrivate';
         $this->view("layout/client", $this->data);
     }
 
@@ -711,6 +798,15 @@ class BookTickets extends Controller
             $show_date = $_POST['date'];
             $time = $_POST['time'];
             $id_room =  $_POST['id_room'];
+
+            $room_pusher =  $this->model->getListTable('room', "WHERE id_room =  $id_room");
+            $id_cinema_pusher = $room_pusher[0]['id_cinema'];
+            $_SESSION['pusher']['pri']['id_room'] = $id_room;
+            $_SESSION['pusher']['pri']['show_date'] = $show_date;
+            $_SESSION['pusher']['pri']['time'] = $time;
+            $_SESSION['pusher']['pri']['id_cinema'] = $id_cinema_pusher;
+
+
 
             $checkInvoice = $this->model->getListTable('invoice_room_private', "WHERE show_date = '$show_date' AND time = '$time' AND id_room =  $id_room ");
             $day = date('Y-m-d');
@@ -761,6 +857,8 @@ class BookTickets extends Controller
                 $this->library('PayOnline/QRmomoPrivate.php', $this->data);
             } elseif ($_POST['payment'] == 'ATM') {
                 $this->library('PayOnline/MomoRoomPrivate.php', $this->data);
+            } elseif ($_POST['payment'] == 'vnpay') {
+                $this->library('PayOnline/VNPayRoomPrivate.php', $this->data);
             }
         }
     }
@@ -770,6 +868,7 @@ class BookTickets extends Controller
 
     public function  PaySucessRoomPrivate()
     {
+
         foreach ($_SESSION['id_itemRomPrivate'] as $item => $quantity) {
             $data = [
                 'id_InvoiceRoomPrivate' => $_SESSION['invoice_room_private'],
@@ -791,6 +890,27 @@ class BookTickets extends Controller
         ];
 
         $this->model->updateData('invoice_room_private', $id_paid, "WHERE id_InvoiceRoomPrivate = $id_InvoiceRoomPrivate");
+
+        $this->library("Pusher/vendor/autoload.php");
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+        );
+        $pusher = new Pusher\Pusher(
+            '9b780886dd99c5bc8616',
+            '493f567787b71d528c2a',
+            '1898906',
+            $options
+        );
+
+        $data_pusher['time'] = $_SESSION['pusher']['pri']['time'];
+        $data_pusher['show_date']  = $_SESSION['pusher']['pri']['show_date'];
+        $data_pusher['id_room']  =  $_SESSION['pusher']['pri']['id_room'];
+        $data_pusher['id_cinema']  = $_SESSION['pusher']['pri']['id_cinema'];
+
+        $pusher->trigger('my-channel', 'my-event', $data_pusher);
+
         $this->data['sub']['text'] = "Thanh toán thành công";
         $this->data['content'] = 'home/paySuccessRoomPrivate';
         $this->view("layout/client", $this->data);

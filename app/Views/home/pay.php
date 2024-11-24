@@ -10,36 +10,36 @@
                         <div class="card-body">
                             <h5 class="card-title">Khuyến mãi</h5>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Mã khuyến mãi" id="promoCode">
+                                <input type="text" class="form-control" placeholder="Mã khuyến mãi" id="promoCode" name="promoCode">
+                                <p class="text-danger"><b><?php if (isset($check_promotions)) {
+                                                                echo $check_promotions;
+                                                            } ?></b></p>
+                                <p class="text-primary"><b><?php if (isset($check_promotions_true)) {
+                                                                echo $check_promotions_true;
+                                                            } ?></b></p>
+                                <input type="hidden" name="image" value="<?php echo $image ?>">
+                                <?php if (isset($_POST['image'])) $image  == $_POST['image'] ?>
+                                <input type="hidden" name="movie_name" value="<?php echo $movie_name ?>">
+                                <?php if (isset($_POST['movie_name'])) $movie_name  == $_POST['movie_name'] ?>
+                                <input type="hidden" name="projection_format" value="<?php echo $projection_format ?>">
+                                <?php if (isset($_POST['projection_format'])) $projection_format  == $_POST['projection_format'] ?>
+                                <input type="hidden" name="cinema" value="<?php echo $cinema ?>">
+                                <?php if (isset($_POST['cinema'])) $cinema  == $_POST['cinema'] ?>
+                                <input type="hidden" name="time" value="<?php echo $time ?>">
+                                <?php if (isset($_POST['time'])) $time  == $_POST['time'] ?>
+                                <input type="hidden" name="seats" value="<?php echo $seats ?>">
+                                <?php if (isset($_POST['seats'])) $seats  == $_POST['seats'] ?>
+                                <input type="hidden" name="total" value="<?php echo $total ?>">
+                                <?php if (isset($_POST['total'])) $total  == $_POST['total'] ?>
+                                <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
+                                <?php if (isset($_POST['id_showtime'])) $id_showtime  == $_POST['id_showtime'] ?>
+                                <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+                                <?php if (isset($_POST['id_movie'])) $id_movie  == $_POST['id_movie'] ?>
+                                <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
+                                <?php if (isset($_POST['id_room'])) $id_room  == $_POST['id_room'] ?>
                             </div>
-                            <button class="btn btn-success mt-2" onclick="applyPromoCode(event)">Áp Dụng</button>
+                            <button class="btn btn-success mt-2">Áp Dụng</button>
                         </div>
-                        <script>
-                            function applyPromoCode(event) {
-                                event.preventDefault();
-
-                                var promoCode = document.getElementById('promoCode').value;
-                                var promo = document.getElementById('total-price');
-                                var totalAmount = promo.textContent;
-                                var numericValue = parseInt(totalAmount.replace(/[^\d]/g, ''));
-                                var promotionCodes = <?php echo json_encode(array_column($promotion, 'promotion_code')); ?>;
-
-                                if (promoCode) {
-                                    if (promotionCodes.includes(promoCode)) {
-                                        var newAmount = numericValue - 10000;
-                                        var formattedAmount = newAmount.toLocaleString('vi-VN') + ' đ';
-                                        alert('Mã khuyến mãi áp dụng thành công!');
-                                        promo.innerHTML = formattedAmount;
-                                    } else {
-                                        alert('Mã khuyến mãi không hợp lệ!');
-                                    }
-                                } else {
-                                    alert('Vui lòng nhập mã khuyến mãi!');
-                                }
-                            }
-                        </script>
-
-
                     </div>
                 </form>
                 <form action="thanh-toan.html" method="POST" target="_blank" enctype="application/x-www-form-urlencoded">
@@ -67,14 +67,7 @@
                                         ATM MoMo
                                     </label>
                                 </div>
-                                <div class="form-check m-3">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/zalopay.webp" alt=""
-                                        style="width: 40px;">
-                                    <input class="form-check-input" type="radio" name="payment" id="zalopay" value="zalopay">
-                                    <label class="form-check-label" for="zalopay">
-                                        ZaloPay - Bạn mới ZaloPay nhập mã GLX50 - Giảm 50k cho đơn từ 200k
-                                    </label>
-                                </div>
+
                                 <div class="form-check m-3">
                                     <img src="<?php echo _WEB_ROOT ?>/public/client/book/image/vnpay.png" alt=""
                                         style="width: 40px;">
@@ -131,21 +124,48 @@
                         <hr>
                         <div id="selected-combos">
                             <?php
-                            $_SESSION['back']['item']  = $_POST['item'];
-                            foreach ($_POST['item'] as $item) {
-                                if ($item['quantity'] > 0) {
+                            if (isset($_POST['item'])) {
+                                $_SESSION['back']['item']  = $_POST['item'];
+                                foreach ($_POST['item'] as $item) {
+                                    if ($item['quantity'] > 0) {
                             ?>
-                                    <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
-                                    <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
+                                        <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
+                                        <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
 
-                            <?php }
-                            }
+                                    <?php }
+                                }
+                            } else {
+                                foreach ($_SESSION['back']['item'] as $item) {
+                                    if ($item['quantity'] > 0) {
+                                    ?>
+                                        <p><?php echo 'x' . $item['quantity'] .  ' '  . $item['name_item'] ?></p>
+                                        <input type="hidden" name="id_item[<?php echo $item['id_item']  ?>]" value="<?php echo $item['quantity']  ?>">
+
+                                <?php }
+                                } ?>
+
+                            <?php   }
                             ?>
                         </div>
                         <hr>
                         <p class="d-flex justify-content-between"><strong>Tổng cộng</strong> <span
                                 class="text-danger" id="total-price"><?php echo $total ?></span></p>
                         <?php $_SESSION['back']['total']  = $total ?>
+                        <p class="d-flex justify-content-between"><strong>Giảm giá</strong> <span
+                                class="text-danger" id="total-price"><?php if (isset($discount)) {
+                                                                            echo $discount;
+                                                                        } else {
+                                                                            echo "0 ₫";
+                                                                        } ?></span></p>
+                        <?php $_SESSION['back']['discount']  = $total ?>
+
+                        <p class="d-flex justify-content-between"><strong>Tiền phải trả</strong> <span
+                                class="text-danger" id="total-price"><?php if (isset($total_after_discount)) {
+                                                                            echo $total_after_discount;
+                                                                        } else {
+                                                                            echo $total;
+                                                                        } ?></span></p>
+                        <?php $_SESSION['back']['total_after_discount']  = $total ?>
 
                         <div class="d-flex justify-content-between">
                             <input type="hidden" name="id_showtime" value="<?php echo $id_showtime ?>">
@@ -162,7 +182,17 @@
 
                             <input type="hidden" name="total" value="<?php echo  $total ?>">
 
+                            <input type="hidden" name="discount" value="<?php if (isset($discount)) {
+                                                                            echo $discount;
+                                                                        } else {
+                                                                            echo "0";
+                                                                        }  ?>">
 
+                            <input type="hidden" name="total_after_discount" value="<?php if (isset($total_after_discount)) {
+                                                                                        echo $total_after_discount;
+                                                                                    } else {
+                                                                                        echo $total;
+                                                                                    } ?>">
 
 
                             <button class="btn btn-primary">Thanh toán</button>
@@ -198,23 +228,15 @@ $_SESSION['hold_expiry_id_showTime'] = $hold_chairs[0]['id_showTime'];
                 const momoOption = document.getElementById("momo");
                 const ATM = document.getElementById("ATM");
 
-                const zalopayOption = document.getElementById("zalopay");
                 const vnpayOption = document.getElementById("vnpay");
 
-                if (!momoOption.checked && !zalopayOption.checked && !vnpayOption.checked && !ATM.checked) {
+                if (!momoOption.checked && !vnpayOption.checked && !ATM.checked) {
                     event.preventDefault();
                     alert("Vui lòng chọn một phương thức thanh toán.");
                     return;
                 }
 
-                if (zalopayOption.checked) {
-                    event.preventDefault();
-                    alert("Hiện tại chưa hỗ trợ thanh toán qua ZaloPay.");
-                }
-                if (vnpayOption.checked) {
-                    event.preventDefault();
-                    alert("Hiện tại chưa hỗ trợ thanh toán qua VNPay.");
-                }
+
             });
         });
     </script>

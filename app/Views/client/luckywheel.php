@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="row row-wheel"  style=" margin-bottom: 20px; background-image: url('<?php echo _WEB_ROOT ?>/public/luckywheel/bg/bg-wheel3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="row row-wheel"  style=" margin-bottom: 20px; background-image: url('<?php echo _WEB_ROOT ?>/public/luckywheel/bg/bg-wheel.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="col-12 col-lg-6">
             <div class="plan plan--active" style="background-color:#fff">
                 <h3 class="plan__title text-pink" style="font-size: 22px;">Luật chơi:</h3>

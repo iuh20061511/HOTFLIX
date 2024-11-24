@@ -14,9 +14,10 @@ class Home extends Controller
     }
     public function index()
     {
+        $this->data['sub']['listMoive'] = $this->model->getListTable('movie', 'where id_movie != 0');
 
-        $this->data['sub']['listShowing'] = $this->model->getListFromTwoTables('show_time', 'movie',  'id_movie', "WHERE show_time.show_date BETWEEN CURRENT_DATE AND DATE_ADD(CURRENT_DATE, INTERVAL 6 DAY)");
-        $this->data['sub']['listComingSoon'] = $this->model->getListFromTwoTables('show_time', 'movie',  'id_movie', "WHERE show_time.show_date >= NOW() + INTERVAL 6 DAY");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
+        $this->data['sub']['listComingSoon'] = $this->model->getListTable('movie', "where status= 0");
         if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1) {
             $id_customer = $_SESSION['is_login']['id_account'];
             $this->data['sub']['showtime_notifications'] = $this->model->getListTable('showtime_notifications', "where id_customer =  $id_customer");
@@ -43,7 +44,7 @@ class Home extends Controller
     {
         $this->data['sub']['text'] = "Chi tiết phim";
         $this->data['sub']['movieDetail'] = $this->model->getListTable('movie', "where id_movie=$id_movie");
-        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1 and id_movie!=$id_movie");
+        $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1 and id_movie!=$id_movie limit 4");
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas', "ORDER BY id_cinema asc");
         // Kiểm tra xem có giá trị cinema từ GET không, nếu không thì lấy giá trị mặc định
         $showtimes = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie',  "WHERE show_time.show_date >= CURDATE() AND show_time.id_movie = $id_movie");
@@ -68,7 +69,7 @@ class Home extends Controller
         $this->data['sub']['text'] = "Chi tiết rạp";
         $this->data['sub']['cinema'] = $this->model->getListTable('cinemas', "where id_cinema=$id_cinema");
         $this->data['sub']['listShowing'] = $this->model->getListTable('movie', "where status=1");
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "order by id_movie desc");
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "where id_movie !=0 order by id_movie desc");
         $folder = 'app/public/assets/img/cinema/' . $id_cinema; // Thư mục cần lấy danh sách file
         $this->data['sub']['listCinemaImage'] = array_map('basename', glob($folder . '/*'));
         // Kiểm tra id_rạp là chẵn hay lẻ
@@ -94,71 +95,37 @@ class Home extends Controller
         $this->view("layout/client", $this->data);
     }
 
-    public function roomAgv()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
 
-        $this->data['content'] = 'home/room/roomAgv';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomBig()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomBig';
-
-        $this->view("layout/client", $this->data);
-    }
-
-
-    public function roomSmall()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomSmall';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomVip()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomVip';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function roomPrivate()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/room/roomPrivate';
-
-        $this->view("layout/client", $this->data);
-    }
-
-    public function book()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/book';
-
-        $this->view("layout/client", $this->data);
-    }
-    public function pay()
-    {
-        $this->data['sub']['text'] = "Danh sách text";
-
-        $this->data['content'] = 'home/pay';
-
-        $this->view("layout/client", $this->data);
-    }
 
     public function error_404()
     {
         $this->view("errors/404");
+    }
+
+    public function huan()
+    {
+
+        $this->library("Pusher/vendor/autoload.php");
+
+        $options = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+        );
+        $pusher = new Pusher\Pusher(
+            '9b780886dd99c5bc8616',
+            '493f567787b71d528c2a',
+            '1898906',
+            $options
+        );
+
+        $data['message'] = 'hello world';
+        $pusher->trigger('my-channel', 'my-event', $data);
+    }
+
+    public function test()
+    {
+        $a = 5;
+
+        $this->library("Pusher/test.php");
     }
 }

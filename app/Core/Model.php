@@ -20,6 +20,26 @@ class Model extends Database
 
         $query = "SELECT * FROM `$tableName` $condition";
 
+        $result = mysqli_query($this->connection, $query);
+
+        if (!$result) {
+            die('Query failed: ' . mysqli_error($this->connection));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+        mysqli_free_result($result);
+        return $data;
+    }
+
+    public function getListTableByCol($tableName, $col, $condition = '')
+    {
+        $this->connectIfNeeded();
+
+        $query = "SELECT $col FROM `$tableName` $condition";
+
 
         $result = mysqli_query($this->connection, $query);
 
@@ -63,6 +83,31 @@ class Model extends Database
         $this->connectIfNeeded();
 
         $query = "SELECT * $select FROM $tableName1 INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
+
+        $result = mysqli_query($this->connection, $query);
+
+        if (!$result) {
+            die('Query failed: ' . mysqli_error($this->connection));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+        mysqli_free_result($result);
+
+        return $data;
+    }
+
+
+    public function getListFromThreeTablesByCol($col, $tableName1, $tableName2, $tableName3, $columnIdFK1, $columnIdFK2, $condition = '')
+    {
+        $this->connectIfNeeded();
+
+
+        $query = "SELECT $col FROM $tableName1
+        INNER JOIN $tableName2 ON $tableName1.$columnIdFK1 = $tableName2.$columnIdFK1
+        INNER JOIN $tableName3 ON $tableName2.$columnIdFK2 = $tableName3.$columnIdFK2 $condition";
 
         $result = mysqli_query($this->connection, $query);
 

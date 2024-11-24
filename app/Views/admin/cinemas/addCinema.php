@@ -51,22 +51,41 @@
 
 									<div class="col-12 col-xl-2" style="margin-top: 15px">
 										<div class="sign__group">
-										<?php 
-                                            $listDistricts = [
-                                                "Quận 1", "Quận 2", "Quận 3", "Quận 4", "Quận 5", "Quận 6", "Quận 7", 
-                                                "Quận 8", "Quận 9", "Quận 10", "Quận 11", "Quận 12", "Q.Bình Thạnh", 
-                                                "Q.Tân Bình", "Q.Bình Tân", "Q.Tân Phú", "Q.Gò Vấp", 
-                                                "Q.Phú Nhuận", "H.Bình Chánh", "H.Cần Giờ", "H.Củ Chi", 
-                                                "H.Nhà Bè","Q.Thủ Đức"
-                                            ];
+											<?php
+											$listDistricts = [
+												"Quận 1",
+												"Quận 2",
+												"Quận 3",
+												"Quận 4",
+												"Quận 5",
+												"Quận 6",
+												"Quận 7",
+												"Quận 8",
+												"Quận 9",
+												"Quận 10",
+												"Quận 11",
+												"Quận 12",
+												"Q.Bình Thạnh",
+												"Q.Tân Bình",
+												"Q.Bình Tân",
+												"Q.Tân Phú",
+												"Q.Gò Vấp",
+												"Q. Thủ Đức",
+												"Q.Phú Nhuận",
+												"H.Bình Chánh",
+												"H.Cần Giờ",
+												"H.Củ Chi",
+												"H.Nhà Bè",
+												"Q.Thủ Đức"
+											];
 
-                                            $selected_district = isset($_POST['district_address']) ? $_POST['district_address'] : '';
-                                            ?>
-                                            <select class="sign__selectjs" id="sign__actors" name="district_address">
-                                                <?php foreach ($listDistricts as $district): ?>
-                                                    <option value="<?= $district ?>" <?= ($district === $selected_district) ? 'selected' : '' ?>><?= $district ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
+											$selected_district = isset($_POST['district_address']) ? $_POST['district_address'] : '';
+											?>
+											<select class="sign__selectjs" id="sign__actors" name="district_address">
+												<?php foreach ($listDistricts as $district): ?>
+													<option value="<?= $district ?>" <?= ($district === $selected_district) ? 'selected' : '' ?>><?= $district ?></option>
+												<?php endforeach; ?>
+											</select>
 										</div>
 									</div>
 									<div class="col-12 col-xl-3" style="margin-top: 15px">
@@ -75,26 +94,26 @@
 										</div>
 									</div>
 								</div>
-											<?php if (isset($error['address'])) { ?>
-															<p class="error text-danger m-1"><b><?php echo $error['address']; ?></b></p>
-											<?php } ?>
+								<?php if (isset($error['address'])) { ?>
+									<p class="error text-danger m-1"><b><?php echo $error['address']; ?></b></p>
+								<?php } ?>
 								<div class="row">
 									<div class="col-12" style="margin-top: 15px">
 										<div class="sign__group">
 											<input type="text" class="sign__input" placeholder="Số điện thoại" name="contact" value="<?php echo isset($_POST['contact']) ? $_POST['contact'] : ''; ?>">
 											<div>
 												<?php if (isset($error['contact'])) { ?>
-												<p class="error text-danger m-1"><b><?php echo $error['contact']; ?></b></p>
+													<p class="error text-danger m-1"><b><?php echo $error['contact']; ?></b></p>
 											</div>
-                               			 <?php } ?>
+										<?php } ?>
 										</div>
 									</div>
 									<div class="col-12">
 										<div class="sign__group">
 											<textarea id="text" name="description" class="sign__textarea" placeholder="Mô tả - Thông tin thêm về rạp"><?php echo isset($_POST['description']) ? $_POST['description'] : ''; ?></textarea>
 											<?php if (isset($error['description'])): ?>
-                                            	<p class="error text-danger"><?php echo $error['description']; ?></p>
-                                        	<?php endif; ?>
+												<p class="error text-danger"><?php echo $error['description']; ?></p>
+											<?php endif; ?>
 										</div>
 									</div>
 								</div>

@@ -18,7 +18,7 @@ class Showtime extends Controller
     public function addShowTime()
     {
         $this->data['sub']['title'] = "Trang Admin";
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "WHERE id_movie != 0");
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', "WHERE id_movie != 0 AND status = 1");
         $id_cinema = $_SESSION['is_login']['id_cinema'];
         $this->data['sub']['listRoom'] = $this->model->getListFromTwoTables('room', 'room_type', 'id_roomType', " where room.id_cinema =  $id_cinema AND room.id_roomType != 5");
 
@@ -93,11 +93,11 @@ class Showtime extends Controller
             }
             if (isset($_SESSION['room'])) {
                 $id_room =  $_SESSION['room'];
+                $this->data['sub']['id_roomType'] =  $this->model->getListTable("room", "where id_room = $id_room")[0]['id_roomType'];
             } else {
                 $id_room = 0;
             }
 
-            $this->data['sub']['id_roomType'] =  $this->model->getListTable("room", "where id_room = $id_room")[0]['id_roomType'];
 
             if (isset($_SESSION['movie'])) {
                 $movie = $_SESSION['movie'];

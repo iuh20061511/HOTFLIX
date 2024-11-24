@@ -17,49 +17,33 @@ const TICKET_CHECKER = 5;
 const ADMIN = 6;
 
 
-function authCheck($app)
+function authCheck($controller, $action)
 {
-    $auth = $app->urlCheck . '/' . $app->action;
+    $auth = $controller . '/' . $action;
     $auth = strtolower($auth);
-
-
 
     require './app/Core/Auth.php';
 
-    $unauthenticated = [
-        "Home/index",
-        "Home/error_404",
-        "home/movieDetail",
-        "account/login",
-        "account/register",
-        "account/forgot",
-        "account/reset",
-        "account/verify",
-        "client/BookTickets/book",
-        "client/BookTickets/book_ticket"
-    ];
-    $isAuthorized = false;
-    if (!empty($_SESSION['is_login']['id_account'])) {
+    $isAuthorized = true;
 
-        $loginLevel = $_SESSION['is_login']['id_role'];
-        foreach ($authenticated as $page => $roles) {
-            if ($auth == strtolower($page) && in_array($loginLevel, $roles)) {
-                $isAuthorized = true;
+    foreach ($authenticated as $page => $roles) {
+
+        if ($auth === strtolower($page)) {
+            if (!empty($_SESSION['is_login']['id_account'])) {
+                $loginLevel = $_SESSION['is_login']['id_role'];
+                if (!in_array($loginLevel, $roles)) {
+                    $isAuthorized = false;
+                    break;
+                }
+            } else {
+                echo '<script>window.location.href = "dang-nhap.html";</script>';
+                exit;
             }
         }
+    }
 
-        if (!$isAuthorized) {
-            if (in_array(strtolower($auth), array_map('strtolower', $unauthenticated))) {
-                $isAuthorized = true;
-            }
-        }
-
-        if (!$isAuthorized) {
-            echo '<script>window.location.href = "404.html";</script>';
-        }
-    } elseif (in_array(strtolower($auth), array_map('strtolower', $unauthenticated))) {
-        $isAuthorized = true;
-    } else {
-        echo '<script>window.location.href = "dang-nhap.html";</script>';
+    if (!$isAuthorized) {
+        echo '<script>window.location.href = "404.html";</script>';
+        exit;
     }
 }

@@ -162,7 +162,7 @@ $jsonSchedules = json_encode($schedules);
 ?>
 
 <!-- <script>
-    const schedules = <?php echo $jsonSchedules; ?>;
+    const schedules = <?php $jsonSchedules; ?>;
     let selectedDate = new Date().toLocaleDateString('en-GB');
     let selectedCinema = "hotflix1";
 

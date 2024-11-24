@@ -146,37 +146,6 @@
                         </div>
                         <div class="row">
                             <div class="col-12 mt-4">
-                                <!-- <div class="showtime-list movie-schedule-container">
-                                    <div class="day-row">
-                                        <div class="row mt-3">
-                                            <div class="col-2">
-                                                <h6 class="text-white">2D:</h6>
-                                            </div>
-                                            <div class="col-9">
-                                                <a href="dat-ve.html?showtime_id=" class="btn btn-outline-light inline mt-2 me-2">
-                                                    18:00
-                                                </a>
-                                                <a href="dat-ve.html?showtime_id=" class="btn btn-outline-light inline mt-2 me-2">
-                                                    19:00
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr style="border: 2px solid #ff55a5;" />
-                                    <div class="day-row">
-                                        <div class="row mt-3">
-                                            <div class="col-2">
-                                                <h6 class="text-white">3D:</h6>
-                                            </div>
-                                            <div class="col-9">
-                                                <a href="dat-ve.html?showtime_id=" class="btn btn-outline-light inline mt-2 me-2">
-                                                    18:00
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr style="border: 2px solid #ff55a5;" />
-                                </div> -->
                                 <div id="movie-schedule-container" class="showtime-list movie-schedule-container"></div>
                             </div>
                         </div>
@@ -289,13 +258,10 @@
                     foreach ($listShowing as $index => $movieShowing) { ?>
                         <div class="col-6 col-sm-4 col-lg-6">
                             <div class="item">
-                                <a href="details1.html" class="item__cover">
+                                <a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html" class="item__cover">
                                     <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movieShowing['poster']; ?>" alt="">
                                     <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
                                         <div class="text-white">Xem chi tiết</div>
-                                    </div>
-                                    <div class="item__play" onclick="location.href='#';">
-                                        <div class="text-white">Mua vé ngay</div>
                                     </div>
                                 </a>
                                 <div class="item__content">

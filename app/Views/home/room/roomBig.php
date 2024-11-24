@@ -401,3 +401,36 @@
         document.getElementById("myForm").reset();
     }
 </script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('9b780886dd99c5bc8616', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+
+        if (data) {
+            if (data.id_showTime && data.location) {
+                var id_showTime = data.id_showTime
+                if (id_showTime == <?php echo $id_showTime ?>) {
+                    const locations = data.location;
+                    const location_seat = locations.split(',');
+                    location_seat.forEach(part => {
+                        seat = part.trim()
+                        if (seat && /^[a-zA-Z0-9_-]+$/.test(seat)) {
+                            let input_seat = document.querySelector(`.checkbox${seat}`);
+                            let span_seat = document.querySelector(`.${seat}`);
+                            span_seat.classList.add('maxSeat');
+                            input_seat.disabled = true;
+                        }
+
+                    });
+                }
+            }
+        }
+    });
+</script>

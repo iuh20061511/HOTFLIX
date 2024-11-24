@@ -110,7 +110,9 @@ class App
 
 
         if (method_exists($this->controller, $this->action)) {
-            // Tên controler, tên hàm muốn chạy là ai, tham số dùng để chạy
+
+            require './app/configs/configAuth.php';
+            authCheck($this->urlCheck, $this->action);
             call_user_func_array([$this->controller, $this->action], $this->params);
         } else {
             $this->loadError();

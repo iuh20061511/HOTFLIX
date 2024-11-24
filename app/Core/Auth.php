@@ -22,9 +22,9 @@ $authenticated = [
     "admin/Cinemas/addNewCinema"          =>      [CHAIN_MANAGER, ADMIN],
     "admin/Cinemas/updateCinema"          =>      [CHAIN_MANAGER, ADMIN],
     "admin/Cinemas/deleteCinema"          =>      [CHAIN_MANAGER, ADMIN],
-    "admin/Cinemas/addNewRoomForCinema"   =>      [CHAIN_MANAGER, ADMIN],
-    "admin/Cinemas/updateRoomForCinema"   =>      [CHAIN_MANAGER, ADMIN],
-    "admin/Cinemas/deleteRooomForCinema"  =>      [CHAIN_MANAGER, ADMIN],
+    "admin/Cinemas/addNewRoomForCinema"   =>      [CINEMA_MANAGER, ADMIN],
+    "admin/Cinemas/updateRoomForCinema"   =>      [CINEMA_MANAGER, ADMIN],
+    "admin/Cinemas/deleteRooomForCinema"  =>      [CINEMA_MANAGER, ADMIN],
     //Movies
     "admin/Movies/index"                  =>      [CHAIN_MANAGER, CINEMA_MANAGER, ADMIN],
     "admin/Movies/addNewMovie"            =>      [CHAIN_MANAGER, ADMIN],

@@ -45,7 +45,7 @@ class Cinemas extends Controller
                 $data = [
                     'cinema_name' => $_POST['cinema_name'],
                     'contact' => $_POST['contact'],
-                    'description' => $$_POST['description'],
+                    'description' => $_POST['description'],
                     'address' => $address,
                     'status' => 1
                 ];
@@ -53,8 +53,7 @@ class Cinemas extends Controller
                 $result = $this->model->InsertData('cinemas', $data);
                 if ($result) {
                     echo "<script>alert('Thêm rạp mới thành công')</script>";
-                    $redirectUrl = "quan-ly-rap-phim.html";
-                    header("refresh:0.5; url=$redirectUrl");
+                    echo "<script>window.location.href = 'quan-ly-rap-phim.html';</script>";
                 }
             }
         }
@@ -120,8 +119,7 @@ class Cinemas extends Controller
                     $result = $this->model->deleteData('cinemas', "where id_cinema = $id_cinema");
                     if ($result) {
                         echo "<script>alert('Xóa rạp phim thành công')</script>";
-                        $redirectUrl = "quan-ly-rap-phim.html";
-                        header("refresh:0.5; url=$redirectUrl");
+                        echo "<script>window.location.href = 'quan-ly-rap-phim.html';</script>";
                     }
                 }
             }
@@ -135,39 +133,20 @@ class Cinemas extends Controller
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
 
         if (isset($_POST['addRoom'])) {
-            $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
             $this->data['sub']['error']['type_room'] = $this->validate->checkSelect($_POST['type_room']);
-            if ($_POST['cinema'] != 0 && strlen($_POST['room_name']) >= 3) {
-                $this->data['sub']['error']['room_name'] = $this->validate->checkRoomOfCinemaExist($_POST['room_name'], $_POST['cinema']);
-            } else {
-                $this->data['sub']['error']['room_name'] = $this->validate->checkFullName($_POST['room_name']);
-            }
 
             if (array_filter($this->data['sub']['error']) == []) {
-                if ($_POST['type_room'] == 1) {
-                    $number_seat = 48;
-                } else if ($_POST['type_room'] == 2) {
-                    $number_seat = 175;
-                } else if ($_POST['type_room'] == 3) {
-                    $number_seat = 250;
-                } else if ($_POST['type_room'] == 4) {
-                    $number_seat = 358;
-                } else {
-                    $number_seat = 1;
-                }
                 $data = [
                     'room_name' => $_POST['room_name'],
-                    'number_seat' => $number_seat,
                     'id_roomType' => $_POST['type_room'],
-                    'id_cinema' => $_POST['cinema'],
+                    'id_cinema' =>   $_SESSION['is_login']['id_cinema'],
                     'status' => 1
                 ];
 
                 $result = $this->model->InsertData('room', $data);
                 if ($result) {
                     echo "<script>alert('Thêm phòng chiếu mới thành công')</script>";
-                    $redirectUrl = "them-phong-chieu.html";
-                    header("refresh:0.5; url=$redirectUrl");
+                    echo "<script>window.location.href = 'them-phong-chieu.html';</script>";
                 }
             }
         }
