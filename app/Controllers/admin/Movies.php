@@ -61,7 +61,7 @@ class Movies extends Controller
 
         // Lấy danh sách phim theo trang hiện tại
         $offset = ($currentPage - 1) * $itemsPerPage;
-        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $conditions . " ORDER BY id_movie LIMIT $itemsPerPage OFFSET $offset");
+        $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $conditions . "WHERE id_movie != 0  ORDER BY id_movie DESC LIMIT $itemsPerPage OFFSET $offset");
 
         // Thêm thông tin phân trang vào $this->data để sử dụng trong view
         $this->data['sub']['pagination'] = [

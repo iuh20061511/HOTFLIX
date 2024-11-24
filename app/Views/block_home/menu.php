@@ -21,19 +21,13 @@
                             $cinemas = (new Model())->getListTable('cinemas');
 
                             ?>
-
-                            <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories" style="width: 300px;">
-
-                                <ul class="header__categories-list">
-                                    <h6 class="text-center text-danger"><b>Hệ thống rạp:</b></h6>
+                            <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories">
+								<ul class="header__categories-list">
                                     <?php foreach ($cinemas as $cinema) { ?>
-
-                                        <p class="border-0 text-light" style="background: none;"><?php echo $cinema['cinema_name']; ?></p>
-
+                                        <li><a href="thong-tin-rap-<?php echo $cinema['id_cinema']; ?>.html"><?php echo $cinema['cinema_name']; ?></a></li>
                                     <?php } ?>
-                                </ul>
-
-                            </div>
+								</ul>
+							</div>
                         </div>
 
                     </li>
@@ -64,47 +58,24 @@
                         </li>
 
 
-
-
-                        <!-- <li class="header__nav-item">
-                            <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Rạp <svg xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24">
-                                    <path
-                                        d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
-                                </svg></a>
-
-                            <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="details2.html">HotFlix Quận 1</a></li>
-                                <li><a href="<?php echo _LINK ?>/thong-tin-rap-10.html">HotFlix Quận 7</a></li>
-                                <li><a href="catalog1.html">HotFlix Gò Vấp</a></li>
-                                <li><a href="catalog2.html">HotFlix Thủ Đức</a></li>
-
-                            </ul>
-                        </li> -->
-
-
                         <li class="header__nav-item">
                             <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê phòng chiếu</a>
                         </li>
 
                         <!-- dropdown -->
-                        <!-- <li class="header__nav-item">
+                        <li class="header__nav-item">
                             <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Pages <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                aria-expanded="false">Mở rộng <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                     <path
                                         d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
                                 </svg></a>
 
                             <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="about.html">About us</a></li>
-                                <li><a href="faq.html">Help center</a></li>
-                                <li><a href="profile.html">Profile</a></li>
-                                <li><a href="actor.html">Actor</a></li>
-                                <li><a href="contacts.html">Contacts</a></li>
-                                <li><a href="privacy.html">Privacy policy</a></li>
+                                <li><a href="vong-quay-may-man.html">Vòng quay may mắn</a></li>
+                                <li><a href="doi-qua.html">Đổi quà</a></li>
+                                <li><a href="danh-sach-qua.html">Danh sách quà</a></li>
                             </ul>
-                        </li> -->
+                        </li>
                         <!-- end dropdown -->
 
 
@@ -128,16 +99,21 @@
                                     <img width="40px" src="<?php echo _WEB_ROOT ?>/public/assets/img/user/user_account.png" alt="User avatar">
                                 </div>
                                 <div class="header__info">
-                                    <p>Xin chào,</p>
+                                    <!-- <p>Xin chào,</p> -->
                                     <p><?php echo $_SESSION['is_login']['fullname'] ?></p>
                                 </div>
                                 <ul class="dropdown-user">
+                                    <p class="fw-bold pe-none" style="color:#ff55a5"><?php echo $_SESSION['is_login']['name_role']?></p>
                                     <li><a href="<?php echo _LINK ?>/thong-tin-tai-khoan.html">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
+                                    <?php } ?>
+                                    <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 4) { ?>
                                         <li><a href="<?php echo _LINK ?>/tra-cuu-ve.html">Tra cứu</a></li>
                                     <?php } ?>
-                                    <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
+                                    <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 1) { ?>
+                                        <li><a href="<?php echo _LINK ?>/lich-su-giao-dich.html">Lịch sử</a></li>
+                                    <?php } ?>
                                     <li><a href="<?php echo _LINK ?>/dang-xuat.html">Đăng xuất</a></li>
                                 </ul>
                             </div>

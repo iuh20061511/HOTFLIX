@@ -2603,7 +2603,7 @@ body::-webkit-scrollbar-thumb {
 
 /* Đặt vị trí cho nút "Xem chi tiết" */
 .item__play:first-of-type {
-  top: 55%;
+  top: 70%;
 }
 
 /* Đặt vị trí cho nút "Mua vé ngay" */

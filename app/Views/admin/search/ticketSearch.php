@@ -466,3 +466,30 @@
         });
     });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+        const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+        const activeTabId = localStorage.getItem("activeTabId"); // Lấy ID tab đang chọn từ LocalStorage
+
+        if (activeTabId) {
+            // Loại bỏ class "active" và "show" của tab mặc định
+            document.querySelector('.nav-tabs .active')?.classList.remove("active");
+            document.querySelector('.tab-content .show')?.classList.remove("show", "active");
+
+            // Thêm class "active" và "show" cho tab được lưu
+            document.querySelector(`[data-bs-target="#${activeTabId}"]`)?.classList.add("active");
+            document.querySelector(`#${activeTabId}`)?.classList.add("show", "active");
+        }
+
+        // Lắng nghe sự kiện click để lưu trạng thái tab
+        tabs.forEach((tab) => {
+            tab.addEventListener("click", function () {
+                if (this.getAttribute("data-bs-toggle") === "tab") { // Đảm bảo nó là tab
+                    const tabId = this.getAttribute("data-bs-target").substring(1); // Lấy ID tab
+                    localStorage.setItem("activeTabId", tabId); // Lưu ID tab vào LocalStorage
+                }
+            });
+        });
+    });
+    </script>

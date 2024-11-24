@@ -187,13 +187,10 @@
                         foreach ($listShowing as $index => $movieShowing) { ?>
 	                        <div class="col-6 col-sm-4 col-lg-6">
 	                            <div class="item">
-	                                <a href="details1.html" class="item__cover">
+	                                <a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html" class="item__cover">
 	                                    <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movieShowing['poster']; ?>" alt="">
 	                                    <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
 	                                        <div class="text-white">Xem chi tiết</div>
-	                                    </div>
-	                                    <div class="item__play" onclick="location.href='#';">
-	                                        <div class="text-white">Mua vé ngay</div>
 	                                    </div>
 	                                </a>
 	                                <div class="item__content">

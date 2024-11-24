@@ -1,19 +1,20 @@
 <!-- sidebar -->
 <div class="sidebar">
 	<!-- sidebar user -->
-	<div class="sidebar__user">
+	<div class="sidebar__user" style="padding: 20px 10px;">
 		<div class="sidebar__user-img">
 			<img src="<?php echo _WEB_ROOT ?>/public/admin/img/user.svg" alt="">
 		</div>
 
 		<div class="sidebar__user-title">
-			<span><?php echo $_SESSION['is_login']['name_role'] ?></span>
-			<p><?php echo $_SESSION['is_login']['fullname'] ?></p>
+			<p class="pe-1 mb-1"><?php echo $_SESSION['is_login']['fullname'] ?></p>
+			<span class="pe-1 mb-1 text-success"><?php echo $_SESSION['is_login']['name_role']?></span>
+			<p class="pe-1" style="font-weight: 100; font-size: 12px; color:#ff55a5"><?php echo $_SESSION['is_login']['cinema_name'] ?></p>
 		</div>
 
-		<button class="sidebar__user-btn" type="button">
-			<i class="ti ti-logout"></i>
-		</button>
+		<div class="sidebar__user-btn" type="button">
+			<a href="<?php echo _LINK ?>/dang-xuat.html" style="color:#fff"><i class="ti ti-logout"></i></a>
+		</div>
 	</div>
 	<!-- end sidebar user -->
 
@@ -56,7 +57,6 @@
 			<li class="sidebar__nav-item">
 				<a class="sidebar__nav-link" href="quan-ly-suat-chieu.html" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
 					<span>Quản lý suất chiếu</span></a>
-
 			</li>
 
 
@@ -82,24 +82,6 @@
 				<a href="reviews.html" class="sidebar__nav-link"><i class="ti ti-star-half-filled"></i>
 					<span>Reviews</span></a>
 			</li>
-
-			<li class="sidebar__nav-item">
-				<a href="settings.html" class="sidebar__nav-link"><i class="ti ti-settings"></i>
-					<span>Settings</span></a>
-			</li>
-
-			<!-- dropdown -->
-			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i
-						class="ti ti-files"></i> <span>Pages</span> <i class="ti ti-chevron-down"></i></a>
-
-				<ul class="dropdown-menu sidebar__dropdown-menu">
-					<li><a href="add-item.html">Add item</a></li>
-					<li><a href="edit-user.html">Edit user</a></li>
-					<li><a href="forgot.html">Forgot password</a></li>
-				</ul>
-			</li>
-			<!-- end dropdown -->
 
 			<li class="sidebar__nav-item">
 				<a href="<?php echo _LINK ?>" class="sidebar__nav-link"><i class="ti ti-arrow-left"></i> <span>Back to

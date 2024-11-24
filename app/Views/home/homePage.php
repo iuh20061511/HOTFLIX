@@ -366,14 +366,14 @@
                             <?php foreach ($listMoive as $movie) { ?>
                                 <li class="splide__slide">
                                     <div class="item item--carousel">
-                                        <a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html" class="item__cover">
+                                        <a href="chi-tiet-phim-<?php echo $movie['id_movie']; ?>.html" class="item__cover">
                                             <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie['poster']; ?>" alt="">
                                             <span class="item__play text-light">
-                                                chi tiết
+                                               Xem chi tiết
                                             </span>
                                         </a>
                                         <div class="item__content">
-                                            <h3 class="item__title"><a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html"><?php echo $movie['movie_name'] ?></a></h3>
+                                            <h3 class="item__title"><a href="chi-tiet-phim-<?php echo $movie['id_movie']; ?>.html"><?php echo $movie['movie_name'] ?></a></h3>
 
                                         </div>
                                     </div>

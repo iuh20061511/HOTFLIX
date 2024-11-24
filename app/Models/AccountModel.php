@@ -30,6 +30,10 @@ class AccountModel extends Model
         if ($staffResult) {
             $staff = $staffResult[0];
             if (password_verify($password, $staff['password'])) {
+                if($staff['id_role'] == 3 || $staff['id_role'] == 4 || $staff['id_role'] == 5){
+                    $name_cinema = $this->model->getListTable('cinemas', "where id_cinema =" . $staff['id_cinema']);
+                    $staff['name_cinema'] = $name_cinema[0]['cinema_name'] ?? 'Toàn rạp';
+                }
                 $name_role = $this->model->getListTable('role', "where id_role =" . $staff['id_role']);
                 $staff['name_role'] = $name_role[0]['name_role'];
                 return $staff;

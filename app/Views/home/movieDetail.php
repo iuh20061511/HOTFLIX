@@ -90,10 +90,6 @@
                         <li class="nav-item" role="presentation">
                             <button id="2-tab" data-bs-toggle="tab" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Reviews</button>
                         </li>
-
-                        <li class="nav-item" role="presentation">
-                            <button id="3-tab" data-bs-toggle="tab" data-bs-target="#tab-3" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Photos</button>
-                        </li>
                     </ul>
                     <!-- end content tabs nav -->
                 </div>
@@ -107,19 +103,14 @@
                 <!-- content tabs -->
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab" tabindex="0">
-                        <div class="row">
+                        <div class="row mb-3 mt-2">
                             <!-- Chọn rạp -->
                             <div class="d-flex align-items-center">
-                                <label for="cinema-select" class="text-white me-2">Chọn Rạp:</label>
-                                <form action="chi-tiet-phim-<?php echo $movieDetail[0]['id_movie'] ?>.html" method='get' style="width: 45%;">
-                                    <select id="cinema-select" class="form-control sign__select" name="select-cinema" onchange="this.form.submit()" style="border-color: #ff55a5;">
-                                        <?php
-                                        // Lấy tên rạp đã chọn và ID
-                                        $selectedCinemaId = $selectedCinema;
-                                        ?>
+                                <label for="cinema-select" class="text-white me-2">Rạp chiếu:</label>
+                                <form action="" method='get' style="width: 45%;">
+                                    <select id="cinema-select" class="form-control sign__select" name="select-cinema" style="border-color: #ff55a5;">
                                         <?php foreach ($listCinema as $cinema) : ?>
-                                            <option value="<?php echo $cinema['id_cinema']; ?>"
-                                                <?php echo $cinema['id_cinema'] == $selectedCinemaId ? 'selected' : ''; ?>>
+                                            <option value="<?php echo $cinema['id_cinema']; ?>" data-cinema="hotflix<?php echo $cinema['id_cinema']; ?>">
                                                 <?php echo $cinema['cinema_name']; ?>
                                             </option>
                                         <?php endforeach; ?>
@@ -127,57 +118,35 @@
                                 </form>
                             </div>
                             <!-- Chọn rạp -->
-                            <div class="col-12 mt-4">
-                                <div class="showtime-list">
-                                    <?php
+                        </div>
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="d-flex justify-content-center mb-4">
+                                    <div class="btn-group" style="width: 100%;">
+                                        <?php
+                                        $startDate = new DateTime();
+                                        $daysOfWeek = ['Chủ nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
 
-                                    // Lấy ngày hôm nay và ngày cuối tuần (Chủ Nhật)
-                                    $today = new DateTime();
+                                        $todayDate = $startDate->format('d/m/Y');
 
-                                    // Mảng lưu trữ suất chiếu theo ngày
-                                    $showtimesByDate = [];
+                                        for ($i = 0; $i < 7; $i++) {
+                                            $currentDate = clone $startDate;
+                                            $currentDate->modify("+$i days");
+                                            $formattedDate = $currentDate->format('d/m/Y');
+                                            $dayOfWeek = $currentDate->format('w');
+                                            $displayDate = $formattedDate . '<br>' . $daysOfWeek[$dayOfWeek];
+                                            $activeClass = ($formattedDate === $todayDate) ? 'active' : '';
 
-                                    // Duyệt qua danh sách suất chiếu
-                                    foreach ($listShowTime as $date => $formats) {
-                                        // Chuyển đổi ngày từ chuỗi thành đối tượng DateTime
-                                        $showDate = new DateTime($date);
-
-                                        // Kiểm tra xem suất chiếu có nằm trong tuần hiện tại không
-                                        if ($showDate >= $today) {
-                                            $showtimesByDate[$date] = $formats;
+                                            echo "<button class='btn btn-outline-light date-btn $activeClass' data-date='$formattedDate'>$displayDate</button>";
                                         }
-                                    }
-
-                                    // Sắp xếp mảng theo thứ tự
-                                    uksort($showtimesByDate, function ($a, $b) {
-                                        return strtotime($a) - strtotime($b); // So sánh ngày
-                                    });
-
-                                    // Duyệt qua các suất chiếu đã sắp xếp
-                                    foreach ($showtimesByDate as $date => $formats) :
-                                        $formattedDate = date('d/m/Y', strtotime($date));
-                                    ?>
-                                        <div class="day-row">
-                                            <h5 class="text-white"><?php echo $formattedDate; ?></h5>
-
-                                            <?php foreach ($formats as $format => $showtimes) : ?>
-                                                <div class="row mt-3">
-                                                    <div class="col-2">
-                                                        <h6 class="text-white"><?php echo $format; ?>:</h6>
-                                                    </div>
-                                                    <div class="col-9">
-                                                        <?php foreach ($showtimes as $showtime) : ?>
-                                                            <a href="dat-ve.html?showtime_id=<?php echo $showtime['id_showTime']; ?>&cinema_id=<?php echo $showtime['id_cinema']; ?>" class="btn btn-outline-light inline mt-2 me-2">
-                                                                <?php echo date('H:i', strtotime($showtime['start_time'])); ?>
-                                                            </a>
-                                                        <?php endforeach; ?>
-                                                    </div>
-                                                </div>
-                                            <?php endforeach; ?>
-                                        </div>
-                                        <hr style="border: 2px solid #ff55a5;" />
-                                    <?php endforeach; ?>
+                                        ?>
+                                    </div>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <div id="movie-schedule-container" class="showtime-list movie-schedule-container"></div>
                             </div>
                         </div>
                     </div>
@@ -270,68 +239,6 @@
                             <!-- end reviews -->
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab" tabindex="0">
-                        <!-- project gallery -->
-                        <div class="gallery" itemscope>
-                            <div class="row row--grid">
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-1.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-1.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 1</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-2.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-2.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 2</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-3.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-3.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 3</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-4.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-4.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 4</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-5.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-5.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 5</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-
-                                <!-- gallery item -->
-                                <figure class="col-12 col-sm-6 col-xl-4" itemprop="associatedMedia" itemscope>
-                                    <a href="img/gallery/project-6.jpg" itemprop="contentUrl" data-size="1920x1280">
-                                        <img src="img/gallery/project-6.jpg" itemprop="thumbnail" alt="Image description" />
-                                    </a>
-                                    <figcaption itemprop="caption description">Some image caption 6</figcaption>
-                                </figure>
-                                <!-- end gallery item -->
-                            </div>
-                        </div>
-                        <!-- end project gallery -->
-                    </div>
                 </div>
                 <!-- end content tabs -->
             </div>
@@ -351,13 +258,10 @@
                     foreach ($listShowing as $index => $movieShowing) { ?>
                         <div class="col-6 col-sm-4 col-lg-6">
                             <div class="item">
-                                <a href="details1.html" class="item__cover">
+                                <a href="chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html" class="item__cover">
                                     <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movieShowing['poster']; ?>" alt="">
                                     <div class="item__play" onclick="location.href='chi-tiet-phim-<?php echo $movieShowing['id_movie']; ?>.html';">
                                         <div class="text-white">Xem chi tiết</div>
-                                    </div>
-                                    <div class="item__play" onclick="location.href='#';">
-                                        <div class="text-white">Mua vé ngay</div>
                                     </div>
                                 </a>
                                 <div class="item__content">
@@ -377,7 +281,141 @@
         </div>
     </div>
 </section>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     localStorage.removeItem('endTime');
     localStorage.removeItem('remainingTime');
+</script>
+
+<?php
+$schedules = [];
+
+foreach ($show_time as $value) {
+    $date = date('d/m/Y', strtotime($value['show_date']));
+    $cinemaId = "hotflix" . $value['id_cinema'];
+
+    // Kiểm tra và khởi tạo các cấp dữ liệu nếu chưa tồn tại
+    if (!isset($schedules[$date])) {
+        $schedules[$date] = [];
+    }
+    if (!isset($schedules[$date][$cinemaId])) {
+        $schedules[$date][$cinemaId] = [];
+    }
+
+    // Tìm phim trong mảng
+    $movieExists = false;
+    foreach ($schedules[$date][$cinemaId] as &$movie) {
+        if ($movie['title'] === $value['movie_name']) {
+            // Tìm định dạng projection_format trong phim
+            $formatExists = false;
+            foreach ($movie['formats'] as &$format) {
+                if ($format['projection_format'] === $value['projection_format']) {
+                    $format['times'][] = [
+                        'time' => date('H:i', strtotime($value['start_time'] . ' +30 minutes')),
+                        'data_time' => $value['id_showTime']
+                    ];
+                    $formatExists = true;
+                    break;
+                }
+            }
+
+            // Nếu chưa có định dạng, thêm mới
+            if (!$formatExists) {
+                $movie['formats'][] = [
+                    'projection_format' => $value['projection_format'],
+                    'times' => [[
+                        'time' => date('H:i', strtotime($value['start_time'] . ' +30 minutes')),
+                        'data_time' => $value['id_showTime']
+                    ]]
+                ];
+            }
+
+            $movieExists = true;
+            break;
+        }
+    }
+
+    // Nếu chưa có phim, thêm mới
+    if (!$movieExists) {
+        $schedules[$date][$cinemaId][] = [
+            'title' => $value['movie_name'],
+            'formats' => [[
+                'projection_format' => $value['projection_format'],
+                'times' => [[
+                    'time' => date('H:i', strtotime($value['start_time'] . ' +30 minutes')),
+                    'data_time' => $value['id_showTime']
+                ]]
+            ]]
+        ];
+    }
+}
+
+$jsonSchedules = json_encode($schedules);
+?>
+
+<script>
+    $(document).ready(function () {
+        // Dữ liệu JSON được truyền từ PHP sang JavaScript
+        const schedules = <?php echo $jsonSchedules; ?>;
+
+        // Lắng nghe sự kiện khi thay đổi rạp
+        $('#cinema-select').on('change', function () {
+            updateSchedule();
+        });
+
+        // Lắng nghe sự kiện khi bấm vào nút chọn ngày
+        $('.date-btn').on('click', function () {
+            // Đánh dấu nút ngày được chọn
+            $('.date-btn').removeClass('active');
+            $(this).addClass('active');
+            updateSchedule();
+        });
+
+        // Hàm cập nhật lịch chiếu vào #movie-schedule-container
+        function updateSchedule() {
+            // Lấy rạp đang được chọn
+            const selectedCinema = $('#cinema-select').find(':selected').data('cinema');
+
+            // Lấy ngày được chọn
+            const selectedDate = $('.date-btn.active').data('date');
+
+            // Kiểm tra xem có dữ liệu trong mảng schedules hay không
+            if (schedules[selectedDate] && schedules[selectedDate][selectedCinema]) {
+                const cinemaSchedules = schedules[selectedDate][selectedCinema];
+
+                // Khởi tạo HTML để hiển thị dữ liệu
+                let scheduleHTML = '';
+
+                // Lặp qua danh sách phim
+                cinemaSchedules.forEach(movie => {
+                    // Lặp qua các định dạng chiếu (projection_format)
+                    movie.formats.forEach(format => {
+                        scheduleHTML += `
+                            <div class="projection-format">
+                                <h6 class="text-white">${format.projection_format}:</h6>
+                                <div class="times">
+                                    ${format.times.map(time => `
+                                        <a href="chon-ghe-${time.data_time}.html" class="btn btn-outline-light mt-2 me-2">
+                                            ${time.time}
+                                        </a>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            <hr style="border: 2px solid #ff55a5;" />
+                        `;
+                    });
+                });
+
+                // Gán HTML vào #movie-schedule-container
+                $('#movie-schedule-container').html(scheduleHTML);
+            } else {
+                // Nếu không có lịch chiếu phù hợp
+                $('#movie-schedule-container').html('<p class="text-white text-center">Không có suất chiếu phù hợp</p>');
+            }
+        }
+
+        // Gọi hàm cập nhật ban đầu
+        updateSchedule();
+    });
 </script>

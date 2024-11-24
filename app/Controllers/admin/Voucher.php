@@ -195,7 +195,7 @@ class Voucher extends Controller
             }else{
                 $this->data['sub']['error']['gift_name'] = $this->validate->checkFullName($_POST['gift_name']);
             }
-            $this->data['sub']['error']['point'] = $this->validate->checkEmptyNumber($_POST['point'], 2000);
+            $this->data['sub']['error']['point'] = $this->validate->checkEmptyNumber($_POST['point'], 200);
             $this->data['sub']['error']['percent'] = $this->validate->checkEmptyNumber($_POST['percent'], 1);
 
             if (empty($_FILES['image']) || $_FILES['image']['error'] !== UPLOAD_ERR_OK) {
