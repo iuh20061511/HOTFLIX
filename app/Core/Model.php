@@ -147,6 +147,19 @@ class Model extends Database
         return mysqli_query($this->connection, $update);
     }
 
+    public function updateDataAccount($table, $condition = '')
+    {
+        $update = "UPDATE $table SET reset_token = NULL, token_expiration = NULL, status = '1' $condition";
+        return mysqli_query($this->connection, $update);
+    }
+
+    public function updateDataAccountPass($table, $password, $condition = '')
+    {
+        $update = "UPDATE $table SET reset_token = NULL, token_expiration = NULL, `password`='$password' $condition";
+        return mysqli_query($this->connection, $update);
+    }
+
+
     public function deleteData($tableName, $condition)
     {
         $this->connectIfNeeded();

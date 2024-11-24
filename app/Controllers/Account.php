@@ -158,15 +158,13 @@ class Account extends Controller
                 if (array_filter($this->data['error']) == []) {
 
                     if ($_POST['csrf_token'] == $_SESSION['csrf_token']) {
-                        $updates = [
-                            'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-                            'reset_token' => '',
-                            'token_expiration' => ''
-                        ];
-                        $result = $this->accountmodel->resetPassword($updates, $_GET['token']);
+
+                        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+                        $result = $this->accountmodel->resetPassword($password, $_GET['token']);
                         if ($result) {
                             echo "<script>alert('Khôi phục mật khẩu thành công! Vui lòng đăng nhập lại');</script>";
-                            header("refresh:0; url=dang-nhap.html");
+                            echo "<script>window.location.href = 'dang-nhap.html';</script>";
                         } else {
                             echo "<script>alert('Khôi phục mật khẩu thất bại !);</script>";
                         }
@@ -177,7 +175,7 @@ class Account extends Controller
             }
             return $this->view('account/resetPassword', $this->data);
         } else {
-            return $this->view('errors/403', $this->data);
+            return $this->view('errors/404', $this->data);
         }
     }
 
@@ -185,17 +183,12 @@ class Account extends Controller
     {
         $checktoken = $this->accountmodel->checkToken($_GET['token']);
         if ($checktoken) {
-            $updates = [
-                'reset_token' => '',
-                'token_expiration' => '',
-                'status' => 1
-            ];
-            $result = $this->accountmodel->verifyAccount($updates, $_GET['token']);
+            $result = $this->accountmodel->verifyAccount($_GET['token']);
             if ($result) {
-                header("refresh:0; url=dang-nhap.html");
+                echo "<script>window.location.href = 'dang-nhap.html';</script>";
             }
         } else {
-            return $this->view('errors/403', $this->data);
+            return $this->view('errors/404', $this->data);
         }
     }
 }

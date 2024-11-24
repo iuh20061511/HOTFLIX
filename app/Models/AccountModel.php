@@ -12,7 +12,6 @@ class AccountModel extends Model
     public function checkPhoneExists($phone)
     {
         return $this->model->getListTable('customer', "where phone = $phone");
-
     }
 
     public function checkLogin($email, $password)
@@ -38,7 +37,6 @@ class AccountModel extends Model
         }
 
         return false;
-
     }
     public function checkEmail($email)
     {
@@ -63,8 +61,6 @@ class AccountModel extends Model
         if (!empty($staff)) {
             return $this->model->updateData('staff', $updates, "where email = '$email'");
         }
-
-
     }
 
     public function checkToken($token)
@@ -76,30 +72,26 @@ class AccountModel extends Model
         }
 
         return false;
-
-
     }
-    public function resetPassword($updates, $token)
+    public function resetPassword($password, $token)
     {
         $customer = $this->model->getListTable('customer', "where reset_token = '$token'");
         $staff = $this->model->getListTable('staff', "where reset_token = '$token'");
         if (!empty($customer)) {
-            return $this->model->updateData('customer', $updates, "where reset_token = '$token'");
+            return $this->model->updateDataAccountPass('customer', $password, "where reset_token = '$token'");
         }
         if (!empty($staff)) {
-            return $this->model->updateData('staff', $updates, "where reset_token = '$token'");
+            return $this->model->updateDataAccountPass('staff', $password, "where reset_token = '$token'");
         }
-
-
     }
 
-    public function verifyAccount($updates, $token)
+    public function verifyAccount($token)
     {
         $customer = $this->model->getListTable('customer', "where reset_token = '$token'");
         if (!empty($customer)) {
-            return $this->model->updateData('customer', $updates, "where reset_token = '$token'");
-        }
 
+            return $this->model->updateDataAccount('customer', "where reset_token = '$token'");
+        }
     }
 
     public function delAccountNoVerify()
@@ -107,10 +99,11 @@ class AccountModel extends Model
         return $this->model->deleteData("customer", "where status = 0  and  token_expiration < NOW()");
     }
 
-    public function convertDayToVietnamese($date) {
+    public function convertDayToVietnamese($date)
+    {
         $englishDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
         $vietnameseDays = ['Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy', 'Chủ Nhật'];
-        
+
         // Lấy ngày của tuần từ $date
         $dayOfWeek = date('l', strtotime($date));
 

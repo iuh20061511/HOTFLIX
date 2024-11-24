@@ -107,10 +107,7 @@ class App
 
 
         $this->params = $urlArray ? array_values($urlArray) : [];
-
-
         if (method_exists($this->controller, $this->action)) {
-
             require './app/configs/configAuth.php';
             authCheck($this->urlCheck, $this->action);
             call_user_func_array([$this->controller, $this->action], $this->params);

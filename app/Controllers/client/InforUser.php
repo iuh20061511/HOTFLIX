@@ -199,8 +199,9 @@ class InforUser extends Controller
             header("refresh:0.5; url=" . _LINK . "/dang-nhap.html");
             exit();
         }
-
-        $this->getShowtimeList($id_movie = 0, $id_showTime, $double_seat_price = null, $single_seat_price = null, $vip_seat_price = null);
+        if (isset($id_showTime)) {
+            $this->getShowtimeList($id_movie = 0, $id_showTime, $double_seat_price = null, $single_seat_price = null, $vip_seat_price = null);
+        }
         $this->data['content'] = 'client/transaction';
         $this->view("layout/client", $this->data);
     }
@@ -244,7 +245,8 @@ class InforUser extends Controller
         return $data;
     }
 
-    public function getListMyGift(){
+    public function getListMyGift()
+    {
         $this->data['sub']['title'] = "Danh sách quà tặng của tôi";
         $id_account = $_SESSION['is_login']['id_account'];
         // Lấy thông tin người dùng
@@ -258,35 +260,35 @@ class InforUser extends Controller
     }
 
     private function getPaginatedGifts($id_account, $itemsPerPage)
-        {
-            $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-            $offset = ($currentPage - 1) * $itemsPerPage;
+    {
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $offset = ($currentPage - 1) * $itemsPerPage;
 
-            // Tính tổng số quà và số trang
-            $totalGifts = count($this->model->getListFromTwoTables(
-                'gift_details',
-                'gifts',
-                'id_gift',
-                "where id_customer = $id_account ORDER BY id_giftDetails DESC"
-            ));
-            $totalPages = ceil($totalGifts / $itemsPerPage);
+        // Tính tổng số quà và số trang
+        $totalGifts = count($this->model->getListFromTwoTables(
+            'gift_details',
+            'gifts',
+            'id_gift',
+            "where id_customer = $id_account ORDER BY id_giftDetails DESC"
+        ));
+        $totalPages = ceil($totalGifts / $itemsPerPage);
 
-            // Lấy danh sách quà tặng theo trang
-            $listGiftDetails = $this->model->getListFromTwoTables(
-                'gift_details',
-                'gifts',
-                'id_gift',
-                "where id_customer = $id_account ORDER BY id_giftDetails DESC LIMIT $itemsPerPage OFFSET $offset"
-            );
+        // Lấy danh sách quà tặng theo trang
+        $listGiftDetails = $this->model->getListFromTwoTables(
+            'gift_details',
+            'gifts',
+            'id_gift',
+            "where id_customer = $id_account ORDER BY id_giftDetails DESC LIMIT $itemsPerPage OFFSET $offset"
+        );
 
-            return [
-                'listGiftDetails' => $listGiftDetails,
-                'pagination' => [
-                    'totalPages' => $totalPages,
-                    'currentPage' => $currentPage,
-                    'itemsPerPage' => $itemsPerPage,
-                    'totalGifts' => $totalGifts,
-                ],
-            ];
-        }
+        return [
+            'listGiftDetails' => $listGiftDetails,
+            'pagination' => [
+                'totalPages' => $totalPages,
+                'currentPage' => $currentPage,
+                'itemsPerPage' => $itemsPerPage,
+                'totalGifts' => $totalGifts,
+            ],
+        ];
+    }
 }

@@ -25,7 +25,7 @@ try {
   // Thiết lập thông tin người gửi và người nhận
   $mail->setFrom('minhhuan190102@gmail.com', 'HOTFLIX');
   $mail->addAddress($email);
-
+  $link = _LINK;
   // Nội dung email
   $html = "
  <!DOCTYPE html>
@@ -158,7 +158,7 @@ try {
       <div class='card-body'>
         <p>Xin chào bạn!</p>
         <p>Chúng tôi đã nhận được yêu cầu đặt lại mật khẩu cho tài khoản của bạn. Để hoàn tất quá trình, vui lòng nhấp vào liên kết dưới đây:</p>
-        <a class='btn' href='http://localhost/hotflix/dat-lai-mat-khau.html?token=$token'>Tạo mật khẩu mới</a>
+        <a class='btn' href='$link/dat-lai-mat-khau.html?token=$token'>Tạo mật khẩu mới</a>
         <p class='note'>Liên kết này sẽ hết hạn trong 15 phút. Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>
       </div>
       <div class='card-footer'>
@@ -179,10 +179,6 @@ try {
   $mail->Body = $html;
 
   $mail->send();
-
 } catch (Exception $e) {
   echo "<script>alert('Lỗi ! Email không được gửi');</script>";
 }
-
-
-?>
