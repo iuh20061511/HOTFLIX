@@ -57,10 +57,10 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
                     <div class="row">
-                        <!-- active price plan -->
+                        <!-- Lịch sử vé -->
                         <div class="col-12 col-lg-6 order-md-1 order-lg-1">
-                            <div class="transaction-list mt-4">
-                                <h3 class="text-white">Lịch sử vé</h3>
+                            <h3 class="text-white mt-4">Lịch sử vé</h3>
+                            <div class="transaction-list mt-2">
                                 <?php
                                 if (empty($invoices)) { ?>
                                     <div class="ticket-item mb-1 d-flex align-items-center">
@@ -226,40 +226,78 @@
                         <?php endforeach; ?>
                         </div>
                     </div>
-                    <!-- end active price plan -->
+                    <!-- Lịch sử phòng riêng -->
                     <div class="col-12 col-lg-6 order-md-2 order-lg-2">
-                        <div class="transaction-list mt-4">
-                            <h3 class="text-white">Lịch sử thuê phòng</h3>
+                        <h3 class="text-white mt-4">Lịch sử vé phòng riêng tư</h3>
+                        <div class="transaction-list mt-2">
                             <?php
-                            if (empty($listInvoiceRoom)) { ?>
+                            if (empty($getListTicketPrivate)) { ?>
                                 <div class="ticket-item mb-1 d-flex align-items-center">
                                     <div class="row w-100">
-                                        <h5>Lịch sử thuê phòng trống</h5>
+                                        <h5>Lịch sử trống</h5>
                                     </div>
                                 </div>
                             <?php }
                             ?>
                             <!-- Các mục giao dịch -->
-                            <?php foreach ($listInvoiceRoom as $invoiceRoom): ?>
-                                <a href="hoa-don-dat-phong-<?php echo $invoiceRoom['id_invoiceRoom'] ?>.html" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
-                                    <img src="<?php echo _WEB_ROOT; ?>/public/assets/img/rent_room.png" alt="Movie Poster" class="ticket-item__poster me-3">
+                            <?php foreach ($getListTicketPrivate as $invoiceId => $private): ?>
+                                <a href="hoa-don-phong-rieng-<?php echo $private['id_InvoiceRoomPrivate'] ?>.html"  class="ticket-item mb-1 d-flex align-items-center" target="_blank">
+                                    <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $private['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
                                     <div class="row w-100">
                                         <div class="col-md-8 ticket-item__details">
-                                            <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoiceRoom['cinema_name'], 'UTF-8') ?></h5>
+                                            <h5 class="ticket-item__title"><?php echo $private['movie_name']; ?></h5>
                                             <p class="ticket-item__showtime">
-                                                <span class="time"><?php echo $invoiceRoom['date_rent'] ?></span>
+                                                <span class="time"><?php echo date('H:i', strtotime($private['time'])); ?></span>
+                                                - <?php echo $private['show_date']; ?>
                                             </p>
                                         </div>
-                                        <div class="col-md-4 ticket-item__extra">
-                                            <p class="ticket-item__cinema"><?php echo mb_strtoupper($invoiceRoom['room_name'], 'UTF-8') ?> </p>
-                                            <p class="ticket-item__format"><?php echo $invoiceRoom['start_time'] . ' - ' . $invoiceRoom['end_time']; ?> </p>
-                                            <span class="ticket-item__details-link">Chi tiết</span>
-                                        </div>
+
+                                    </div>
+                                    <div class="col-md-4 ticket-item__extra">
+                                        <p class="ticket-item__cinema"><?php echo $private['cinema_name']; ?></p>
+                                        <p class="ticket-item__format"></p>
+                                        <div type="button" class="ticket-item__details-link">Xem chi tiết</div>
                                     </div>
                                 </a>
                             <?php endforeach; ?>
                         </div>
                     </div>
+                     <!-- Lịch sử phòng thuê -->
+                     <!-- <div class="row"> -->
+                        <div class="ol-12 col-lg-6 order-md-3 order-lg-3">
+                            <h3 class="text-white mt-4">Lịch sử thuê phòng</h3>
+                            <div class="transaction-list mt-2">
+                                <?php
+                                if (empty($listInvoiceRoom)) { ?>
+                                    <div class="ticket-item mb-1 d-flex align-items-center">
+                                        <div class="row w-100">
+                                            <h5>Lịch sử thuê phòng trống</h5>
+                                        </div>
+                                    </div>
+                                <?php }
+                                ?>
+                                <!-- Các mục giao dịch -->
+                                <?php foreach ($listInvoiceRoom as $invoiceRoom): ?>
+                                    <a href="hoa-don-dat-phong-<?php echo $invoiceRoom['id_invoiceRoom'] ?>.html" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
+                                        <img src="<?php echo _WEB_ROOT; ?>/public/assets/img/rent_room.png" alt="Movie Poster" class="ticket-item__poster me-3">
+                                        <div class="row w-100">
+                                            <div class="col-md-8 ticket-item__details">
+                                                <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoiceRoom['cinema_name'], 'UTF-8') ?></h5>
+                                                <p class="ticket-item__showtime">
+                                                    <span class="time"><?php echo $invoiceRoom['date_rent'] ?></span>
+                                                </p>
+                                            </div>
+                                            <div class="col-md-4 ticket-item__extra">
+                                                <p class="ticket-item__cinema"><?php echo mb_strtoupper($invoiceRoom['room_name'], 'UTF-8') ?> </p>
+                                                <p class="ticket-item__format"><?php echo $invoiceRoom['start_time'] . ' - ' . $invoiceRoom['end_time']; ?> </p>
+                                                <span class="ticket-item__details-link">Chi tiết</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
@@ -319,6 +357,10 @@
         <img src="" alt="Movie Poster" class="popup-qrcode-image" id="popupQrcodeImage">
     </div>
     <!-- Popup hiện poster -->
+     <?php 
+        // echo '<pre>';
+        // print_r($getListTicketPrivate);
+     ?>
 
     <script>
         document.querySelectorAll('.ticket-item__details-link').forEach(item => {

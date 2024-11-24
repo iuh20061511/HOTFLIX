@@ -116,28 +116,30 @@ class Search extends Controller
 
                 //Danh sách quà:
                 $this->data['sub']['listGiftDetails'] = $this->model->getListFromTwoTables('gift_details', 'gifts', 'id_gift', "where id_customer = $id_account ORDER BY  id_giftDetails  DESC");
-                // if(isset($_POST['approve_gift'])){
-                //     $id_cinema= $_SESSION['is_login']['id_cinema'];
-                //     $InfoCinema = $this->model->getListTable('cinemas', "where id_cinema = $id_cinema");
-                //     $cinema_name = $InfoCinema[0]['cinema_name'] ?? 'Unknown';
-                //     $id_giftDetail = $_POST['id_giftDetail'];
-                //     $data = [
-                //         'status' =>1,
-                //         'cinemaLocation' => $cinema_name,
-                //         'receiveTime' => date('Y-m-d H:i:s'),
-                //     ];
-                //     $result = $this->model->updateData('gift_details', $data, "where id_giftDetails  = $id_giftDetail");
-                //     if ($result) {
-                //         echo "<script>alert('Cập nhật trạng thái nhận quà thành công')</script>";
-                //     }else{
-                //         echo "<script>alert('Thực hiện thất bại')</script>";
-                //     }
-                // }
+                //Danh sách phòng riêng tư
+                $this->data['sub']['getListTicketPrivate'] = $this->getListTicketPrivate($id_account);
             }
         }
         $this->data['content'] = 'admin/search/ticketSearch';
 
         $this->view("layout/client", $this->data);
+    }
+
+    
+    private function getListTicketPrivate($id_customer){
+        $data = $this->model->getListFromThreeTables('invoice_room_private', 'room ', 'cinemas', 'id_room ', 'id_cinema', "where invoice_room_private.id_customer = $id_customer ORDER BY invoice_room_private.id_InvoiceRoomPrivate DESC");
+        $infoMovie = $this->model->getListTable('movie');
+
+        foreach ($data as $key => $private) {
+            foreach ($infoMovie as $movie) {
+                if ($private['id_movie'] === $movie['id_movie']) {
+                    $data[$key]['movie_name'] = $movie['movie_name'];
+                    $data[$key]['poster'] = $movie['poster'];
+                }
+            }
+            $data[$key]['show_date'] = $this->model->convertDayToVietnamese($private['show_date']);
+        }
+        return $data;
     }
 
 

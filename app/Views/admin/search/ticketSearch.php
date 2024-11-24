@@ -64,7 +64,7 @@
                     <?php
                         if(isset($_GET['search_ticket']) && empty($error['search_ticket'])){ ?>
                         <div class="row">
-                            <div class="col-12 col-lg-3 order-md-1 order-lg-1" style="margin-top: 40px">
+                            <div class="col-12 col-lg-4 order-md-1 order-lg-1 ps-5" style="margin-top: 40px">
                                 <div class="plan plan--active">
                                     <h3 class="plan__title text-pink" style="font-size: 22px;">Thông tin khách hàng</h3>
                                     <ul class="plan__list">
@@ -75,10 +75,11 @@
                                     </ul>
                                 </div>
                             </div>
-                            <!-- active price plan -->
-                            <div class="col-12 col-lg-5 order-md-2 order-lg-2">
-                                <div class="transaction-list mt-4">
-                                        <h3 class="text-white">Lịch sử đặt vé</h3>
+                            <div class="col-12 col-lg-2 order-md-2 order-lg-2"></div>
+                            <!-- Đặt vé -->
+                            <div class="col-12 col-lg-6 order-md-2 order-lg-2">
+                                <h3 class="text-white mt-5">Lịch sử đặt vé</h3>
+                                <div class="transaction-list">
                                         <?php 
                                             if(empty($listTicket)){?>
                                             <div class="ticket-item mb-1 d-flex align-items-center">
@@ -93,14 +94,14 @@
                                             <div type="button" data-bs-toggle="modal" data-bs-target="#plan-modal" class="ticket-item mb-1 d-flex align-items-center" data-invoice='<?php echo json_encode($invoice, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE); ?>' >
                                                 <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $invoice['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
                                                 <div class="row w-90">
-                                                    <div class="col-md-8 ticket-item__details">
+                                                    <div class="col-md-9 ticket-item__details">
                                                         <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoice['movie_name'], 'UTF-8'); ?></h5>
                                                         <p class="ticket-item__showtime">
                                                             <span><?php echo date('H:i', strtotime($invoice['start_time'])); ?></span>
                                                             - <?php echo $invoice['show_date']; ?>
                                                         </p>
                                                     </div>
-                                                    <div class="col-md-4 ticket-item__extra">
+                                                    <div class="col-md-3 ticket-item__extra" style="width: 100%;">
                                                         <p class="ticket-item__title"><?php echo mb_strtoupper($invoice['cinema_name'], 'UTF-8')?></p>
                                                         <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
                                                         <span class="ticket-item__details-link">Chi tiết</span>
@@ -110,10 +111,47 @@
                                         <?php endforeach; ?>
                                 </div>
                             </div>
-                            <!-- end active price plan -->
-                            <div class="col-12 col-lg-4 order-md-3 order-lg-3">
-                                <div class="transaction-list mt-4">
-                                    <h3 class="text-white">Lịch sử thuê phòng</h3>
+                            <!-- Thuê phòng riêng tư -->
+					    </div>
+                        <div class="row">
+                            <!-- Đặt vé riêng tư -->
+                            <div class="col-12 col-lg-6 order-md-2 order-lg-2">
+                                <h3 class="text-white mt-5">Lịch sử đặt vé phòng riêng tư</h3>
+                                <div class="transaction-list">
+                                        <?php 
+                                            if(empty($getListTicketPrivate)){?>
+                                            <div class="ticket-item mb-1 d-flex align-items-center">
+                                                <div class="row w-100">
+                                                    <h5>Lịch sử đặt vé trống</h5>
+                                                </div>
+                                            </div>
+                                        <?php }
+                                        ?>
+                                        <!-- Các mục giao dịch -->
+                                        <?php foreach ($getListTicketPrivate as $invoiceId => $private): ?>
+                                            <a href="hoa-don-phong-rieng-<?php echo $private['id_InvoiceRoomPrivate'] ?>.html" type="button" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
+                                                <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $private['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
+                                                <div class="row w-90">
+                                                    <div class="col-md-9 ticket-item__details">
+                                                        <h5 class="ticket-item__title"><?php echo mb_strtoupper($private['movie_name'], 'UTF-8'); ?></h5>
+                                                        <p class="ticket-item__showtime">
+                                                            <span><?php echo date('H:i', strtotime($private['time'])); ?></span>
+                                                            - <?php echo $private['show_date']; ?>
+                                                        </p>
+                                                    </div>
+                                                    <div class="col-md-3 ticket-item__extra" style="width: 100%;">
+                                                        <p class="ticket-item__title"><?php echo mb_strtoupper($private['cinema_name'], 'UTF-8')?></p>
+                                                        <span class="ticket-item__details-link text-end">Chi tiết</span>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        <?php endforeach; ?>
+                                </div>
+                            </div>
+                            <!-- Thuê phòng -->
+                            <div class="col-12 col-lg-6 order-md-3 order-lg-3">
+                                <h3 class="text-white mt-5">Lịch sử thuê phòng</h3>
+                                <div class="transaction-list ">
                                     <?php
                                         if(empty($listInvoiceRoom)){?>
                                         <div class="ticket-item mb-1 d-flex align-items-center">
@@ -144,7 +182,7 @@
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-					    </div>
+                        </div>
                     <?php }
                     ?>
 				</div>

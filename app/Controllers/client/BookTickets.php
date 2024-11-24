@@ -753,7 +753,7 @@ class BookTickets extends Controller
 
     public function book_ticket()
     {
-        $showtimes = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie',  "WHERE show_time.show_date >= CURDATE()");
+        $showtimes = $this->model->getListFromThreeTables('room', 'show_time', 'movie', 'id_room', 'id_movie',  "WHERE show_time.id_movie != 0 AND show_time.show_date >= CURDATE()");
 
         $current_time = new DateTime();
         $new_array = [];

@@ -202,6 +202,8 @@ class InforUser extends Controller
         if (isset($id_showTime)) {
             $this->getShowtimeList($id_movie = 0, $id_showTime, $double_seat_price = null, $single_seat_price = null, $vip_seat_price = null);
         }
+
+        $this->data['sub']['getListTicketPrivate'] = $this->getListTicketPrivate($id_account);
         $this->data['content'] = 'client/transaction';
         $this->view("layout/client", $this->data);
     }
@@ -241,6 +243,22 @@ class InforUser extends Controller
                 $seatSaleRatio = 0 . '/' . $rooms[0]['number_seat'];
             }
             $data[$key]['seat'] = $seatSaleRatio;
+        }
+        return $data;
+    }
+
+    private function getListTicketPrivate($id_customer){
+        $data = $this->model->getListFromThreeTables('invoice_room_private', 'room ', 'cinemas', 'id_room ', 'id_cinema', "where invoice_room_private.id_customer = $id_customer ORDER BY invoice_room_private.id_InvoiceRoomPrivate DESC");
+        $infoMovie = $this->model->getListTable('movie');
+
+        foreach ($data as $key => $private) {
+            foreach ($infoMovie as $movie) {
+                if ($private['id_movie'] === $movie['id_movie']) {
+                    $data[$key]['movie_name'] = $movie['movie_name'];
+                    $data[$key]['poster'] = $movie['poster'];
+                }
+            }
+            $data[$key]['show_date'] = $this->model->convertDayToVietnamese($private['show_date']);
         }
         return $data;
     }
