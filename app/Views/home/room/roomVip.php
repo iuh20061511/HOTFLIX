@@ -1,20 +1,49 @@
 <link rel="stylesheet" href="<?php echo _WEB_ROOT ?>/public/client/rooms/css/roomAgv.css">
+<style>
+    .maxSeat {
+        background-color: #000 !important;
+        cursor: not-allowed !important;
+
+    }
+</style>
+<?php if ($_SESSION['is_login']['id_role'] != 1) { ?>
+    <div class="container d-flex justify-content-center align-items-center" style="position: absolute; top:40%; z-index: 800;">
+        <div class="card p-4" style="width: 400px;  <?php echo $check ? 'display: none;' : ''; ?>">
+            <i class="bi bi-x-circle" style="position: absolute; right: 10px; top: 2px; font-size: 20px; cursor: pointer;" onclick="closeCard()"></i>
+            <form action="" method="post">
+                <h5 class="card-title text-center mb-4">Thông tin khách hàng</h5>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="SĐT hoặc email khách hàng thành viên..." name="info">
+                    <span class="text-danger"><?php if (isset($error))  echo $error ?></span>
+                </div>
+                <input type="submit" class="btn btn-success w-100 mt-3" value="Xác nhận" name="btn_inforCus">
+            </form>
+        </div>
+    </div>
+<?php } ?>
+<form action="chon-thuc-an.html" method="POST" onsubmit="return checkSeats();" id="myForm">
+    <input type="hidden" name="movie_name" value="<?php echo $movie[0]['movie_name'] ?>">
+    <input type="hidden" name="image" value="<?php echo $movie[0]['poster'] ?>">
+    <input type="hidden" name="cinema" value="<?php echo $cinema[0]['cinema_name'] ?>">
+    <input type="hidden" name="projection_format" value="<?php echo $movie[0]['projection_format'] ?>">
+    <input type="hidden" name="time" value="<?php echo substr($movie[0]['start_time'], 0, 5)  . ' - ' . substr($movie[0]['end_time'], 0, 5) . ', ' . date('d/m/Y', strtotime($movie[0]['show_date']));  ?>">
+
+    <input type="hidden" name="id_showtime" value="<?php echo $id_showTime ?>">
+    <input type="hidden" name="id_movie" value="<?php echo $id_movie ?>">
+    <input type="hidden" name="id_room" value="<?php echo $id_room ?>">
 
 
-<form action="" method="GET">
+
 
     <section class="content">
         <div class="content__head">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <h2 class="content__title">Discover</h2>
 
-                    </div>
                 </div>
             </div>
         </div>
-        <div class="container">
+        <div class="container" style="margin-top: 80px;">
             <div class="row">
 
                 <div class="col-12 col-lg-9 seat_move">
@@ -65,19 +94,24 @@
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>">
                                                     <?php for ($i = 0; $i < 2; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
-                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 9;
-                                                        ?>
+                                                        $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
+                                                    ?>
                                                         <label class="seat seat-vip">
                                                             <div class="seat-sub1"></div>
-                                                            <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                            <span><?php echo $seat; ?></span>
+                                                            <?php if ($isDisabled) { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
+                                                                <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                            <?php } ?>
                                                         </label>
                                                     <?php } ?>
-
                                                 </div>
                                             <?php } ?>
-
                                         </div>
+
                                     </div>
                                     <div class="col-2">
                                         <div class="cinema-seats1 cinema-seats">
@@ -87,39 +121,53 @@
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>">
                                                     <?php for ($i = 2; $i < 4; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
-                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 9;
-                                                        ?>
+                                                        $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
+                                                    ?>
                                                         <label class="seat seat-vip">
                                                             <div class="seat-sub1"></div>
-                                                            <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                            <span><?php echo $seat; ?></span>
+                                                            <?php if ($isDisabled) { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
+                                                                <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                            <?php } ?>
                                                         </label>
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-
                                         </div>
+
                                     </div>
                                     <div class="col-2">
                                         <div class="cinema-seats1 cinema-seats">
                                             <?php
                                             $rows = range('A', 'L');
+
                                             for ($j = 0; $j < 6; $j++) { ?>
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>">
                                                     <?php for ($i = 4; $i < 6; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
                                                         $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 9;
-                                                        ?>
+                                                        $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
+                                                    ?>
                                                         <label class="seat seat-vip">
                                                             <div class="seat-sub1"></div>
-                                                            <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                            <span><?php echo $seat; ?></span>
+                                                            <?php if ($isDisabled) { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
+                                                                <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                            <?php } ?>
                                                         </label>
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-
                                         </div>
+
 
                                     </div>
                                     <div class="col-2">
@@ -130,18 +178,24 @@
                                                 <div class="cinema-row row-<?php echo $j + 1; ?>">
                                                     <?php for ($i = 6; $i < 8; $i++) {
                                                         $seat = $rows[$j] . ($i + 1);
-                                                        $isGreenSeat = in_array($rows[$j], ['F', 'G', 'H', 'I', 'J', 'K']) && $i >= 2 && $i <= 9;
-                                                        ?>
+                                                        $isDisabled = in_array($seat, array_column($seats_buy, 'location'));
+                                                    ?>
                                                         <label class="seat seat-vip">
                                                             <div class="seat-sub1"></div>
-                                                            <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>">
-                                                            <span><?php echo $seat; ?></span>
+                                                            <?php if ($isDisabled) { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" disabled>
+                                                                <span style="background-color: #000; cursor: not-allowed"><?php echo $seat; ?></span>
+                                                            <?php } else { ?>
+                                                                <input type="checkbox" name="seat[]" value="<?php echo $seat; ?>" class="checkbox<?php echo $seat; ?>">
+                                                                <span class="<?php echo $seat ?> "><?php echo $seat; ?></span>
+                                                                <input type="checkbox" name="seat[<?php echo $seat; ?>][price]" id="" value="<?php echo $movie[0]['vip_seat_price'] ?>">
+                                                            <?php } ?>
                                                         </label>
                                                     <?php } ?>
                                                 </div>
                                             <?php } ?>
-
                                         </div>
+
                                     </div>
 
 
@@ -160,41 +214,41 @@
                         <div class="col-12 col-sm-8 col-lg-12">
                             <div class="item ">
                                 <div class="row p-2" style="border-bottom:1px solid #fff ;">
-                                    <img src="<?php echo _WEB_ROOT ?>/public/assets/img/covers/7.png" alt=""
+                                    <img src="<?php echo _WEB_ROOT ?>/public/admin/img/movies/<?php echo $movie[0]['poster'] ?>" alt=""
                                         class="col-5 m-2" style="width: 150px;">
                                     <div class="col-5">
-                                        <h6 class="text-warning "> Phim Shin Cậu Bé Bút Chì: Nhật Ký Khủng Long Của
-                                            Chúng Mình</h6><br>
-                                        <span class="text-info">2D Lồng tiếng</span>
+
+                                        <h6 class="text-warning "><?php echo $movie[0]['movie_name'] ?></h6><br>
+                                        <span class="text-info"><?php echo $movie[0]['projection_format'] ?></span>
                                     </div>
 
                                     <div class="col-6">
                                         <span class="text-light"><i class="fa-solid fa-tag"></i> Thể loại:</span>
                                     </div>
                                     <div class="col-6">
-                                        <span class="text-light">Kinh dị</span>
+                                        <span class="text-light"><?php echo $movie[0]['genre'] ?></span>
                                     </div>
                                     <div class="col-6">
                                         <span class="text-light"><i class="fa-regular fa-clock"></i>Thời lượng:</span>
                                     </div>
                                     <div class="col-6">
-                                        <span class="text-light">135 phút</span>
+                                        <span class="text-light"><?php echo $movie[0]['duration'] ?> phút</span>
                                     </div>
                                 </div>
 
                                 <div class="">
-                                    <p class="text-info"><i class="fa-solid fa-film m-1"></i><b>Rạp chiếu : Hồ Chí
-                                            Minh</b>
+                                    <p class="text-info"><i class="fa-solid fa-film m-1 mt-2"></i><b>Rạp chiếu : <?php echo $cinema[0]['cinema_name'] ?></b>
                                     </p>
-                                    <span class="text-light"><i class="fa-solid fa-calendar-days m-1"></i>Thời gian: 18h
-                                        17/08/2024
+                                    <span class="text-light"><i class="fa-solid fa-calendar-days m-1"></i>Thời gian: <?php echo substr($movie[0]['start_time'], 0, 5)  . ' - ' . substr($movie[0]['end_time'], 0, 5) . ', ' . date('d/m/Y', strtotime($movie[0]['show_date']));  ?>
                                     </span><br>
-                                    <span class="text-light"><i class="fa-solid fa-tv m-1"></i>Phòng chiếu: P12
+                                    <span class="text-light"><i class="fa-solid fa-tv m-1"></i>Phòng chiếu: <?php echo $cinema[0]['room_name'] ?>
                                     </span><br><br>
                                 </div>
                                 <div class="">
                                     <span class="text-light count_seat_buy">Ghế ngồi: </span><br>
-                                    <p class="text-light total">Tổng tiền: </p>
+                                    <label for="" class="text-light">Tổng tiền : </label><input class="text-light total" name="total" type="text" readonly value=" 0 " style="background: 0;border: none;">
+
+
                                 </div>
 
                                 <input type="submit" value="Tiếp tục" class="btn btn-primary">
@@ -204,14 +258,138 @@
                 </div>
 
             </div>
-
         </div>
     </section>
 </form>
 <script>
-    var a = 50000;
-    var b = 70000;
-    var c = 130000;
+    var a = <?php echo $movie[0]['single_seat_price'] ?>;
+    var b = <?php echo $movie[0]['vip_seat_price'] ?>;
+    var c = <?php echo $movie[0]['double_seat_price'] ?>;
 </script>
 
 <script src="<?php echo _WEB_ROOT ?>/public/client/rooms/js/roomBig.js"></script>
+
+<script>
+    function checkSeats() {
+
+        const seats = document.querySelectorAll('input[name="seat[]"]:checked');
+
+        if (seats.length === 0) {
+            alert("Vui lòng chọn ghế!");
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+    localStorage.removeItem('endTime');
+    localStorage.removeItem('remainingTime');
+</script>
+<script>
+    document.querySelectorAll('input[type="checkbox"][name="seat[]"]').forEach(function(seatCheckbox) {
+        seatCheckbox.addEventListener('change', function() {
+
+            let totalSelectedSeats = 0;
+            let selectedSeatValues = [];
+            var check = false;
+            const selectedSeats = document.querySelectorAll('input[type="checkbox"][name="seat[]"]:checked');
+            selectedSeats.forEach(function(seat) {
+                var seatVal = seat.value;
+                totalSelectedSeats++;
+                if (!selectedSeatValues.includes(seatVal)) {
+                    selectedSeatValues.push(seatVal);
+                }
+                for (let i = 65; i <= 90; i++) {
+                    let letter = String.fromCharCode(i);
+                    for (let j = 1; j <= 50; j++) {
+                        let maxseat = letter + j;
+                        let seatNA = document.querySelector(`.${maxseat}`);
+                        let checkbox = document.querySelector(`.checkbox${maxseat}`);
+                        if (!selectedSeatValues.includes(maxseat)) {
+                            if (totalSelectedSeats === 6) {
+                                if (seatNA) {
+                                    seatNA.classList.add('maxSeat');
+                                    check = true;
+                                    if (checkbox) {
+                                        checkbox.disabled = true;
+                                    }
+
+                                }
+                            } else {
+                                if (seatNA) {
+                                    seatNA.classList.remove('maxSeat');
+                                    check = false;
+                                    if (checkbox) {
+                                        checkbox.disabled = false;
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            if (check == true) {
+                setTimeout(function() {
+                    alert('Bạn chỉ được phép chọn tối đa 6 ghế');
+                }, 200);
+            }
+
+
+
+
+            const seatValue = this.value;
+            const priceCheckbox = document.querySelector(`input[type="checkbox"][name="seat[${seatValue}][price]"]`);
+
+            if (priceCheckbox) {
+
+                priceCheckbox.checked = this.checked;
+            }
+        });
+    });
+</script>
+<script>
+    function closeCard() {
+        const card = document.querySelector('.card');
+        card.style.display = 'none';
+    }
+</script>
+<script>
+    window.onload = function() {
+        document.getElementById("myForm").reset();
+    }
+</script>
+
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+<script>
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher('9b780886dd99c5bc8616', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('my-event', function(data) {
+
+        if (data) {
+            if (data.id_showTime && data.location) {
+                var id_showTime = data.id_showTime
+                if (id_showTime == <?php echo $id_showTime ?>) {
+                    const locations = data.location;
+                    const location_seat = locations.split(',');
+                    location_seat.forEach(part => {
+                        seat = part.trim()
+                        if (seat && /^[a-zA-Z0-9_-]+$/.test(seat)) {
+                            let input_seat = document.querySelector(`.checkbox${seat}`);
+                            let span_seat = document.querySelector(`.${seat}`);
+                            span_seat.classList.add('maxSeat');
+                            input_seat.disabled = true;
+                        }
+
+                    });
+                }
+            }
+        }
+    });
+</script>

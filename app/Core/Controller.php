@@ -17,5 +17,10 @@ class Controller extends Validate
     }
 
 
+
+    public function library($library, $data = [])
+    {
+        extract($data);
+        require_once "./app/Library/" . $library;
+    }
 }
-?>

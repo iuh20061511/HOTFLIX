@@ -28,15 +28,5 @@ define('_LINK', $link);
 
 
 
-
 require_once "./app/Bridge.php";
 $myApp = new App();
-
-
-require_once "./app/Core/Auth.php";
-
-// authCheck($myApp);
-
-
-
-?>

@@ -294,7 +294,7 @@ body::-webkit-scrollbar-thumb {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 26px;
   text-transform: uppercase;
   color: #fff;
@@ -331,17 +331,21 @@ body::-webkit-scrollbar-thumb {
 .sidebar__nav-item {
   width: 100%;
   display: block;
-  margin-bottom: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   position: relative;
-  padding: 0 30px;
+  padding: 0 25px;
 }
 
 .sidebar__nav-item:last-child {
   margin-bottom: 0;
 }
 
+
 .sidebar__dropdown-menu {
   position: absolute;
+  display: none;
+  left: 20%;
   background-color: #222028;
   padding: 15px 20px;
   flex-direction: column;
@@ -351,6 +355,7 @@ body::-webkit-scrollbar-thumb {
   border-radius: 8px;
   border: none;
 }
+
 
 .sidebar__dropdown-menu li {
   margin-bottom: 15px;
@@ -378,6 +383,12 @@ body::-webkit-scrollbar-thumb {
 
 .sidebar__dropdown-menu.show {
   display: flex;
+}
+
+/* Hiển thị menu con khi hover vào phần tử cha */
+.sidebar__nav-item:hover .sidebar__dropdown-menu {
+  display: flex;
+  /* Hiển thị menu con */
 }
 
 .sidebar__copyright {
@@ -1981,7 +1992,7 @@ body::-webkit-scrollbar-thumb {
 
 .sign__textarea {
   border: 2px solid transparent;
-  height: 110px;
+  height: 210px;
   position: relative;
   color: #fff;
   font-size: 16px;
@@ -2019,7 +2030,7 @@ body::-webkit-scrollbar-thumb {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
-  width: auto;
+  width: 100%;
   min-width: 120px;
   height: 46px;
   margin-right: 20px;
@@ -2704,7 +2715,7 @@ body::-webkit-scrollbar-thumb {
 ==============================*/
 .modal .modal-content {
   margin: 0 auto;
-  max-width: 440px;
+  max-width: 1000px;
   background-color: transparent;
   border: none;
   border-radius: 8px;
@@ -2715,7 +2726,7 @@ body::-webkit-scrollbar-thumb {
   display: block;
   margin: 0 auto;
   width: 100%;
-  max-width: 440px;
+  max-width: 1000px;
   padding: 30px 20px;
   border-radius: 8px;
   background: #1a191f;
@@ -4243,4 +4254,166 @@ body::-webkit-scrollbar-thumb {
   .menu {
     display: none;
   }
+}
+
+.text-white {
+  color: #fff;
+}
+
+
+/*Popup video*/
+.popupvideo.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popupvideo {
+  position: fixed;
+  inset: 0;
+  /* Đặt top, right, bottom, left thành 0 để chiếm toàn bộ màn hình */
+  background: rgba(0, 0, 0, 0.85);
+  /* Nền mờ */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  /* Đảm bảo nó luôn trên cùng */
+  transition: opacity .3s ease-in-out, visibility .3s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.popupvideo_inner {
+  width: 80%;
+  height: 80%;
+  max-width: 1000px;
+  /* Giới hạn chiều rộng */
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Nền đen mờ cho video */
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  /* Hiệu ứng đổ bóng */
+  padding: 20px;
+  border: 2px solid #ff55a5;
+}
+
+.popupvideo_inner_iframe {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: none;
+  /* Loại bỏ đường viền iframe */
+  border-radius: 10px;
+  /* Bo góc iframe */
+  overflow: hidden;
+  /* Đảm bảo video không bị tràn */
+}
+
+.popupvideo_inner_close {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  border-radius: 50%;
+  background-color: #bea67c;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  /* Thêm hiệu ứng hover */
+}
+
+.popupvideo_inner_close:hover {
+  background-color: #e0b589;
+  /* Thay đổi màu khi hover */
+}
+
+.popupvideo_inner_close img {
+  width: 14px;
+  height: 14px;
+}
+
+.play_trailer {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*Popup poster*/
+/* Popup hiện poster lớn */
+.popup-poster {
+  display: none;
+  /* Ẩn popup ban đầu */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  /* Nền đen mờ */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  /* Đảm bảo nổi trên các thành phần khác */
+}
+
+.popup-poster-image {
+  max-width: 90%;
+  /* Kích thước tối đa cho ảnh */
+  max-height: 90%;
+  /* Kích thước tối đa cho ảnh */
+  border: 2px solid #ff55a5;
+}
+
+.close-popup {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  font-size: 30px;
+  color: white;
+  cursor: pointer;
+}
+
+.view-poster {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/*Model View description*/
+.movie-description {
+  max-height: 150px;
+  /* Chiều cao tối đa */
+  overflow-y: auto;
+  /* Thanh cuộn dọc */
+  overflow-x: hidden;
+  /* Ẩn cuộn ngang */
+  padding: 10px;
+  /* Khoảng cách bên trong */
+  border-radius: 5px;
+  resize: none;
+  /* Ngăn người dùng thay đổi kích thước */
+}
+
+.catalog__img {
+  width: 60px;
+  /* Điều chỉnh kích thước hình ảnh nhỏ */
+  height: 60px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.catalog__img img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  /* Giữ tỷ lệ hình ảnh và hiển thị phần chính giữa */
+  border-radius: 4px;
+  /* Bo góc ảnh nếu cần */
 }

@@ -1,9 +1,13 @@
 <?php
 
 
-class HomeModel
+class HomeModel extends Model
 {
-
+    private $model;
+    public function __construct()
+    {
+        $this->model = new Model();
+    }
     protected $table = 'product';
 
     public function getList()

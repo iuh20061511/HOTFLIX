@@ -23,9 +23,7 @@ class Database
     {
         if ($this->connection) {
             mysqli_close($this->connection);
-            $this->connection = null; // Đặt biến kết nối về null
+            $this->connection = null;
         }
     }
 }
-
-?>

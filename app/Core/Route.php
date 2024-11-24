@@ -2,16 +2,16 @@
 
 class Route
 {
-
     public function handleRoute($url)
     {
         global $routes;
 
-
         if (is_array($url)) {
             $path = implode('/', $url);
-        } else {
+        } elseif (is_string($url)) {
             $path = $url;
+        } else {
+            $path = '';
         }
 
         unset($routes['default_controller']);
@@ -19,6 +19,7 @@ class Route
 
         $path = trim($path, '/');
         $handleUrl = $path;
+
         if (!empty($routes)) {
             foreach ($routes as $key => $value) {
                 if (preg_match('~' . $key . '~is', $path)) {
@@ -27,10 +28,6 @@ class Route
             }
         }
 
-
         return $handleUrl;
-
-
     }
-
 }

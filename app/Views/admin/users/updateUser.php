@@ -5,7 +5,7 @@
 				<!-- main title -->
 				<div class="col-12">
 					<div class="main__title">
-						<h2>Edit user</h2>
+						<h2>Cập nhật thông tin</h2>
 					</div>
 				</div>
 				<!-- end main title -->
@@ -15,13 +15,10 @@
 					<div class="profile__content">
 						<!-- profile user -->
 						<div class="profile__user">
-							<div class="profile__avatar">
-								<img src="img/user.svg" alt="">
-							</div>
 							<!-- or red -->
 							<div class="profile__meta profile__meta--green">
-								<h3>John Doe <span>(Approved)</span></h3>
-								<span>HotFlix ID: 23562</span>
+								<h3><?php echo $infoStaff[0]['full_name']; ?><span>(Approved)</span></h3>
+								<span>HotFlix ID: <?php echo $infoStaff[0]['id_staff']; ?></span>
 							</div>
 						</div>
 						<!-- end profile user -->
@@ -29,15 +26,7 @@
 						<!-- profile tabs nav -->
 						<ul class="nav nav-tabs profile__tabs" id="profile__tabs" role="tablist">
 							<li class="nav-item" role="presentation">
-								<button id="1-tab" class="active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">Profile</button>
-							</li>
-
-							<li class="nav-item" role="presentation">
-								<button id="2-tab" data-bs-toggle="tab" data-bs-target="#tab-2" type="button" role="tab" aria-controls="tab-2" aria-selected="false">Comments</button>
-							</li>
-
-							<li class="nav-item" role="presentation">
-								<button id="3-tab" data-bs-toggle="tab" data-bs-target="#tab-3" type="button" role="tab" aria-controls="tab-3" aria-selected="false">Reviews</button>
+								<button id="1-tab" class="active" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true">Hồ sơ</button>
 							</li>
 						</ul>
 						<!-- end profile tabs nav -->
@@ -53,871 +42,164 @@
 				<!-- end profile -->
 
 				<!-- content tabs -->
-				<div class="tab-content">
-					<div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="1-tab" tabindex="0">
-						<div class="col-12">
-							<div class="row">
-								<!-- details form -->
-								<div class="col-12 col-lg-6">
-									<form action="#" class="sign__form sign__form--profile">
-										<div class="row">
-											<div class="col-12">
-												<h4 class="sign__title">Profile details</h4>
-											</div>
+				<div class="row">
 
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="username">Username</label>
-													<input id="username" type="text" name="username" class="sign__input" placeholder="User 123">
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="email2">Email</label>
-													<input id="email2" type="text" name="email" class="sign__input" placeholder="email@email.com">
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="fname">Name</label>
-													<input id="fname" type="text" name="fname" class="sign__input" placeholder="John Doe">
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="sign__gallery-upload">Avatar</label>
-													<div class="sign__gallery">
-														<label id="gallery1" for="sign__gallery-upload">Upload (40x40)</label>
-														<input data-name="#gallery1" id="sign__gallery-upload" name="gallery" class="sign__gallery-upload" type="file" accept=".png, .jpg, .jpeg" multiple="">
-													</div>
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="subscription">Subscription</label>
-													<select class="sign__select" id="subscription">
-														<option value="Basic">Basic</option>
-														<option value="Premium">Premium</option>
-														<option value="Cinematic">Cinematic</option>
-													</select>
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6">
-												<div class="sign__group">
-													<label class="sign__label" for="rights">Rights</label>
-													<select class="sign__select" id="rights">
-														<option value="User">User</option>
-														<option value="Moderator">Moderator</option>
-														<option value="Admin">Admin</option>
-													</select>
-												</div>
-											</div>
-
-											<div class="col-12">
-												<button class="sign__btn sign__btn--small" type="button"><span>Save</span></button>
-											</div>
+				<!-- form -->
+				<div class="col-12">
+					<form action="#" class="sign__form sign__form--add" method="POST">
+						<div class="row">
+							<div class="col-12 col-xl-7">
+								<div class="row">
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+											<input type="text" class="sign__input" placeholder="Họ tên" name="fullname" value="<?php echo isset($_POST['fullname']) ? $_POST['fullname'] : $infoStaff[0]['full_name']; ?>">
+											<?php if (isset($error['fullname'])): ?>
+												<p class="error text-danger"><?php echo $error['fullname']; ?></p>
+											<?php endif; ?>
 										</div>
-									</form>
-								</div>
-								<!-- end details form -->
+									</div>
 
-								<!-- password form -->
-								<div class="col-12 col-lg-6">
-									<form action="#" class="sign__form sign__form--profile">
-										<div class="row">
-											<div class="col-12">
-												<h4 class="sign__title">Change password</h4>
-											</div>
-
-											<div class="col-12 col-md-6 col-lg-12 col-xxl-6">
-												<div class="sign__group">
-													<label class="sign__label" for="oldpass">Old Password</label>
-													<input id="oldpass" type="password" name="oldpass" class="sign__input">
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6 col-lg-12 col-xxl-6">
-												<div class="sign__group">
-													<label class="sign__label" for="newpass">New Password</label>
-													<input id="newpass" type="password" name="newpass" class="sign__input">
-												</div>
-											</div>
-
-											<div class="col-12 col-md-6 col-lg-12 col-xxl-6">
-												<div class="sign__group">
-													<label class="sign__label" for="confirmpass">Confirm New Password</label>
-													<input id="confirmpass" type="password" name="confirmpass" class="sign__input">
-												</div>
-											</div>
-
-											<div class="col-12">
-												<button class="sign__btn sign__btn--small" type="button"><span>Change</span></button>
-											</div>
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+											<input type="text" class="sign__input" placeholder="Email" name="email" value="<?php echo $infoStaff[0]['email']; ?>" readonly>
 										</div>
-									</form>
+									</div>
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+										<select class="sign__selectjs" id="sign__director" name="cinema">
+											<?php
+											// Gán tên rạp mặc định
+											$selectedCinemaId = isset($_POST['cinema']) ? $_POST['cinema'] : $infoStaff[0]['id_cinema'];
+											$cinemaName = '';
+
+											// Tìm tên rạp đã chọn
+											foreach ($listCinema as $cinema) {
+												if ($cinema['id_cinema'] == $selectedCinemaId) {
+													$cinemaName = $cinema['cinema_name'];
+													break;
+												}
+											}
+											?>
+											<option value="<?php echo $selectedCinemaId; ?>" selected><?php echo $cinemaName ?: 'Chọn rạp - nơi làm việc'; ?></option>
+
+											<?php foreach ($listCinema as $cinema) : ?>
+												<?php if ($cinema['id_cinema'] != $selectedCinemaId) : ?>
+													<option value="<?php echo $cinema['id_cinema']; ?>"><?php echo $cinema['cinema_name']; ?></option>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</select>
+										</div>
+									</div>
 								</div>
-								<!-- end password form -->
+							</div>
+
+							<div class="col-12 col-xl-5">
+								<div class="row">
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+												<input type="number" class="sign__input" placeholder="Số điện thoại" name="phone" value="<?php echo isset($_POST['phone']) ? $_POST['phone'] : $infoStaff[0]['phone']; ?>">
+												<?php if (isset($error['phone'])): ?>
+													<p class="error text-danger"><?php echo $error['phone']; ?></p>
+												<?php endif; ?>
+										</div>
+
+									</div>
+
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+											<input type="date" class="sign__input" placeholder="Ngày sinh" name="birthday" value="<?php echo isset($_POST['birthday']) ? $_POST['birthday'] : $infoStaff[0]['birthday']; ?>">
+											<?php if (isset($error['birthday'])): ?>
+												<p class="error text-danger"><?php echo $error['birthday']; ?></p>
+											<?php endif; ?>
+										</div>
+									</div>
+
+									<div class="col-12" style="margin-top: 15px">
+										<div class="sign__group">
+										<select class="sign__selectjs" id="sign__actors" name="role">
+											<?php
+											// Gán giá trị mặc định cho role
+											$selectedRoleId = isset($_POST['role']) ? $_POST['role'] : $infoStaff[0]['id_role'];
+											$roleName = '';
+
+											// Tìm tên role đã chọn
+											foreach ($listRole as $role) {
+												if ($role['id_role'] == $selectedRoleId) {
+													$roleName = $role['ten_role'];
+													break;
+												}
+											}
+											?>
+											<option value="<?php echo $selectedRoleId; ?>" selected><?php echo $roleName ?: 'Chọn vai trò'; ?></option>
+
+											<?php foreach ($listRole as $role) : ?>
+												<?php if ($role['id_role'] != 1 && $role['id_role'] != $selectedRoleId) : ?>
+													<option value="<?php echo $role['id_role']; ?>"><?php echo $role['ten_role']; ?></option>
+												<?php endif; ?>
+											<?php endforeach; ?>
+										</select>
+										</div>
+									</div>
+
+
+								</div>
+							</div>
+
+							<div class="col-12" style="margin-top: 10px">
+								<div class="sign__group">
+									<label class="sign__label">Giới tính:</label>
+									<ul class="sign__radio">
+										<li>
+											<input id="type1" type="radio" name="gender" checked="" value="Khác"
+											<?php
+												if(!isset($_POST['gender']) && $infoStaff[0]['gender']=='Khác'){
+													echo 'checked';
+												}
+												if(isset($_POST['gender']) && $_POST['gender']=='Khác'){
+													echo 'checked';
+												}
+											?>
+											>
+											<label for="type1">Khác</label>
+										</li>
+										<li>
+											<input id="type2" type="radio" name="gender" value="Nữ" 
+											<?php
+												if(!isset($_POST['gender']) && $infoStaff[0]['gender']=='Nữ'){
+													echo 'checked';
+												}
+												if(isset($_POST['gender']) && $_POST['gender']=='Nữ'){
+													echo 'checked';
+												}
+											?>
+											>
+											<label for="type2">Nữ</label>
+										</li>
+										<li>
+											<input id="type3" type="radio" name="gender" value="Nam"
+											<?php
+												if(!isset($_POST['gender']) && $infoStaff[0]['gender']=='Nam'){
+													echo 'checked';
+												}
+												if(isset($_POST['gender']) && $_POST['gender']=='Nam'){
+													echo 'checked';
+												}
+											?>
+											>
+											<label for="type3">Nam</label>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="col-12">
+								<input type="submit" value="Cập nhật" class="sign__btn sign__btn--small" name="updateUser">
 							</div>
 						</div>
-					</div>
-
-					<div class="tab-pane fade" id="tab-2" role="tabpanel" aria-labelledby="2-tab" tabindex="0">
-						<!-- table -->
-						<div class="col-12">
-							<div class="catalog catalog--1">
-								<table class="catalog__table">
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>ITEM</th>
-											<th>AUTHOR</th>
-											<th>TEXT</th>
-											<th>LIKE / DISLIKE</th>
-											<th>CRAETED DATE</th>
-											<th>ACTIONS</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										<tr>
-											<td>
-												<div class="catalog__text">11</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">I Dream in Another Language</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Charlize Theron</div>
-											</td>
-											<td>
-												<div class="catalog__text">When a renowned archaeologist goes...</div>
-											</td>
-											<td>
-												<div class="catalog__text">12 / 7</div>
-											</td>
-											<td>
-												<div class="catalog__text">05.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">12</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Forgotten Road</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Tyreese Gibson</div>
-											</td>
-											<td>
-												<div class="catalog__text">A down-on-his-luck boxer struggles...</div>
-											</td>
-											<td>
-												<div class="catalog__text">67 / 22</div>
-											</td>
-											<td>
-												<div class="catalog__text">05.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">13</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Whitney</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Jordana Brewster</div>
-											</td>
-											<td>
-												<div class="catalog__text">When an old friend offers him...</div>
-											</td>
-											<td>
-												<div class="catalog__text">44 / 5</div>
-											</td>
-											<td>
-												<div class="catalog__text">04.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">14</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Red Sky at Night</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Son Gun</div>
-											</td>
-											<td>
-												<div class="catalog__text">But as the stakes get higher...</div>
-											</td>
-											<td>
-												<div class="catalog__text">20 / 6</div>
-											</td>
-											<td>
-												<div class="catalog__text">04.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">15</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Into the Unknown</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Louis Leterrier</div>
-											</td>
-											<td>
-												<div class="catalog__text">A brilliant scientist discovers...</div>
-											</td>
-											<td>
-												<div class="catalog__text">8 / 132</div>
-											</td>
-											<td>
-												<div class="catalog__text">04.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">16</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Unseen Journey</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Brian Cranston</div>
-											</td>
-											<td>
-												<div class="catalog__text">But when her groundbreaking...</div>
-											</td>
-											<td>
-												<div class="catalog__text">6 / 1</div>
-											</td>
-											<td>
-												<div class="catalog__text">03.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">17</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Savage Beauty</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Matt Jones</div>
-											</td>
-											<td>
-												<div class="catalog__text">Along the way, she must...</div>
-											</td>
-											<td>
-												<div class="catalog__text">10 / 0</div>
-											</td>
-											<td>
-												<div class="catalog__text">03.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">18</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Endless Horizon</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Rosa Lee</div>
-											</td>
-											<td>
-												<div class="catalog__text">Renewable energy source...</div>
-											</td>
-											<td>
-												<div class="catalog__text">13 / 14</div>
-											</td>
-											<td>
-												<div class="catalog__text">02.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">19</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Lost Key</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Tess Harper</div>
-											</td>
-											<td>
-												<div class="catalog__text">Confront her own past to save...</div>
-											</td>
-											<td>
-												<div class="catalog__text">12 / 7</div>
-											</td>
-											<td>
-												<div class="catalog__text">02.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">20</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Echoes of Yesterday</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Gene Graham</div>
-											</td>
-											<td>
-												<div class="catalog__text">Her father and uncover the secrets...</div>
-											</td>
-											<td>
-												<div class="catalog__text">67 / 22</div>
-											</td>
-											<td>
-												<div class="catalog__text">01.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<!-- end table -->
-
-						<!-- paginator -->
-						<div class="col-12">
-							<div class="main__paginator">
-								<!-- amount -->
-								<span class="main__paginator-pages">10 of 169</span>
-								<!-- end amount -->
-
-								<ul class="main__paginator-list">
-									<li>
-										<a href="#">
-											<i class="ti ti-chevron-left"></i>
-											<span>Prev</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span>Next</span>
-											<i class="ti ti-chevron-right"></i>
-										</a>
-									</li>
-								</ul>
-
-								<ul class="paginator">
-									<li class="paginator__item paginator__item--prev">
-										<a href="#"><i class="ti ti-chevron-left"></i></a>
-									</li>
-									<li class="paginator__item"><a href="#">1</a></li>
-									<li class="paginator__item paginator__item--active"><a href="#">2</a></li>
-									<li class="paginator__item"><a href="#">3</a></li>
-									<li class="paginator__item"><a href="#">4</a></li>
-									<li class="paginator__item"><span>...</span></li>
-									<li class="paginator__item"><a href="#">29</a></li>
-									<li class="paginator__item"><a href="#">30</a></li>
-									<li class="paginator__item paginator__item--next">
-										<a href="#"><i class="ti ti-chevron-right"></i></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<!-- end paginator -->
-					</div>
-
-					<div class="tab-pane fade" id="tab-3" role="tabpanel" aria-labelledby="3-tab" tabindex="0">
-						<!-- table -->
-						<div class="col-12">
-							<div class="catalog catalog--2">
-								<table class="catalog__table">
-									<thead>
-										<tr>
-											<th>ID</th>
-											<th>ITEM</th>
-											<th>AUTHOR</th>
-											<th>TEXT</th>
-											<th>RATING</th>
-											<th>CRAETED DATE</th>
-											<th>ACTIONS</th>
-										</tr>
-									</thead>
-
-									<tbody>
-										<tr>
-											<td>
-												<div class="catalog__text">11</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">I Dream in Another Language</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Gene Graham</div>
-											</td>
-											<td>
-												<div class="catalog__text">Her father and uncover the secrets...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">7.9</div>
-											</td>
-											<td>
-												<div class="catalog__text">06.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">12</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Forgotten Road</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Tess Harper</div>
-											</td>
-											<td>
-												<div class="catalog__text">Confront her own past to save...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">8.6</div>
-											</td>
-											<td>
-												<div class="catalog__text">06.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">13</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Whitney</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Rosa Lee</div>
-											</td>
-											<td>
-												<div class="catalog__text">Renewable energy source...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">6.0</div>
-											</td>
-											<td>
-												<div class="catalog__text">05.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">14</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Red Sky at Night</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Matt Jones</div>
-											</td>
-											<td>
-												<div class="catalog__text">Along the way, she must...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">9.1</div>
-											</td>
-											<td>
-												<div class="catalog__text">05.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">15</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Into the Unknown</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Brian Cranston</div>
-											</td>
-											<td>
-												<div class="catalog__text">But when her groundbreaking...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">5.5</div>
-											</td>
-											<td>
-												<div class="catalog__text">05.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">16</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Unseen Journey</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Louis Leterrier</div>
-											</td>
-											<td>
-												<div class="catalog__text">A brilliant scientist discovers...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">7.0</div>
-											</td>
-											<td>
-												<div class="catalog__text">04.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">17</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Savage Beauty</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Son Gun</div>
-											</td>
-											<td>
-												<div class="catalog__text">But as the stakes get higher...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">9.0</div>
-											</td>
-											<td>
-												<div class="catalog__text">04.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">18</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Endless Horizon</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Jordana Brewster</div>
-											</td>
-											<td>
-												<div class="catalog__text">When an old friend offers him...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">6.2</div>
-											</td>
-											<td>
-												<div class="catalog__text">03.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">19</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">The Lost Key</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Tyreese Gibson</div>
-											</td>
-											<td>
-												<div class="catalog__text">A down-on-his-luck boxer struggles...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">7.9</div>
-											</td>
-											<td>
-												<div class="catalog__text">02.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										<tr>
-											<td>
-												<div class="catalog__text">20</div>
-											</td>
-											<td>
-												<div class="catalog__text"><a href="#">Echoes of Yesterday</a></div>
-											</td>
-											<td>
-												<div class="catalog__text">Charlize Theron</div>
-											</td>
-											<td>
-												<div class="catalog__text">When a renowned archaeologist goes...</div>
-											</td>
-											<td>
-												<div class="catalog__text catalog__text--rate">8.6</div>
-											</td>
-											<td>
-												<div class="catalog__text">02.02.2023</div>
-											</td>
-											<td>
-												<div class="catalog__btns">
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--view" data-bs-target="#modal-view2">
-														<i class="ti ti-eye"></i>
-													</button>
-
-													<button type="button" data-bs-toggle="modal" class="catalog__btn catalog__btn--delete" data-bs-target="#modal-delete2">
-														<i class="ti ti-trash"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<!-- end table -->
-
-						<!-- paginator -->
-						<div class="col-12">
-							<div class="main__paginator">
-								<!-- amount -->
-								<span class="main__paginator-pages">10 of 169</span>
-								<!-- end amount -->
-
-								<ul class="main__paginator-list">
-									<li>
-										<a href="#">
-											<i class="ti ti-chevron-left"></i>
-											<span>Prev</span>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<span>Next</span>
-											<i class="ti ti-chevron-right"></i>
-										</a>
-									</li>
-								</ul>
-
-								<ul class="paginator">
-									<li class="paginator__item paginator__item--prev">
-										<a href="#"><i class="ti ti-chevron-left"></i></a>
-									</li>
-									<li class="paginator__item"><a href="#">1</a></li>
-									<li class="paginator__item paginator__item--active"><a href="#">2</a></li>
-									<li class="paginator__item"><a href="#">3</a></li>
-									<li class="paginator__item"><a href="#">4</a></li>
-									<li class="paginator__item"><span>...</span></li>
-									<li class="paginator__item"><a href="#">29</a></li>
-									<li class="paginator__item"><a href="#">30</a></li>
-									<li class="paginator__item paginator__item--next">
-										<a href="#"><i class="ti ti-chevron-right"></i></a>
-									</li>
-								</ul>
-							</div>
-						</div>
-						<!-- end paginator -->
-					</div>
+					</form>
 				</div>
+				<!-- end form -->
+			</div>
 				<!-- end content tabs -->
 			</div>
 		</div>
@@ -925,7 +207,7 @@
 	<!-- end main content -->
 
 	<!-- view modal -->
-	<div class="modal fade" id="modal-view" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-view" tabindex="-1" aria-labelledby="modal-view" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content modal__content--view">
@@ -945,11 +227,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end view modal -->
 
 	<!-- delete modal -->
-	<div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-delete" tabindex="-1" aria-labelledby="modal-delete" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
@@ -966,11 +248,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end delete modal -->
 
 	<!-- view modal -->
-	<div class="modal fade" id="modal-view2" tabindex="-1" aria-labelledby="modal-view2" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-view2" tabindex="-1" aria-labelledby="modal-view2" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content modal__content--view">
@@ -985,11 +267,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end view modal -->
 
 	<!-- delete modal -->
-	<div class="modal fade" id="modal-delete2" tabindex="-1" aria-labelledby="modal-delete2" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-delete2" tabindex="-1" aria-labelledby="modal-delete2" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
@@ -1006,11 +288,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end delete modal -->
 
 	<!-- status modal -->
-	<div class="modal fade" id="modal-status3" tabindex="-1" aria-labelledby="modal-status3" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-status3" tabindex="-1" aria-labelledby="modal-status3" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
@@ -1027,11 +309,11 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end status modal -->
-	
+
 	<!-- delete modal -->
-	<div class="modal fade" id="modal-delete3" tabindex="-1" aria-labelledby="modal-delete3" aria-hidden="true">
+	<!-- <div class="modal fade" id="modal-delete3" tabindex="-1" aria-labelledby="modal-delete3" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content">
 				<div class="modal__content">
@@ -1048,5 +330,5 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 	<!-- end delete modal -->

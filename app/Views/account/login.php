@@ -35,7 +35,8 @@
                         <!-- authorization form -->
                         <form action="" class="sign__form" method="POST">
                             <a href="index.html" class="sign__logo">
-                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo.svg" alt="">
+                                <img src="<?php echo _WEB_ROOT ?>/public/assets/img/logo_edited_v2.svg" alt="">
+
 
                             </a>
 
@@ -48,33 +49,24 @@
 
                             </div>
                             <?php if (isset($error['dangnhap'])): ?>
-                                    <p class="error text-danger"><?php echo $error['dangnhap']; ?></p>
+                                <p class="error text-danger"><?php echo $error['dangnhap']; ?></p>
                             <?php endif; ?>
                             <?php if (isset($error['empty'])): ?>
-                                    <p class="error text-danger"><?php echo $error['empty']; ?></p>
+                                <p class="error text-danger"><?php echo $error['empty']; ?></p>
                             <?php endif; ?>
 
-                            <div class="sign__group sign__group--checkbox">
-                                <input id="remember" name="remember" type="checkbox">
-                                <label for="remember">Remember Me</label>
-                            </div>
-
-                            <button class="sign__btn" name="btn_signin" type="submit">Đăng nhập</button>
-
-                            <span class="sign__delimiter">or</span>
-
+                            <input type="submit" name="btn_signin" value="Đăng nhập" class="btn btn-danger sign__group">
 
 
                             <span class="sign__text">Bạn chưa có tài khoản?
-                                <a
-                                    href="<?php echo _LINK ?>/dang-ki.html">Đăng ký ngay!
+                                <a href="<?php echo _LINK ?>/dang-ki.html">Đăng ký ngay!
                                 </a></span>
 
                             <span class="sign__text">
                                 <a href="<?php echo _LINK ?>/quen-mat-khau.html">Quên mật khẩu?</a>
                             </span>
                         </form>
-                        <!-- end authorization form -->
+
                     </div>
                 </div>
             </div>
