@@ -118,11 +118,34 @@
                         <?php $_SESSION['back']['time']  = $time ?>
 
                         <hr>
-                        <p><?php echo $_POST['count_seats'] ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php echo $_POST['total_price_seat'] ?></span></p>
+                        <p><?php
+
+                            if (isset($_POST['count_seats'])) {
+                                echo $_POST['count_seats'];
+                            } else {
+                                echo $_SESSION['back']['count_seats'];
+                            }
+
+                            ?>x Người Lớn - Member <span style="margin-left: 130px;"><?php
+
+                                                                                        if (isset($_POST['total_price_seat'])) {
+                                                                                            echo $_POST['total_price_seat'];
+                                                                                        } else {
+                                                                                            echo $_SESSION['back']['total_price_seat'];
+                                                                                        }
+                                                                                        ?></span></p>
                         <p>Ghế: <?php echo $seats ?></p>
                         <?php $_SESSION['back']['seats']  = $seats ?>
-                        <?php $_SESSION['back']['count_seats'] = $_POST['count_seats'] ?>
-                        <?php $_SESSION['back']['total_price_seat'] = $_POST['total_price_seat'] ?>
+                        <?php
+                        if (isset($_POST['count_seats'])) {
+                            $_SESSION['back']['count_seats'] = $_POST['count_seats'];
+                        }
+                        ?>
+                        <?php
+                        if (isset($_POST['total_price_seat'])) {
+                            $_SESSION['back']['total_price_seat'] = $_POST['total_price_seat'];
+                        }
+                        ?>
 
                         <hr>
                         <div id="selected-combos">

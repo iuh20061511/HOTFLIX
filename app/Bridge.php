@@ -14,6 +14,14 @@ define('_URL_', $currentURL);
 
 
 
+if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) {
+    if (_LINK . '/' == _LINK . _URL_) {
+        echo "<script>window.location.href = 'quan-ly.html';</script>";
+    }
+}
+
+
+
 
 require_once "./app/configs/routes.php";
 require_once "./app/Core/Handler.php";

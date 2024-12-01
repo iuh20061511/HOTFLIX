@@ -22,12 +22,12 @@
 
                             ?>
                             <div class="dropdown-menu header__dropdown-menu header__dropdown-menu--categories">
-								<ul class="header__categories-list">
+                                <ul class="header__categories-list">
                                     <?php foreach ($cinemas as $cinema) { ?>
                                         <li><a href="thong-tin-rap-<?php echo $cinema['id_cinema']; ?>.html"><?php echo $cinema['cinema_name']; ?></a></li>
                                     <?php } ?>
-								</ul>
-							</div>
+                                </ul>
+                            </div>
                         </div>
 
                     </li>
@@ -49,34 +49,39 @@
                                 }
                             }
                         </style>
-                        <li class="header__nav-item ">
-                            <a class="header__nav-link rounded-3 p-3 text-change" href="<?php echo _LINK ?>/dat-ve.html" role="button"><b>Đặt vé</b></a>
+                        <?php if (empty($_SESSION['is_login']['id_role']) || $_SESSION['is_login']['id_role'] == 1) { ?>
 
-                        </li>
-                        <li class="header__nav-item ">
-                            <a class="header__nav-link" href="<?php echo _LINK ?>/chon-thoi-gian-dat-phong.html?day=<?php echo date('Y-m-d') ?>" role="button"><b>Phòng chiếu của bạn</b></a>
-                        </li>
+                            <li class="header__nav-item ">
+                                <a class="header__nav-link rounded-3 p-3 text-change" href="<?php echo _LINK ?>/dat-ve.html" role="button"><b>Đặt vé</b></a>
+
+                            </li>
+                            <li class="header__nav-item ">
+                                <a class="header__nav-link" href="<?php echo _LINK ?>/chon-thoi-gian-dat-phong.html?day=<?php
+                                                                                                                        echo date('Y-m-d', strtotime('+1 day'));
+                                                                                                                        ?>" role="button"><b>Phòng chiếu của bạn</b></a>
+                            </li>
 
 
-                        <li class="header__nav-item">
-                            <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê phòng chiếu</a>
-                        </li>
+                            <li class="header__nav-item">
+                                <a href="<?php echo _LINK ?>/thue-phong/chon-rap-phong-chieu.html" class="header__nav-link">Thuê phòng chiếu</a>
+                            </li>
 
-                        <!-- dropdown -->
-                        <li class="header__nav-item">
-                            <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Mở rộng <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
-                                </svg></a>
+                            <!-- dropdown -->
+                            <li class="header__nav-item">
+                                <a class="header__nav-link" href="#" role="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">Mở rộng <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M17,9.17a1,1,0,0,0-1.41,0L12,12.71,8.46,9.17a1,1,0,0,0-1.41,0,1,1,0,0,0,0,1.42l4.24,4.24a1,1,0,0,0,1.42,0L17,10.59A1,1,0,0,0,17,9.17Z" />
+                                    </svg></a>
 
-                            <ul class="dropdown-menu header__dropdown-menu">
-                                <li><a href="vong-quay-may-man.html">Vòng quay may mắn</a></li>
-                                <li><a href="doi-qua.html">Đổi quà</a></li>
-                                <li><a href="danh-sach-qua.html">Danh sách quà</a></li>
-                            </ul>
-                        </li>
-                        <!-- end dropdown -->
+                                <ul class="dropdown-menu header__dropdown-menu">
+                                    <li><a href="vong-quay-may-man.html">Vòng quay may mắn</a></li>
+                                    <li><a href="doi-qua.html">Đổi quà</a></li>
+                                    <li><a href="danh-sach-qua.html">Danh sách quà</a></li>
+                                </ul>
+                            </li>
+
+                        <?php } ?>
 
 
                     </ul>
@@ -85,12 +90,23 @@
                     <!-- header actions -->
                     <div class="header__actions">
                         <form action="#" class="header__search">
-                            <input type="text" placeholder="Tìm kiếm">
-                            <button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">
-                                    </path>
-                                </svg></button>
+                            <?php if (empty($_SESSION['is_login']['id_role']) || $_SESSION['is_login']['id_role'] == 1) { ?>
+
+                                <input type="text" placeholder="Tìm kiếm">
+                                <button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
+                                            d="M21.71,20.29,18,16.61A9,9,0,1,0,16.61,18l3.68,3.68a1,1,0,0,0,1.42,0A1,1,0,0,0,21.71,20.29ZM11,18a7,7,0,1,1,7-7A7,7,0,0,1,11,18Z">
+                                        </path>
+                                    </svg></button>
+
+                            <?php } ?>
+
+                            <?php if (!isset($_SESSION['is_login'])) { ?>
+                                <a href="<?php echo _LINK ?>/dang-nhap.html" class="header__sign-in " style="margin-left: 40px;">
+                                    <span>Đăng nhập</span>
+                                </a>
+                            <?php } ?>
+
                         </form>
 
                         <?php if (isset($_SESSION['is_login'])) { ?>
@@ -102,8 +118,8 @@
                                     <!-- <p>Xin chào,</p> -->
                                     <p><?php echo $_SESSION['is_login']['fullname'] ?></p>
                                 </div>
-                                <ul class="dropdown-user">
-                                    <p class="fw-bold pe-none" style="color:#ff55a5"><?php echo $_SESSION['is_login']['name_role']?></p>
+                                <ul class="dropdown-user" style="margin-top: 5px;">
+                                    <p class="fw-bold pe-none" style="color:#ff55a5"><?php echo $_SESSION['is_login']['name_role'] ?></p>
                                     <li><a href="<?php echo _LINK ?>/thong-tin-tai-khoan.html">Tài khoản</a></li>
                                     <?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] != 1) { ?>
                                         <li><a href="<?php echo _LINK ?>/quan-ly.html">Chức năng</a></li>
@@ -120,15 +136,9 @@
                         <?php } ?>
 
 
-                        <?php if (!isset($_SESSION['is_login'])) { ?>
-                            <a href="<?php echo _LINK ?>/dang-nhap.html" class="header__sign-in">
-                                <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                    <path
-                                        d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />
-                                </svg>
-                                <span>Đăng nhập</span>
-                            </a>
-                        <?php } ?>
+
+
+
                     </div>
                     <!-- end header actions -->
 

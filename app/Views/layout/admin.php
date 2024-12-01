@@ -13,7 +13,10 @@
 
 <body>
     <?php
+
     $this->view("block_home/menu");
+
+
     $this->view("block_home/menuAdmin");
 
     $this->view($content, $sub);

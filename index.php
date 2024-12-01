@@ -8,7 +8,6 @@ if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
     $web = 'http://' . $_SERVER['HTTP_HOST'];
 }
 
-$_SESSION['login'] = 1;
 
 
 

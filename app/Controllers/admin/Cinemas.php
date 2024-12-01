@@ -134,12 +134,18 @@ class Cinemas extends Controller
 
         if (isset($_POST['addRoom'])) {
             $this->data['sub']['error']['type_room'] = $this->validate->checkSelect($_POST['type_room']);
+            if (empty($_POST['id_cinema'])) {
+                $this->data['sub']['error']['id_cinema'] = "Vui lòng chọn rạp !";
+            }
+            if (empty($_POST['room_name'])) {
+                $this->data['sub']['error']['room_name']  = "Vui lòng nhập tên phòng !";
+            }
 
             if (array_filter($this->data['sub']['error']) == []) {
                 $data = [
                     'room_name' => $_POST['room_name'],
                     'id_roomType' => $_POST['type_room'],
-                    'id_cinema' =>   $_SESSION['is_login']['id_cinema'],
+                    'id_cinema' =>   $_POST['id_cinema'],
                     'status' => 1
                 ];
 
@@ -216,8 +222,7 @@ class Cinemas extends Controller
                 $result = $this->model->deleteData('room', "where id_room = $id_room");
                 if ($result) {
                     echo "<script>alert('Xóa phòng chiếu thành công')</script>";
-                    $redirectUrl = "quan-ly-rap-phim.html";
-                    header("refresh:0.5; url=$redirectUrl");
+                    echo "<script>window.location.href = 'quan-ly-rap-phim.html';</script>";
                 }
             }
         }

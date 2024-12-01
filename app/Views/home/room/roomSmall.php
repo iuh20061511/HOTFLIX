@@ -259,25 +259,27 @@
                         let seatNA = document.querySelector(`.${maxseat}`);
                         let checkbox = document.querySelector(`.checkbox${maxseat}`);
                         if (!selectedSeatValues.includes(maxseat)) {
-                            if (totalSelectedSeats === 6) {
-                                if (seatNA) {
-                                    seatNA.classList.add('maxSeat');
-                                    check = true;
-                                    if (checkbox) {
-                                        checkbox.disabled = true;
-                                    }
+                            <?php if ($_SESSION['is_login']['id_role'] == 1) { ?>
+                                if (totalSelectedSeats === 6) {
+                                    if (seatNA) {
+                                        seatNA.classList.add('maxSeat');
+                                        check = true;
+                                        if (checkbox) {
+                                            checkbox.disabled = true;
+                                        }
 
-                                }
-                            } else {
-                                if (seatNA) {
-                                    seatNA.classList.remove('maxSeat');
-                                    check = false;
-                                    if (checkbox) {
-                                        checkbox.disabled = false;
                                     }
+                                } else {
+                                    if (seatNA) {
+                                        seatNA.classList.remove('maxSeat');
+                                        check = false;
+                                        if (checkbox) {
+                                            checkbox.disabled = false;
+                                        }
 
+                                    }
                                 }
-                            }
+                            <?php } ?>
                         }
                     }
                 }

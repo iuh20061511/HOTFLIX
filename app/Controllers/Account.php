@@ -38,7 +38,7 @@ class Account extends Controller
 
                         $id_customer = $user['id_customer'];
                         $customer =   $this->model->getListTable('customer', "where id_customer = $id_customer");
-                        $point = $customer[0]['points'];
+                        $point = $customer[0]['points_rank'];
                         if ($point >= 10 && $point < 20) {
                             $id_rank = 2;
                         } elseif ($point >= 20 && $point < 30) {
@@ -68,7 +68,11 @@ class Account extends Controller
                     $_SESSION['is_login']['id_role'] = $user['id_role'];
                     $_SESSION['is_login']['name_role'] = $user['name_role'];
 
-                    header("Location: trang-chu.html");
+                    if ($_SESSION['is_login']['id_role'] == 1) {
+                        header("Location: trang-chu.html");
+                    } else {
+                        header("Location: quan-ly.html");
+                    }
                     exit;
                 }
 

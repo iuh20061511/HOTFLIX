@@ -167,6 +167,11 @@ class ChangeTickets extends Controller
             $this->ticket['link_ticket'][$id_ticket] = _LINK . "/ve-da-dat-$id_ticket.html";
         }
 
+        $data_status_exchange = [
+            'status_exchange' => 1
+        ];
+        $this->model->updateData('invoice', $data_status_exchange, "where id_invoice  = '$id_invoice'");
+
         $this->ticket['invoice'] =  _LINK . "/in-ve-$id_invoice.html";
 
         $this->library("PHPMailer/sendMailChangeTicket.php", $this->ticket);

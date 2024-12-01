@@ -4,7 +4,6 @@ class InforUser extends Controller
     private $model;
     private $validate;
     private $accountmodel;
-    private $giveTicket;
 
     private $data = [];
     private $ticket = [];
@@ -97,6 +96,7 @@ class InforUser extends Controller
                         'discount_total' => $item['discount_total'],
                         'final_total' => $item['final_total'],
                         'payment_method' => $item['payment_method'],
+                        'status_exchange' => $item['status_exchange'],
                         'tickets' => [],
                         'items' => [],
                     ];
@@ -247,7 +247,8 @@ class InforUser extends Controller
         return $data;
     }
 
-    private function getListTicketPrivate($id_customer){
+    private function getListTicketPrivate($id_customer)
+    {
         $data = $this->model->getListFromThreeTables('invoice_room_private', 'room ', 'cinemas', 'id_room ', 'id_cinema', "where invoice_room_private.id_customer = $id_customer ORDER BY invoice_room_private.id_InvoiceRoomPrivate DESC");
         $infoMovie = $this->model->getListTable('movie');
 

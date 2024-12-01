@@ -26,15 +26,10 @@
 
             for ($i = 0; $i < 7; $i++) {
                 $day = clone $today;
-                $day->modify("+$i days");
+                $day->modify("+" . ($i + 1) . " days");
                 $dayOfWeek = $day->format('N');
 
-                if ($i == 0) {
-                    $dayFormatted = 'Hôm nay: ' . $day->format('d/m/Y');
-                } else {
-                    $dayFormatted = $daysOfWeek[$dayOfWeek] . ' ' . $day->format('d/m/Y');
-                }
-
+                $dayFormatted = $daysOfWeek[$dayOfWeek] . ' ' . $day->format('d/m/Y');
                 $dayValue = $day->format('Y-m-d');
 
                 $days[] = [
@@ -42,6 +37,7 @@
                     'value' => $dayValue
                 ];
             }
+
 
             $id_cinema = $_GET['id_cinema'] ?? $_SESSION['id_cinema_customer'] ?? null;
             foreach ($days as $day) {

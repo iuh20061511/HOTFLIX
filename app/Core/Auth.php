@@ -14,7 +14,7 @@
 $authenticated = [
     // //Home
     // "Home/error_404"              =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
-    // "Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
+    //"Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
     // //Dashboard
     // "admin/dashboard/index"       =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
     // //Cinemas
@@ -58,7 +58,7 @@ $authenticated = [
 
     // //Client/BookTickets
     // "client/BookTickets/book"             => [CUSTOMER, TICKET_CLERK],
-    // "client/BookTickets/selectSeat"       => [CUSTOMER, TICKET_CLERK],
+    "client/BookTickets/selectSeat"       => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/chooseFood"       => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/backChooseFood"   => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/pay"              => [CUSTOMER, TICKET_CLERK],

@@ -44,37 +44,39 @@
             <div class="col-12 order-md-3 col-md-8 col-lg-6 col-xl-4">
                 <div class="row">
                     <div class="col-12">
-                        <h6 class="footer__title">Browse</h6>
+                        <h6 class="footer__title">HỖ TRỢ</h6>
                     </div>
 
                     <div class="col-6">
                         <ul class="footer__list">
-                            <li><a href="catalog1.html">Movies</a></li>
-                            <li><a href="catalog1.html">TV Shows</a></li>
-                            <li><a href="catalog1.html">Anime</a></li>
-                            <li><a href="catalog1.html">Cartoons</a></li>
+                            <li><a href="#">Góp ý</a></li>
+                            <li><a href="#">Sale & Services</a></li>
+                            <li><a href="#">Rạp / Giá Vé</a></li>
+                            <li><a href="#">Tuyển Dụng</a></li>
                         </ul>
                     </div>
 
                     <div class="col-6">
                         <ul class="footer__list">
-                            <li><a href="catalog1.html">Netflix</a></li>
-                            <li><a href="catalog1.html">Marvel</a></li>
-                            <li><a href="catalog1.html">DC Comics</a></li>
-                            <li><a href="catalog1.html">Book adaptations</a></li>
+                            <li><a href="#">Về Chúng Tôi</a></li>
+                            <li><a href="#">Thoả Thuận Sử Dụng</a></li>
+                            <li><a href="#">Quy Chế Hoạt Động</a></li>
+                            <li><a href="#">Chính Sacha Bảo Mật</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             <div class="col-6 order-md-2 col-md-4 col-lg-3 col-xl-2">
-                <h6 class="footer__title">CỤM RẠP FLIXGO</h6>
+                <h6 class="footer__title">CỤM RẠP HOTFLIX</h6>
                 <ul class="footer__list">
-                    <li><a href="about.html">FlixGo Nguyễn Văn Bảo, Gò Vấp, TPHCM</a></li>
-                    <li><a href="pricing.html">FlixGo Đồng Khởi Quận 1, TPHCM</a></li>
-                    <li><a href="faq.html">FlixGo Quận 9, TPHCM</a></li>
-                    <li><a href="contacts.html">FlixGo Quận 11, TPHCM</a></li>
-                    <li><a href="contacts.html">FlixGo Thủ Đức, TPHCM</a></li>
+                    <?php
+                    $cinemas = (new Model())->getListTable('cinemas');
+
+                    ?>
+                    <?php foreach ($cinemas as $cinema) { ?>
+                        <li><a href="thong-tin-rap-<?php echo $cinema['id_cinema']; ?>.html"><?php echo $cinema['cinema_name']; ?></a></li>
+                    <?php } ?>
 
                 </ul>
             </div>
@@ -94,13 +96,9 @@
             <!-- footer copyright -->
             <div class="col-12">
                 <div class="footer__copyright">
-                    <small>© HotFlix, 2024. Create by <a href="https://themeforest.net/user/dmitryvolkov/portfolio"
-                            target="_blank" rel="noopener">IUH student</a>.</small>
+                    <small>© HotFlix, 2024. Create by IUH student.</small>
 
-                    <ul>
-                        <li><a href="privacy.html">Privacy policy</a></li>
-                        <li><a href="privacy.html">Terms and conditions</a></li>
-                    </ul>
+
                 </div>
             </div>
             <!-- end footer copyright -->
