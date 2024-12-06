@@ -12,9 +12,9 @@
 
 
 $authenticated = [
-    // //Home
+    //Home
     // "Home/error_404"              =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
-    //"Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
+    // //"Home/index"                  =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
     // //Dashboard
     // "admin/dashboard/index"       =>      [CUSTOMER, CHAIN_MANAGER, CINEMA_MANAGER, TICKET_CLERK, TICKET_CHECKER, ADMIN],
     // //Cinemas
@@ -58,7 +58,7 @@ $authenticated = [
 
     // //Client/BookTickets
     // "client/BookTickets/book"             => [CUSTOMER, TICKET_CLERK],
-    "client/BookTickets/selectSeat"       => [CUSTOMER, TICKET_CLERK],
+    // "client/BookTickets/selectSeat"       => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/chooseFood"       => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/backChooseFood"   => [CUSTOMER, TICKET_CLERK],
     // "client/BookTickets/pay"              => [CUSTOMER, TICKET_CLERK],
@@ -79,7 +79,7 @@ $authenticated = [
     // "client/BookTickets/PaySucessRoomPrivate"  => [CUSTOMER],
     // "client/BookTickets/PDFTotalInvoicePrivate" => [CUSTOMER],
 
-    // //Client/RentRoooms
+    // // //Client/RentRoooms
     // "client/Rent_room/index"             => [CUSTOMER],
     // "client/Rent_room/chooseTime_room"   => [CUSTOMER],
     // "client/Rent_room/paySuccessRoom"    => [CUSTOMER],

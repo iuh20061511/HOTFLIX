@@ -63,10 +63,22 @@
 				</li>
 			<?php } ?>
 
-			<li class="sidebar__nav-item">
-				<a class="sidebar__nav-link" href="quan-ly-suat-chieu.html" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
-					<span>Quản lý lịch chiếu</span></a>
-			</li>
+			<?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 3) { ?>
+
+				<li class="sidebar__nav-item">
+					<a class="sidebar__nav-link" href="quan-ly-suat-chieu.html" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
+						<span>Quản lý lịch chiếu</span></a>
+				</li>
+			<?php } ?>
+
+			<?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 5) { ?>
+
+				<li class="sidebar__nav-item">
+					<a class="sidebar__nav-link" href="https://webqr.com/" role="button" aria-expanded="false"><i class="ti ti-calendar"></i>
+						<span>Kiểm tra vé</span></a>
+				</li>
+			<?php } ?>
+
 
 			<?php if (isset($_SESSION['is_login']['id_role']) && $_SESSION['is_login']['id_role'] == 2) { ?>
 

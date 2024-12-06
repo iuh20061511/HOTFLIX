@@ -1,31 +1,29 @@
 (() => {
-    document.addEventListener('DOMContentLoaded', () => {
-        const $ = document.querySelector.bind(document);
-
+    $(document).ready(() => {
         let timeRotate = 6000; // 6 giây
         let currentRotate = 0;
         let isRotating = false;
-        const wheel = $('.wheel');  // Chọn thẻ <ul class="wheel">
-        let inputIdGift = $('#id_gift_wheel');
-        let updatePoints = $('#updatePoint');
-        let btnSubmitWheel = $('#btnSubmitWheel');
-        const btnWheel = $('.wheel__button');
-        const modalMessage = $('#modal-message');
-        const notifyWheel = $('#notify_wheel');
-        const modalImageWheel = $('#image_wheel');
-        const prizeModal = new bootstrap.Modal(document.getElementById('prizeModal'), {
+        const $wheel = $('.wheel');  // Chọn thẻ <ul class="wheel">
+        const $inputIdGift = $('#id_gift_wheel');
+        const $updatePoints = $('#updatePoint');
+        const $btnSubmitWheel = $('#btnSubmitWheel');
+        const $btnWheel = $('.wheel__button');
+        const $modalMessage = $('#modal-message');
+        const $notifyWheel = $('#notify_wheel');
+        const $modalImageWheel = $('#image_wheel');
+        const prizeModal = new bootstrap.Modal($('#prizeModal')[0], {
             backdrop: 'static',  // Cấm đóng modal khi nhấn ra ngoài
             keyboard: false      // Cấm đóng modal bằng phím Escape
         });
 
         //=====< Lấy danh sách phần thưởng từ các thẻ li >=====
-        const listGift = Array.from(wheel.children).map((li, index) => {
+        const listGift = Array.from($wheel.children()).map((li, index) => {
             return {
-                id_gift: li.querySelector('b').getAttribute('data-id-gift'),
-                gift_name: li.querySelector('b').innerText,
+                id_gift: $(li).find('b').data('id-gift'),
+                gift_name: $(li).find('b').text(),
                 index: index,
-                image: li.querySelector('b').getAttribute('data-image-gift'),
-                percent: parseFloat(li.querySelector('b').getAttribute('data-percent')),
+                image: $(li).find('b').data('image-gift'),
+                percent: parseFloat($(li).find('b').data('percent')),
             };
         });
 
@@ -52,7 +50,7 @@
 
         /********** Hàm bắt đầu quay **********/
         const start = () => {
-            modalMessage.innerHTML = '';
+            $modalMessage.html('');
             isRotating = true;
             const random = Math.random(); // Sinh số ngẫu nhiên từ 0 đến 1
             const gift = getGift(random); // Lấy phần quà dựa trên số ngẫu nhiên
@@ -63,8 +61,10 @@
 
         /********** Hàm quay vòng quay **********/
         const rotateWheel = (currentRotate, index) => {
-            wheel.style.transition = `transform ${timeRotate / 1000}s ease-out`;
-            wheel.style.transform = `rotate(${currentRotate - index * rotate - rotate / 2}deg)`;
+            $wheel.css({
+                'transition': `transform ${timeRotate / 1000}s ease-out`,
+                'transform': `rotate(${currentRotate - index * rotate - rotate / 2}deg)`
+            });
         };
 
         /********** Hàm lấy phần thưởng **********/
@@ -87,20 +87,20 @@
                 isRotating = false;
                 // Kiểm tra nếu gift_name là "may mắn lần sau"
                 if (gift.gift_name.toLowerCase() === "chúc bạn may mắn lần sau") {
-                    modalMessage.innerHTML = `Chúc bạn may mắn lần sau!`;
-                    notifyWheel.innerHTML = 'Thật đáng tiếc!';
+                    $modalMessage.html(`Chúc bạn may mắn lần sau!`);
+                    $notifyWheel.html('Thật đáng tiếc!');
                 } else {
-                    modalMessage.innerHTML = `Bạn đã trúng thưởng "${gift.gift_name}"`;
+                    $modalMessage.html(`Bạn đã trúng thưởng "${gift.gift_name}"`);
                 }
-                modalImageWheel.src = gift.image;
-                inputIdGift.value = gift.id_gift;
-                updatePoints.value = userPoints - minPointsRequired;
+                $modalImageWheel.attr('src', gift.image);
+                $inputIdGift.val(gift.id_gift);
+                $updatePoints.val(userPoints - minPointsRequired);
                 prizeModal.show();
             }, timeRotate);
         };
 
         /********** Sự kiện click vào nút quay **********/
-        btnWheel.addEventListener('click', (e) => {
+        $btnWheel.on('click', (e) => {
             e.preventDefault();
             if (userPoints >= minPointsRequired) {
                 if (!isRotating) {
@@ -108,48 +108,50 @@
 
                     // Sau khi quay xong, gửi yêu cầu AJAX
                     setTimeout(() => {
-                        const idGift = inputIdGift.value;
-                        const updatedPoints = updatePoints.value;
+                        const idGift = $inputIdGift.val();
+                        const updatedPoints = $updatePoints.val();
 
                         // Gửi AJAX đến server để xử lý quay thưởng
-                        fetch(urlSever, {
+                        $.ajax({
+                            url: urlSever,
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ id_gift: idGift, updatePoint: updatedPoints, currentPage: numberPage })
-                        })
-                            .then(response => response.json())
-                            .then(data => {
+                            contentType: 'application/json',
+                            data: JSON.stringify({
+                                id_gift: idGift,
+                                updatePoint: updatedPoints,
+                                currentPage: numberPage
+                            }),
+                            success: (data) => {
                                 if (data.status === 'success') {
                                     // Cập nhật điểm người dùng và danh sách quà
                                     userPoints = data.newPoints;
-                                    document.querySelector('#userPoints').innerHTML = userPoints;
+                                    $('#userPoints').html(userPoints);
                                     // Render lại danh sách quà
                                     updateGiftList(data.giftDetails);
                                 } else {
                                     alert('Có lỗi xảy ra: ' + data.message);
                                 }
-                            })
-                            .catch(error => {
+                            },
+                            error: (error) => {
                                 console.error('Error:', error);
                                 alert('Lỗi kết nối tới server!');
-                            });
+                            }
+                        });
                     }, timeRotate); // Gửi yêu cầu sau khi quay xong
                 }
             } else {
                 // Hiển thị thông báo không đủ điểm
-                modalMessage.innerHTML = `Bạn đã không đủ điểm để tham gia vòng quay`;
-                notifyWheel.innerHTML = 'Thật đáng tiếc!';
-                modalImageWheel.src = srcImageFail;
+                $modalMessage.html(`Bạn đã không đủ điểm để tham gia vòng quay`);
+                $notifyWheel.html('Thật đáng tiếc!');
+                $modalImageWheel.attr('src', srcImageFail);
                 prizeModal.show();
             }
         });
 
         /********** Hàm cập nhật danh sách quà **********/
         const updateGiftList = giftDetails => {
-            const giftTableBody = document.querySelector('#giftTableBody');
-            giftTableBody.innerHTML = ''; // Xóa nội dung cũ
+            const $giftTableBody = $('#giftTableBody');
+            $giftTableBody.empty(); // Xóa nội dung cũ
 
             giftDetails.forEach(gift => {
                 const row = `
@@ -167,7 +169,7 @@
                         </td>
                     </tr>
                 `;
-                giftTableBody.innerHTML += row;
+                $giftTableBody.append(row);
             });
         };
 

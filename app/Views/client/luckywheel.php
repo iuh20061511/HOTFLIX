@@ -11,7 +11,7 @@
             </div>
         </div>
     </div>
-    <div class="row row-wheel"  style=" margin-bottom: 20px; background-image: url('<?php echo _WEB_ROOT ?>/public/luckywheel/bg/bg-wheel.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="row row-wheel" style=" margin-bottom: 20px; background-image: url('<?php echo _WEB_ROOT ?>/public/luckywheel/bg/bg-wheel.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
         <div class="col-12 col-lg-6">
             <div class="plan plan--active" style="background-color:#fff">
                 <h3 class="plan__title text-pink" style="font-size: 22px;">Luật chơi:</h3>
@@ -34,49 +34,49 @@
                     <p>Điểm hiện có: <span id="userPoints"><?php echo $user[0]['points']; ?></span></p>
                 </h6>
                 <section class="main-wheel" style="padding-top: 10px">
-                <?php if (!empty($listGift) && count($listGift)>=6) { ?>
-                    <span class="span-wheel">
-                        <ul class="wheel">
-                        <?php
-                            // Tính toán số phần thưởng và góc xoay
-                            $size = count($listGift);
-                            $rotate = 360 / $size;  // Số độ cho mỗi phần thưởng
-                            $skewY = 90 - $rotate;  // Góc nghiêng để làm phẳng các phần thưởng
+                    <?php if (!empty($listGift) && count($listGift) >= 6) { ?>
+                        <span class="span-wheel">
+                            <ul class="wheel">
+                                <?php
+                                // Tính toán số phần thưởng và góc xoay
+                                $size = count($listGift);
+                                $rotate = 360 / $size;  // Số độ cho mỗi phần thưởng
+                                $skewY = 90 - $rotate;  // Góc nghiêng để làm phẳng các phần thưởng
 
-                            foreach ($listGift as $index => $gift) {
-                                $angle = $rotate * $index;  // Góc xoay của mỗi phần thưởng
-                                $textClass = ($index % 2 == 0) ? 'text-wheel-1' : 'text-wheel-2';
-                            ?>
-                            <li class="item-wheel" style="transform: rotate(<?php echo $angle; ?>deg) skewY(-<?php echo $skewY; ?>deg);">
-                                <p class="text-wheel <?php echo $textClass; ?>" style="transform: skewY(<?php echo $skewY; ?>deg) rotate(<?php echo $rotate / 2; ?>deg);">
-                                <b data-id-gift="<?php echo $gift['id_gift']?>" data-image-gift="<?php echo _WEB_ROOT . '/public/admin/img/gift/' . htmlspecialchars($gift['image']); ?>" data-percent="<?php echo $gift['percent']?>">
-                                    <?php echo htmlspecialchars($gift['gift_name']); ?>
-                                </b>
-                                </p>
-                            </li>
-                        <?php } ?>
-                        </ul>
-                        <!-- Danh sách bóng đèn -->
-                        <div class="list-light-bulbs">
-                            <?php
-                            $numLights = 36; // Số bóng đèn xung quanh vòng tròn
-                            for ($i = 0; $i < $numLights; $i++) {
-                                $angle = 360 / $numLights * $i; // Góc xoay của mỗi bóng đèn
-                            ?>
-                                <div class="light-bulb" style="transform: rotate(<?php echo $angle; ?>deg) translateX(calc(var(--size-wheel) / 2 + 10px));"></div>
-                            <?php } ?>
+                                foreach ($listGift as $index => $gift) {
+                                    $angle = $rotate * $index;  // Góc xoay của mỗi phần thưởng
+                                    $textClass = ($index % 2 == 0) ? 'text-wheel-1' : 'text-wheel-2';
+                                ?>
+                                    <li class="item-wheel" style="transform: rotate(<?php echo $angle; ?>deg) skewY(-<?php echo $skewY; ?>deg);">
+                                        <p class="text-wheel <?php echo $textClass; ?>" style="transform: skewY(<?php echo $skewY; ?>deg) rotate(<?php echo $rotate / 2; ?>deg);">
+                                            <b data-id-gift="<?php echo $gift['id_gift'] ?>" data-image-gift="<?php echo _WEB_ROOT . '/public/admin/img/gift/' . htmlspecialchars($gift['image']); ?>" data-percent="<?php echo $gift['percent'] ?>">
+                                                <?php echo htmlspecialchars($gift['gift_name']); ?>
+                                            </b>
+                                        </p>
+                                    </li>
+                                <?php } ?>
+                            </ul>
+                            <!-- Danh sách bóng đèn -->
+                            <div class="list-light-bulbs">
+                                <?php
+                                $numLights = 36; // Số bóng đèn xung quanh vòng tròn
+                                for ($i = 0; $i < $numLights; $i++) {
+                                    $angle = 360 / $numLights * $i; // Góc xoay của mỗi bóng đèn
+                                ?>
+                                    <div class="light-bulb" style="transform: rotate(<?php echo $angle; ?>deg) translateX(calc(var(--size-wheel) / 2 + 10px));"></div>
+                                <?php } ?>
+                            </div>
+                        </span>
+                        <div class="wheel__arrow">
+                            <button class="wheel__button">QUAY</button>
                         </div>
-                    </span>
-                    <div class="wheel__arrow">
-                        <button class="wheel__button">QUAY</button>
-                    </div>
-                <?php } else { ?>
-                    <div class="no-wheel-items">
-                        <p class="text-center" style="font-size: 22px; font-weight: bold; color: #f8e64b;">
-                            Sự kiện đang tạm thời đóng, xin quý vị thông cảm!
-                        </p>
-                    </div>
-                <?php } ?>
+                    <?php } else { ?>
+                        <div class="no-wheel-items">
+                            <p class="text-center" style="font-size: 22px; font-weight: bold; color: #f8e64b;">
+                                Sự kiện đang tạm thời đóng, xin quý vị thông cảm!
+                            </p>
+                        </div>
+                    <?php } ?>
                 </section>
                 <!-- <h1 class="msg-lucky"></h1> -->
             </div>
@@ -117,7 +117,7 @@
                                         <?php echo $giftDetail['status'] == 1 ? 'Đã nhận' : 'Chưa nhận'; ?>
                                     </td>
                                 </tr>
-                            <?php }
+                        <?php }
                         }
                         ?>
                     </tbody>
@@ -147,18 +147,18 @@
                         </a>
                     </li>
                 </ul>
-                
+
                 <ul class="paginator">
                     <li class="paginator__item paginator__item--prev">
                         <a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>"><i class="ti ti-chevron-left"></i></a>
                     </li>
-                    
+
                     <?php for ($i = 1; $i <= $pagination['totalPages']; $i++): ?>
                         <li class="paginator__item <?= $i == $pagination['currentPage'] ? 'paginator__item--active' : ''; ?>">
                             <a href="?page=<?= $i; ?>"><?= $i; ?></a>
                         </li>
                     <?php endfor; ?>
-                    
+
                     <li class="paginator__item paginator__item--next">
                         <a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>"><i class="ti ti-chevron-right"></i></a>
                     </li>
@@ -201,11 +201,12 @@
     </div>
 </div>
 <script>
-    let numberPage = '<?php echo isset($_GET['page']) ?(int)($_GET['page']) : 1?>';
+    let numberPage = '<?php echo isset($_GET['page']) ? (int)($_GET['page']) : 1 ?>';
     let userPoints = <?php echo $user[0]['points']; ?>;
     const minPointsRequired = 10;
     let srcImageFail = `<?php echo _WEB_ROOT; ?>/public/luckywheel/bg/matbuon.jpg`;
     const urlSever = '<?php echo _LINK; ?>/client/luckywheel/spin';
-    const urlGift ='<?php echo _WEB_ROOT; ?>/public/admin/img/gift/';
+    const urlGift = '<?php echo _WEB_ROOT; ?>/public/admin/img/gift/';
 </script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="<?php echo _WEB_ROOT ?>/public/luckywheel/main.js"></script>

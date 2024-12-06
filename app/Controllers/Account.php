@@ -53,6 +53,12 @@ class Account extends Controller
                         ];
                         $_SESSION['is_login']['id_rank'] = $id_rank;
                         $this->model->updateData('customer', $data_rank, "where id_customer = $id_customer");
+
+                        $data_rank_reset = [
+                            'points' => 0,
+                            'points_rank' => 0
+                        ];
+                        $this->model->updateData('customer', $data_rank_reset, "where id_customer = $id_customer AND MONTH(CURDATE()) IN (1, 4, 7, 10) AND DAY(CURDATE()) = 1");
                     } else {
                         $_SESSION['is_login']['id_account'] = $user['id_staff'];
                         $_SESSION['is_login']['id_cinema'] = $user['id_cinema'];

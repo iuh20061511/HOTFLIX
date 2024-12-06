@@ -509,12 +509,12 @@ class BookTickets extends Controller
 
             $customer =   $this->model->getListTable('customer', "where id_customer = $id_customer");
             if (!empty($customer)) {
+                $point_rank = $customer[0]['points_rank'];
+                $point = $customer[0]['points'];
 
-                echo "<pre>";
-                print_r($customer);
-                $point = $customer[0]['points_rank'];
                 $data_point = [
-                    'points_rank' => $point + count($id_seat)
+                    'points_rank' => $point_rank + count($id_seat),
+                    'points' => $point + count($id_seat) * 10
                 ];
                 $this->model->updateData('customer', $data_point, "where id_customer = $id_customer");
             }
@@ -564,7 +564,8 @@ class BookTickets extends Controller
                 $this->view("layout/client", $this->data);
             } else {
 
-                echo "<script>window.location.href = 'in-ve-tai-quay-$id_invoice.html';</script>";
+                echo "<script>window.open('in-ve-tai-quay-$id_invoice.html', '_blank');</script>";
+                echo "<script>window.location.href = 'ban-ve.html';</script>";
             }
         } else {
             echo "Thất bại";

@@ -48,10 +48,10 @@ $routes['xoa-suat-chieu-(.+).html'] = 'admin/Showtime/deleteShowTime/$1';
 
 //Menu_items
 
-$routes['quan-ly-bap-nuoc.html'] = 'admin/Menu_items';
-$routes['them-bap-nuoc.html'] = 'admin/menu_items/addNewItem';
-$routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/menu_items/updateItem/$1';
-$routes['xoa-bap-nuoc.html'] = 'admin/menu_items/deleteItem';
+$routes['quan-ly-bap-nuoc.html'] = 'admin/Menu_Items ';
+$routes['them-bap-nuoc.html'] = 'admin/Menu_Items /addNewItem';
+$routes['cap-nhat-bap-nuoc-(.+).html'] = 'admin/Menu_Items /updateItem/$1';
+$routes['xoa-bap-nuoc.html'] = 'admin/Menu_Items /deleteItem';
 
 //Voucher
 $routes['quan-ly-voucher.html'] = 'admin/Voucher';
@@ -108,7 +108,7 @@ $routes['thanh-toan-hoa-don-thanh-cong.html'] = 'client/Rent_room/paySuccessRoom
 //Tra cứu thông tin
 $routes['tra-cuu-ve.html'] = 'admin/Search';
 $routes['in-ve-(.+).html'] = 'client/BookTickets/PDFInvoiceDetails/$1';
-// $routes['tra-cuu-qua-tang.html'] = 'book_room/rent_room';
+
 
 //Vòng quay may mắn
 $routes['vong-quay-may-man.html'] = 'client/LuckyWheel';

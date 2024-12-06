@@ -300,4 +300,3 @@ $jsonSchedules = json_encode($schedules);
         });
     });
 </script>
-
