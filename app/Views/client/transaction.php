@@ -71,7 +71,7 @@
                                     <div class="ticket-item mb-1 d-flex align-items-center">
                                         <img src="<?php echo _WEB_ROOT; ?>/public/admin/img/movies/<?php echo $invoice['poster']; ?>" alt="Movie Poster" class="ticket-item__poster me-3">
                                         <div class="row w-100">
-                                            <div class="col-md-8 ticket-item__details">
+                                            <div class="col-md-7 ticket-item__details">
                                                 <h5 class="ticket-item__title"><?php echo $invoice['movie_name']; ?></h5>
                                                 <p class="ticket-item__showtime">
                                                     <span class="time"><?php echo date('H:i', strtotime($invoice['start_time'])); ?></span>
@@ -184,7 +184,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="col-md-4 ticket-item__extra">
+                                        <div class="col-md-5 ticket-item__extra">
                                             <p class="ticket-item__cinema"><?php echo $invoice['cinema_name']; ?></p>
                                             <p class="ticket-item__format"><?php echo $invoice['format']; ?></p>
                                             <div type="button" data-bs-toggle="modal" data-bs-target="#plan-modal" class="ticket-item__details-link" data-invoice='<?php echo json_encode($invoice, JSON_HEX_APOS | JSON_UNESCAPED_UNICODE); ?>'>Xem chi tiết</div>
@@ -279,13 +279,13 @@
                                 <a href="hoa-don-dat-phong-<?php echo $invoiceRoom['id_invoiceRoom'] ?>.html" class="ticket-item mb-1 d-flex align-items-center" target="_blank">
                                     <img src="<?php echo _WEB_ROOT; ?>/public/assets/img/rent_room.png" alt="Movie Poster" class="ticket-item__poster me-3">
                                     <div class="row w-100">
-                                        <div class="col-md-8 ticket-item__details">
+                                        <div class="col-md-7 ticket-item__details">
                                             <h5 class="ticket-item__title"><?php echo mb_strtoupper($invoiceRoom['cinema_name'], 'UTF-8') ?></h5>
                                             <p class="ticket-item__showtime">
                                                 <span class="time"><?php echo $invoiceRoom['date_rent'] ?></span>
                                             </p>
                                         </div>
-                                        <div class="col-md-4 ticket-item__extra">
+                                        <div class="col-md-5 ticket-item__extra">
                                             <p class="ticket-item__cinema"><?php echo mb_strtoupper($invoiceRoom['room_name'], 'UTF-8') ?> </p>
                                             <p class="ticket-item__format"><?php echo $invoiceRoom['start_time'] . ' - ' . $invoiceRoom['end_time']; ?> </p>
                                             <span class="ticket-item__details-link">Chi tiết</span>

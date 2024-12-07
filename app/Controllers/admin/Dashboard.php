@@ -14,93 +14,73 @@ class Dashboard extends Controller
     public function index()
     {
         $this->data['sub']['title'] = "Trang Admin Dashboard";
+        $invoice_ticket_month = $this->getMonthlyTicketRevenue();
+        $invoice_room_month  = $this->getMonthlyRoomRevenue();
+        $invoice_ticket_week = $this->getWeeklyTicketRevenue();
+        $invoice_room_week  = $this->getWeeklyRoomRevenue();
+        $this->data['sub']['invoice_month'] = $invoice_ticket_month + $invoice_room_month;
+        $this->data['sub']['invoice_week'] =  $invoice_ticket_week +  $invoice_room_week;
 
-        if (isset($_POST['week'])) {
-            $this->data['sub']['total_revenue'] = $this->getWeeklyTicketRevenue()['total_revenue'];
-            $this->data['sub']['weeklyRevenueRate'] = $this->getWeeklyTicketRevenue()['weeklyRevenueRate'];
 
-            $this->data['sub']['total_revenue_month'] = $this->getMothTicketRevenue()['total_revenue_month'];
-            $this->data['sub']['monthlyRevenueRate'] = $this->getMothTicketRevenue()['monthlyRevenueRate'];
-        }
-        $this->data['sub']['calculateMovieRevenue'] = $this->calculateMovieRevenue();
         $this->data['content'] = 'admin/dashboard/dashboard';
 
         $this->view("layout/admin", $this->data);
     }
 
-    public function getWeeklyTicketRevenue()
+    public function getMonthlyTicketRevenue()
     {
-        $WeeklyRevenue = array();
-        if (isset($_POST['week'])) {
-            list($year, $week) = explode("-W", $_POST['week']);
-
-            $start_date = date("Y-m-d", strtotime("{$year}W" . str_pad($week, 2, "0", STR_PAD_LEFT)));
-            $end_date = date("Y-m-d", strtotime("{$start_date} +6 days"));
-
-            $start_date_previous_week = date("Y-m-d", strtotime("{$start_date} -7 days"));
-            $end_date_previous_week = date("Y-m-d", strtotime("{$end_date} -7 days"));
-
-            $invoice = $this->model->getListTableByCol('invoice', 'SUM(final_total) AS total_revenue', "WHERE create_date BETWEEN '$start_date' AND '$end_date'");
-            $invoice_previous_week = $this->model->getListTableByCol('invoice', 'SUM(final_total) AS total_revenue', "WHERE create_date BETWEEN '$start_date_previous_week' AND '$end_date_previous_week'");
-
-            if ($invoice_previous_week[0]['total_revenue'] > 0) {
-                $weeklyRevenueRate = (($invoice[0]['total_revenue'] / $invoice_previous_week[0]['total_revenue']) * 100) - 100;
-            } else {
-                $weeklyRevenueRate = 100;
-            }
-
-            $WeeklyRevenue['total_revenue'] = $invoice[0]['total_revenue'] ?? 0;
-            $WeeklyRevenue['weeklyRevenueRate'] = round($weeklyRevenueRate);
-
-            return $WeeklyRevenue;
-        }
-        return false;
-    }
-
-    public function getMothTicketRevenue()
-    {
-        $MonthlyRevenue = array();
-        if (isset($_POST['week'])) {
-            list($year, $week) = explode("-W", $_POST['week']);
-
-            $start_date = date("Y-m-01", strtotime("{$year}-W" . str_pad($week, 2, "0", STR_PAD_LEFT)));
-            $end_date = date("Y-m-t", strtotime($start_date));
-
-            $start_date_previous_month = date("Y-m-01", strtotime("{$start_date} -1 month"));
-            $end_date_previous_month = date("Y-m-t", strtotime("{$end_date} -1 month"));
-
-            $invoice = $this->model->getListTableByCol('invoice', 'SUM(final_total) AS total_revenue', "WHERE create_date BETWEEN '$start_date' AND '$end_date'");
-            $invoice_previous_month = $this->model->getListTableByCol('invoice', 'SUM(final_total) AS total_revenue', "WHERE create_date BETWEEN '$start_date_previous_month' AND '$end_date_previous_month'");
-
-            if ($invoice_previous_month[0]['total_revenue'] > 0) {
-                $monthlyRevenueRate = (($invoice[0]['total_revenue'] / $invoice_previous_month[0]['total_revenue']) * 100) - 100;
-            } else {
-                $monthlyRevenueRate = 100;
-            }
-
-
-            $MonthlyRevenue['total_revenue_month'] = $invoice[0]['total_revenue'] ?? 0;
-            $MonthlyRevenue['monthlyRevenueRate'] = round($monthlyRevenueRate);
-
-            return $MonthlyRevenue;
-        }
-
-        return false;
-    }
-
-
-    public function calculateMovieRevenue()
-    {
-        $MovieRevenue = $this->model->getListFromThreeTablesByCol(
-            'movie.movie_name, SUM(invoice.final_total) AS total_revenue, COUNT(show_time.id_movie) AS total_movie',
+        $invoice = $this->model->getListFromTwoTablesByCol(
+            'SUM(final_total) AS total_ticket',
             'invoice',
             'show_time',
-            'movie',
             'id_showTime',
-            'id_movie',
-            'GROUP BY movie.movie_name'
+            'WHERE YEAR(show_time.show_date) = YEAR(CURDATE())  AND MONTH(show_time.show_date) = MONTH(CURDATE()) GROUP BY  MONTH(show_time.show_date) ORDER BY MONTH(show_time.show_date)'
+
+        );
+        return !empty($invoice[0]['total_ticket']) ? $invoice[0]['total_ticket'] : 0;
+    }
+
+    public function getMonthlyRoomRevenue()
+    {
+        $invoice_roomPrivate = $this->model->getListTableByCol('invoice_room_private', 'SUM(price) AS total_roomPrivate', 'WHERE YEAR(show_date) = YEAR(CURDATE()) AND MONTH(show_date) = MONTH(CURDATE()) GROUP BY  MONTH(show_date) ORDER BY MONTH(show_date)');
+        $invoice_room = $this->model->getListTableByCol('invoice_room', 'SUM(final_total) AS total_room', 'WHERE YEAR(date_rent) = YEAR(CURDATE()) AND MONTH(date_rent) = MONTH(CURDATE()) GROUP BY  MONTH(date_rent) ORDER BY MONTH(date_rent)');
+
+        $total_roomPrivate = !empty($invoice_roomPrivate) ? $invoice_roomPrivate[0]['total_roomPrivate'] : 0;
+        $total_room = !empty($invoice_room) ? $invoice_room[0]['total_room'] : 0;
+        $invoice = $total_roomPrivate + $total_room;
+        return $invoice;
+    }
+
+    public function getWeeklyTicketRevenue()
+    {
+        $invoice = $this->model->getListFromTwoTablesByCol(
+            'SUM(final_total) AS total_ticket',
+            'invoice',
+            'show_time',
+            'id_showTime',
+            'WHERE YEAR(show_time.show_date) = YEAR(CURDATE())  AND WEEK(show_time.show_date, 1) = WEEK(CURDATE(), 1) GROUP BY WEEK(show_time.show_date, 1) ORDER BY WEEK(show_time.show_date, 1)'
         );
 
-        return $MovieRevenue;
+        return !empty($invoice[0]['total_ticket']) ? $invoice[0]['total_ticket'] : 0;
+    }
+
+    public function getWeeklyRoomRevenue()
+    {
+
+        $invoice_roomPrivate = $this->model->getListTableByCol(
+            'invoice_room_private',
+            'SUM(price) AS total_roomPrivate',
+            'WHERE YEAR(show_date) = YEAR(CURDATE()) AND WEEK(show_date, 1) = WEEK(CURDATE(), 1) GROUP BY WEEK(show_date, 1) ORDER BY WEEK(show_date, 1)'
+        );
+
+        $invoice_room = $this->model->getListTableByCol(
+            'invoice_room',
+            'SUM(final_total) AS total_room',
+            'WHERE YEAR(date_rent) = YEAR(CURDATE()) AND WEEK(date_rent, 1) = WEEK(CURDATE(), 1) GROUP BY WEEK(date_rent, 1) ORDER BY WEEK(date_rent, 1)'
+        );
+        $total_roomPrivate = !empty($invoice_roomPrivate) ? $invoice_roomPrivate[0]['total_roomPrivate'] : 0;
+        $total_room = !empty($invoice_room) ? $invoice_room[0]['total_room'] : 0;
+        $invoice = $total_roomPrivate + $total_room;
+        return $invoice;
     }
 }

@@ -20,12 +20,7 @@
 					<div class="stats">
 						<span>Doanh vé tuần</span>
 						<p style="font-size: 20px;">
-							<?php if (isset($total_revenue)) : ?>
-								<?= number_format($total_revenue, 0, ',', '.') ?> VNĐ
-								<b class="<?= $weeklyRevenueRate > 1 ? 'green' : 'red' ?>">
-									<?= ($weeklyRevenueRate > 1 ? '+' : '') . $weeklyRevenueRate ?>%
-								</b>
-							<?php endif; ?>
+							<?php echo  number_format($invoice_week, 0, ',', '.') . ' VNĐ'; ?>
 						</p>
 						<br>
 
@@ -37,14 +32,9 @@
 				<!-- stats -->
 				<div class="col-12 col-sm-6 col-xl-3">
 					<div class="stats">
-						<span>Doanh vé thu tháng</span>
+						<span>Doanh thu tháng</span>
 						<p style="font-size: 20px;">
-							<?php if (isset($total_revenue_month)) : ?>
-								<?= number_format($total_revenue_month, 0, ',', '.') ?> VNĐ
-								<b class="<?= $monthlyRevenueRate > 1 ? 'green' : 'red' ?>">
-									<?= ($monthlyRevenueRate > 1 ? '+' : '') . $monthlyRevenueRate ?>%
-								</b>
-							<?php endif; ?>
+							<?php echo  number_format($invoice_month, 0, ',', '.') . ' VNĐ'; ?>
 						</p><br>
 						<i class="ti ti-movie" style="font-size: 20px;"></i>
 					</div>
@@ -96,7 +86,7 @@
 									</tr>
 								</thead>
 
-								<tbody>
+								<!-- <tbody>
 									<?php
 									$i = 0;
 									foreach ($calculateMovieRevenue as $item) { ?>
@@ -116,7 +106,7 @@
 										</tr>
 									<?php } ?>
 
-								</tbody>
+								</tbody> -->
 							</table>
 						</div>
 					</div>

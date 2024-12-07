@@ -99,6 +99,25 @@ class Model extends Database
         return $data;
     }
 
+    public function getListFromTwoTablesByCol($col, $tableName1, $tableName2, $columnIdFK, $condition = '')
+    {
+        $this->connectIfNeeded();
+
+        $query = "SELECT $col FROM $tableName1 INNER JOIN $tableName2 ON $tableName1.$columnIdFK = $tableName2.$columnIdFK $condition";
+        $result = mysqli_query($this->connection, $query);
+
+        if (!$result) {
+            die('Query failed: ' . mysqli_error($this->connection));
+        }
+
+        $data = [];
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
+        }
+        mysqli_free_result($result);
+
+        return $data;
+    }
 
     public function getListFromThreeTablesByCol($col, $tableName1, $tableName2, $tableName3, $columnIdFK1, $columnIdFK2, $condition = '')
     {
