@@ -24,10 +24,12 @@ class Users extends Controller
         $totalStaff = count($this->model->getListTable('staff'));
         $condition = '';
         if (isset($_GET['role'])) {
+            $role = $_GET['role'];
             if ($_GET['role'] != 0) {
-                $role = $_GET['role'];
                 $condition = "WHERE staff.id_role  = $role";
                 $totalStaff = count($this->model->getListTable('staff',  $condition));
+            } else {
+                echo "<script>window.location.href = 'quan-ly-tai-khoan.html'</script>";
             }
         }
         $totalPages = ceil($totalStaff / $itemsPerPage);
