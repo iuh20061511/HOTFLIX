@@ -22,6 +22,18 @@
 			<!-- users -->
 			<div class="col-12">
 				<div class="catalog catalog--1">
+					<form action="" method="GET">
+						<select class="form-select" id="roleSelect" name="role" aria-label="Chọn vai trò" style="width: 200px; float: right;" onchange="this.form.submit()">
+							<option value="0" <?= (isset($_GET['role']) && $_GET['role'] == 0) ? 'selected' : '' ?>>Tất cả</option>
+							<option value="2" <?= (isset($_GET['role']) && $_GET['role'] == 2) ? 'selected' : '' ?>>Quản lý cụm rạp</option>
+							<option value="3" <?= (isset($_GET['role']) && $_GET['role'] == 3) ? 'selected' : '' ?>>Quản lý rạp phim</option>
+							<option value="4" <?= (isset($_GET['role']) && $_GET['role'] == 4) ? 'selected' : '' ?>>Nhân viên quầy vé</option>
+							<option value="5" <?= (isset($_GET['role']) && $_GET['role'] == 5) ? 'selected' : '' ?>>nhân viên soát vé</option>
+							<option value="6" <?= (isset($_GET['role']) && $_GET['role'] == 6) ? 'selected' : '' ?>>Quản trị viên</option>
+
+						</select>
+
+					</form>
 					<table class="catalog__table">
 						<thead>
 							<tr>
@@ -39,7 +51,7 @@
 
 						<tbody>
 							<?php
-							$stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'] ;
+							$stt = ($pagination['currentPage'] - 1) * $pagination['itemsPerPage'];
 							foreach ($listStaff as $index => $staff) { ?>
 								<tr>
 									<td>
@@ -101,9 +113,13 @@
 					<ul class="main__paginator-list">
 						<!-- Trang trước -->
 						<li>
-							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>">
-								<i class="ti ti-chevron-left"></i>
-								<span>Prev</span>
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1)
+												. (isset($_GET['role']) ? '&role=' . $_GET['role'] : '') ?>">
+								Previous
+							</a>
+
+							<i class="ti ti-chevron-left"></i>
+							<span>Prev</span>
 							</a>
 						</li>
 						<!-- Trang kế tiếp -->
@@ -114,20 +130,20 @@
 							</a>
 						</li>
 					</ul>
-					
+
 					<ul class="paginator">
 						<li class="paginator__item paginator__item--prev">
-							<a href="?page=<?= max(1, $pagination['currentPage'] - 1); ?>"><i class="ti ti-chevron-left"></i></a>
+							<a href="?page=<?= max(1, $pagination['currentPage'] - 1) . (isset($_GET['role']) ? '&role=' . $_GET['role'] : ''); ?>"><i class="ti ti-chevron-left"></i></a>
 						</li>
-						
+
 						<?php for ($i = 1; $i <= $pagination['totalPages']; $i++): ?>
 							<li class="paginator__item <?= $i == $pagination['currentPage'] ? 'paginator__item--active' : ''; ?>">
-								<a href="?page=<?= $i; ?>"><?= $i; ?></a>
+								<a href="?page=<?= $i . (isset($_GET['role']) ? '&role=' . $_GET['role'] : ''); ?>"><?= $i; ?></a>
 							</li>
 						<?php endfor; ?>
-						
+
 						<li class="paginator__item paginator__item--next">
-							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1); ?>"><i class="ti ti-chevron-right"></i></a>
+							<a href="?page=<?= min($pagination['totalPages'], $pagination['currentPage'] + 1) . (isset($_GET['role']) ? '&role=' . $_GET['role'] : ''); ?>"><i class="ti ti-chevron-right"></i></a>
 						</li>
 					</ul>
 				</div>
@@ -183,13 +199,13 @@
 </div>
 
 <script>
-	document.addEventListener('DOMContentLoaded', function () {
+	document.addEventListener('DOMContentLoaded', function() {
 		// Lấy tất cả các nút xóa
 		var deleteButtons = document.querySelectorAll('.catalog__btn--delete');
 
 		// Thêm sự kiện click cho từng nút xóa
-		deleteButtons.forEach(function (button) {
-			button.addEventListener('click', function () {
+		deleteButtons.forEach(function(button) {
+			button.addEventListener('click', function() {
 				var staffId = this.getAttribute('data-staff-id');
 				var staffName = this.getAttribute('data-staff-name');
 				document.getElementById('staff-id').textContent = staffId;

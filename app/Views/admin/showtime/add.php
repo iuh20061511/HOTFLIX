@@ -418,47 +418,53 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form action="" method="post">
-                                                <div class="form-group row">
-                                                    <?php foreach ($times as $time) { ?>
-                                                        <div class="form-check col-4">
-
-                                                            <input type="checkbox" class="form-check-input" name="<?php echo $time[0] . ',' . $time[1]; ?>">
-
-                                                            <label class="form-check-label" for="">
-                                                                <?php echo $time[0] . 'h' . ' - ' . $time[1] . 'h'; ?>
-                                                            </label>
-                                                        </div>
-                                                    <?php } ?>
-                                                </div>
-                                                <label for="">Chọn định dạng chiếu:</label>
-                                                <select class="form-control m-1" name="projection_format" id="">
-                                                    <option value="Phim 2D">Phim 2D</option>
-                                                    <option value="Phim 3D">Phim 3D</option>
-                                                    <option value="IMAX">IMAX</option>
-                                                    <option value="Phim lồng tiếng">Phim lồng tiếng</option>
-                                                    <option value="Phim thuyết minh">Phim thuyết minh</option>
-                                                    <option value="Phim tài liệu">Phim tài liệu</option>
-                                                    <option value="Phim hoạt hình">Phim hoạt hình</option>
-
-                                                </select>
-                                                <input type="hidden" name="date_time" value="<?php echo $$day ?>">
-                                                <?php
+                                            <?php if (count($times) > 0) { ?>
+                                                <form action="" method="post" onsubmit="return validateCheckboxes()">
+                                                    <div class="form-group row">
+                                                        <?php
+                                                        foreach ($times as $time) { ?>
+                                                            <div class="form-check col-4">
 
 
+                                                                <input type="checkbox" class="form-check-input" name="<?php echo $time[0] . ',' . $time[1]; ?>">
 
-                                                if ($id_roomType == 2 || $id_roomType == 3 || $id_roomType == 4) {
+                                                                <label class="form-check-label" for="">
+                                                                    <?php echo $time[0] . 'h' . ' - ' . $time[1] . 'h'; ?>
+                                                                </label>
+                                                            </div>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <label for="">Chọn định dạng chiếu:</label>
+                                                    <select class="form-control m-1" name="projection_format" id="">
+                                                        <option value="Phim 2D">Phim 2D</option>
+                                                        <option value="Phim 3D">Phim 3D</option>
+                                                        <option value="IMAX">IMAX</option>
+                                                        <option value="Phim lồng tiếng">Phim lồng tiếng</option>
+                                                        <option value="Phim thuyết minh">Phim thuyết minh</option>
+                                                        <option value="Phim tài liệu">Phim tài liệu</option>
+                                                        <option value="Phim hoạt hình">Phim hoạt hình</option>
 
-                                                ?>
-                                                    <input type="number" name="single_seat_price" id="single_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đơn..." min="10000" required>
-                                                    <input type="number" name="double_seat_price" id="double_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đôi..." min="10000" required>
-                                                <?php }
-                                                ?>
-                                                <input type="number" name="vip_seat_price" id="vip_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế vip..." min="10000" required>
+                                                    </select>
+                                                    <input type="hidden" name="date_time" value="<?php echo $$day ?>">
+                                                    <?php
 
 
-                                                <input type="submit" value="xác nhận" class="btn btn-success m-3" name="submit" style="margin-left: 40%;">
-                                            </form>
+
+                                                    if ($id_roomType == 2 || $id_roomType == 3 || $id_roomType == 4) {
+
+                                                    ?>
+                                                        <input type="number" name="single_seat_price" id="single_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đơn..." min="10000" value="45000" required>
+                                                        <input type="number" name="double_seat_price" id="double_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế đôi..." min="10000" value="90000" required>
+                                                    <?php }
+                                                    ?>
+                                                    <input type="number" name="vip_seat_price" id="vip_seat_price" class="form-control m-1" placeholder="Nhập giá tiền của ghế vip..." min="10000" value="60000" required>
+
+
+                                                    <input type="submit" value="xác nhận" class="btn btn-success m-3" name="submit" style="margin-left: 40%;">
+                                                </form>
+                                            <?php } else { ?>
+                                                <h5 class="text-center text-danger">Lịch chiếu đã đầy, Vui lòng chọn ngày khác hoặc phòng khác</h5>
+                                            <?php } ?>
                                         </div>
 
                                     </div>
@@ -517,4 +523,23 @@
             });
         });
     });
+</script>
+<script>
+    function validateCheckboxes() {
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        let checked = false;
+
+        checkboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                checked = true;
+            }
+        });
+
+        if (!checked) {
+            alert('Bạn phải chọn ít nhất một thời gian.');
+            return false; // Ngăn không cho gửi biểu mẫu
+        }
+
+        return true; // Cho phép gửi biểu mẫu
+    }
 </script>

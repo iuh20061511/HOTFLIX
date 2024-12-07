@@ -1,6 +1,6 @@
     <!-- page title -->
     <section class="section section--first" style="padding: 10px 0; <?php echo !empty($invoices) ? 'margin-top: 65px;' : ''; ?>">
-        <div class="container">
+        <!-- <div class="container">
             <div class="row">
                 <div class="col-12">
                     <div class="section__wrap">
@@ -11,7 +11,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </section>
     <!-- content -->
     <section class="content" style="top: 0;">
@@ -22,12 +22,7 @@
                     <div class="col-12">
                         <div class="profile__content">
                             <div class="profile__user">
-                                <div class="profile__avatar">
-                                    <img width="40px" src="<?php echo _WEB_ROOT ?>/public/assets/img/user/user_account.png" alt="User avatar">
-                                </div>
-                                <div class="profile__meta">
-                                    <h3><?php echo $user[0]['full_name'] ?></h3>
-                                </div>
+
                             </div>
 
                             <!-- content tabs nav -->
@@ -84,16 +79,18 @@
                                                 </p>
                                                 <?php
                                                 $showDateTime = $invoice['show_date_default'] . ' ' . $invoice['start_time'];
-                                                if ($showDateTime >= date("Y-m-d H:i:s")): ?>
+                                                if ($showDateTime > date("Y-m-d H:i:s")): ?>
                                                     <button type="button" data-bs-toggle="modal" data-bs-target="#give-ticket" class="btn btn-primary w-200 mb-2">Tặng vé</button>
                                                 <?php endif; ?>
 
                                                 <?php
                                                 if ($_SESSION['is_login']['id_rank'] == 4 && $invoice['status_exchange'] == 0) { ?>
-                                                    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#<?php echo $invoice['id_invoice'] ?>"> Đổi vé </button>
-                                                <?php } ?>
+                                                    <?php if ($invoice['show_date_default'] > date("Y-m-d")) { ?>
+                                                        <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#<?php echo $invoice['id_invoice'] ?>"> Đổi vé </button>
+                                                <?php }
+                                                } ?>
                                                 <div class="modal fade" id="<?php echo $invoice['id_invoice'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg">
+                                                    <div class="modal-dialog modal-lg" style="overflow: scroll; height: 700px;">
                                                         <div class="modal-content">
                                                             <div class="modal-body">
                                                                 <h5 class="text-center text-danger"><b>Các suất chiếu có thể đổi</b></h5>
@@ -149,7 +146,7 @@
                                                                         $currentDate = $showDate; ?>
 
                                                         <h6 class="text-center text-primary mt-3"><b>Ngày: <?php echo $currentDate; ?></b></h6>
-                                                        <div class="row mt-3">
+                                                        <div class="row mt-3" style="overflow: scroll; height: 400px;">
                                                         <?php }
 
                                                                     $time = date('H:i', strtotime($show['start_time'])); ?>
@@ -157,9 +154,9 @@
 
                                                         <div class="col-md-3 mb-3">
                                                             <div class="card shadow-sm">
-                                                                <div class="card-body text-center">
+                                                                <div class="card-body text-center" style="min-height: 180px;">
                                                                     <h5 class="card-title text-warning"><?php echo rtrim((new DateTime("$time"))->modify('+30 minutes')->format('H:i')); ?></h5>
-                                                                    <p class="card-text text-muted"><?php echo $show['cinema_name']; ?></p>
+                                                                    <p class="card-text text-muted" style="font-size: 13px;"><?php echo $show['cinema_name']; ?></p>
                                                                     <p class="card-text text-danger" style="font-size: 12px;"><b><?php echo $show['seat']; ?></b> ghế đã bán</p>
                                                                     <?php
                                                                     ?>
@@ -171,7 +168,7 @@
                                                                         <input type="hidden" name="tn" value="<?php echo $quantity_ticket_normal ?>">
                                                                         <input type="hidden" name="tv" value="<?php echo $quantity_ticket_vip ?>">
                                                                         <input type="hidden" name="tdb" value="<?php echo $quantity_ticket_double  ?>">
-                                                                        <input type="submit" value="Đổi vé" class="btn btn-outline-warning w-100" name="sub_change">
+                                                                        <input type="submit" value="Đổi vé" class="btn btn-outline-warning" name="sub_change" style="position: absolute; bottom: 10px; right: 30%;">
                                                                     </form>
                                                                 </div>
                                                             </div>

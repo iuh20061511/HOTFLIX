@@ -16,45 +16,46 @@ class Users extends Controller
     public function index()
     {
         $this->data['sub']['title'] = "Trang Danh sách Nhân viên";
-        
-        // Thiết lập phân trang
-        $itemsPerPage = 5; // Số nhân viên trên mỗi trang
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
-        
-        // Tổng số nhân viên và tính tổng số trang
-        $totalStaff = count($this->model->getListTable('staff'));// Hàm để đếm tổng số nhân viên
+
+        $itemsPerPage = 5;
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+
+        $totalStaff = count($this->model->getListTable('staff'));
+        $condition = '';
+        if (isset($_GET['role'])) {
+            $role = $_GET['role'];
+            $condition = "WHERE staff.id_role  = $role";
+            $totalStaff = count($this->model->getListTable('staff',  $condition));
+        }
         $totalPages = ceil($totalStaff / $itemsPerPage);
-        
-        // Lấy danh sách nhân viên theo trang hiện tại
+
+
         $offset = ($currentPage - 1) * $itemsPerPage;
-        $this->data['sub']['listStaff'] = $this->model->getListStaff("LIMIT 5 OFFSET $offset");
+
+        $this->data['sub']['listStaff'] = $this->model->getListStaff("$condition LIMIT 5 OFFSET $offset");
         $this->data['sub']['listCinema'] = $this->model->getListTable('cinemas');
 
-        // Lặp qua danh sách staff
+
         foreach ($this->data['sub']['listStaff'] as &$staff) {
-            // Kiểm tra nếu id_cinema là null thì gán 'Toàn Rạp'
             if ($staff['id_cinema'] === null) {
                 $staff['cinema_name'] = 'Hệ thống Rạp';
             } else {
-                // Tìm tên rạp trong listCinema
                 $cinemaName = null;
                 foreach ($this->data['sub']['listCinema'] as $cinema) {
-                    // So sánh id_cinema trong staff với id_cinema trong cinemas
                     if ($cinema['id_cinema'] == $staff['id_cinema']) {
-                        $cinemaName = $cinema['cinema_name']; // Gán tên rạp vào biến $cinemaName
+                        $cinemaName = $cinema['cinema_name'];
                     }
                 }
-                
-                // Nếu tìm thấy tên rạp, gán vào staff['name_cinema'], nếu không thì gán 'Rạp không xác định'
+
                 $staff['cinema_name'] = $cinemaName ? $cinemaName : 'Rạp không xác định';
             }
         }
 
-        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
         $this->data['sub']['pagination'] = [
             'totalPages' => $totalPages,
             'currentPage' => $currentPage,
-            'itemsPerPage'=>$itemsPerPage,
+            'itemsPerPage' => $itemsPerPage,
             'totalStaff' => $totalStaff,
         ];
 
@@ -66,23 +67,23 @@ class Users extends Controller
     public function listMembers()
     {
         $this->data['sub']['title'] = "Trang Danh sách Thành viên";
-         // Thiết lập phân trang
-         $itemsPerPage = 5; // Số nhân viên trên mỗi trang
-         $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
-         
-         // Tổng số nhân viên và tính tổng số trang
-         $totalStaff = count($this->model->getListTable('customer'));// Hàm để đếm tổng số nhân viên
-         $totalPages = ceil($totalStaff / $itemsPerPage);
+        // Thiết lập phân trang
+        $itemsPerPage = 5; // Số nhân viên trên mỗi trang
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
 
-                 // Lấy danh sách nhân viên theo trang hiện tại
+        // Tổng số nhân viên và tính tổng số trang
+        $totalStaff = count($this->model->getListTable('customer')); // Hàm để đếm tổng số nhân viên
+        $totalPages = ceil($totalStaff / $itemsPerPage);
+
+        // Lấy danh sách nhân viên theo trang hiện tại
         $offset = ($currentPage - 1) * $itemsPerPage;
         $this->data['sub']['listMember'] = $this->model->getListMember("LIMIT 5 OFFSET $offset");
-        
+
         // Thêm thông tin phân trang vào $this->data để sử dụng trong view
         $this->data['sub']['pagination'] = [
             'totalPages' => $totalPages,
             'currentPage' => $currentPage,
-            'itemsPerPage'=>$itemsPerPage,
+            'itemsPerPage' => $itemsPerPage,
             'totalStaff' => $totalStaff,
         ];
 
@@ -103,7 +104,7 @@ class Users extends Controller
             $this->data['sub']['error']['fullname'] = $this->validate->checkFullName($_POST['fullname']);
             $this->data['sub']['error']['birthday'] = $this->validate->checkDateOfBirth($_POST['birthday']);
             $this->data['sub']['error']['role'] = $this->validate->checkSelect($_POST['role']);
-            if($_POST['role'] !=2 && $_POST['role'] !=6){
+            if ($_POST['role'] != 2 && $_POST['role'] != 6) {
                 $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
             }
             $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone']);
@@ -120,7 +121,7 @@ class Users extends Controller
                     'status' => 1
                 ];
 
-                if($_POST['role'] !=2 && $_POST['role'] !=6){
+                if ($_POST['role'] != 2 && $_POST['role'] != 6) {
                     $data['id_cinema'] = $_POST['cinema'];
                 }
 
@@ -132,7 +133,6 @@ class Users extends Controller
         }
 
         $this->view("layout/admin", $this->data);
-
     }
 
     public function updateStaff($id_staff)
@@ -146,7 +146,7 @@ class Users extends Controller
             $this->data['sub']['error']['fullname'] = $this->validate->checkFullName($_POST['fullname']);
             $this->data['sub']['error']['birthday'] = $this->validate->checkDateOfBirth($_POST['birthday']);
             $this->data['sub']['error']['role'] = $this->validate->checkSelect($_POST['role']);
-            if($_POST['role'] !=2 && $_POST['role'] !=6){
+            if ($_POST['role'] != 2 && $_POST['role'] != 6) {
                 $this->data['sub']['error']['cinema'] = $this->validate->checkSelect($_POST['cinema']);
             }
             $this->data['sub']['error']['phone'] = $this->validate->checkPhone($_POST['phone'], true, false, $id_staff);
@@ -160,9 +160,9 @@ class Users extends Controller
                     'id_role' => $_POST['role'],
                 ];
 
-                if($_POST['role'] !=2 && $_POST['role'] !=6){
+                if ($_POST['role'] != 2 && $_POST['role'] != 6) {
                     $data['id_cinema'] = $_POST['cinema'];
-                }elseif ($_POST['role'] ==2 || $_POST['role'] ==6) {
+                } elseif ($_POST['role'] == 2 || $_POST['role'] == 6) {
                     $data['id_cinema'] = NULL;
                 }
                 $result = $this->model->updateData('staff', $data, "where id_staff = $id_staff");
@@ -175,7 +175,6 @@ class Users extends Controller
         $this->data['content'] = 'admin/users/updateUser';
 
         $this->view("layout/admin", $this->data);
-
     }
 
     public function deleteStaff()
@@ -192,11 +191,5 @@ class Users extends Controller
                 }
             }
         }
-
-
     }
-
-
-
-
 }

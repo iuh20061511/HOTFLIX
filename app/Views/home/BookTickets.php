@@ -99,7 +99,7 @@
 
                     $days = [];
 
-                    for ($i = 0; $i < 8; $i++) {
+                    for ($i = 0; $i < 7; $i++) {
                         $day = clone $today;
                         $day->modify("+$i days");
                         $dayOfWeek = $day->format('N');

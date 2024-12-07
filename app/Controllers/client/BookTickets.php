@@ -259,7 +259,7 @@ class BookTickets extends Controller
             if (isset($_POST['item'])) {
                 $this->data['sub']['item']  = $_POST['item'];
             }
-            $promotions  = $this->model->getListTable('promotion');
+            $promotions  = $this->model->getListTable('promotion', "WHERE CURRENT_DATE BETWEEN date_start AND date_end");
             if (isset($_POST['promoCode'])) {
                 $checkpromoCode = false;
                 foreach ($promotions as $pro) {

@@ -223,6 +223,8 @@ class InforUser extends Controller
         show_time.double_seat_price = '$double_seat_price' AND
         show_time.single_seat_price = '$single_seat_price' AND
         show_time.vip_seat_price = '$vip_seat_price'
+        AND STR_TO_DATE(CONCAT(show_time.show_date, ' ', show_time.start_time), '%Y-%m-%d %H:%i:%s') > CONVERT_TZ(NOW(), 'SYSTEM', 'Asia/Ho_Chi_Minh') 
+       AND STR_TO_DATE(CONCAT(show_time.show_date, ' ', show_time.start_time), '%Y-%m-%d %H:%i:%s') <= DATE_ADD(CONVERT_TZ(NOW(), 'SYSTEM', 'Asia/Ho_Chi_Minh'), INTERVAL 6 DAY)
         ORDER BY show_date ASC, start_time ASC"
         );
 

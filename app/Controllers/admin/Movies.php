@@ -18,17 +18,15 @@ class Movies extends Controller
     {
         $this->data['sub']['title'] = "Trang quản lý phim";
 
-        // Khởi tạo biến điều kiện
         $getConditions = [];
         $conditions = "WHERE id_movie != 0 ";
 
-        // Xử lý tìm kiếm
         if (isset($_GET['search_nameMovie']) && !empty($_GET['search_nameMovie'])) {
             $search_nameMovie = $_GET['search_nameMovie'];
             $getConditions[] = "movie_name LIKE '%$search_nameMovie%' ";
         }
 
-        // Xử lý sắp xếp
+
         if (isset($_GET['movie_sort'])) {
             $status_sort = $_GET['movie_sort'];
             switch ($status_sort) {
@@ -37,7 +35,7 @@ class Movies extends Controller
                 case 2:
                     $getConditions[] = "status = $status_sort";
                     break;
-                case 3: // Tất cả
+                case 3:
                     $redirectUrl = "quan-ly-phim.html";
                     header("refresh:0.5; url=$redirectUrl");
                     break;
@@ -46,27 +44,24 @@ class Movies extends Controller
             }
         }
 
-        // Tạo điều kiện cho câu truy vấn
         if (!empty($getConditions)) {
             $conditions .= " AND " . implode(" AND ", $getConditions);
         }
 
 
-        // Thiết lập phân trang
-        $itemsPerPage = 5; // Số phim trên mỗi trang
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1; // Trang hiện tại, mặc định là 1
+        $itemsPerPage = 5;
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 
-        // Tổng số phim và tính tổng số trang
+
         $totalMovies = count($this->model->getListTable('movie', $conditions));
         $totalPages = ceil($totalMovies / $itemsPerPage);
 
-        // Lấy danh sách phim theo trang hiện tại
         $offset = ($currentPage - 1) * $itemsPerPage;
 
-        $queryConditions = $conditions. " ORDER BY id_movie DESC LIMIT $itemsPerPage OFFSET $offset";
+        $queryConditions = $conditions . " ORDER BY id_movie DESC LIMIT $itemsPerPage OFFSET $offset";
         $this->data['sub']['listMovie'] = $this->model->getListTable('movie', $queryConditions);
 
-        // Thêm thông tin phân trang vào $this->data để sử dụng trong view
+
         $this->data['sub']['pagination'] = [
             'totalPages' => $totalPages,
             'currentPage' => $currentPage,
@@ -85,7 +80,9 @@ class Movies extends Controller
                 if (isset($_GET['page'])) {
                     $page = $_GET['page'];
                     echo "<script>window.location.href = 'quan-ly-phim.html?page=$page';</script>";
+                    echo "<script>window.location.href = 'quan-ly-phim.html?page=$page';</script>";
                 } else {
+                    echo "<script>window.location.href = 'quan-ly-phim.html;</script>";
                     echo "<script>window.location.href = 'quan-ly-phim.html;</script>";
                 }
             }
@@ -219,8 +216,7 @@ class Movies extends Controller
                 $result = $this->model->updateData('movie', $data, "where id_movie = $id_movie");
                 if ($result) {
                     echo "<script>alert('Cập nhật phim thành công')</script>";
-                    $redirectUrl = "quan-ly-phim.html";
-                    header("refresh:0.5; url=$redirectUrl");
+                    echo "<script>window.location.href = 'quan-ly-phim.html';</script>";
                 }
             }
         }
